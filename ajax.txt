@@ -1,0 +1,13 @@
+var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('ad', $('#ad').val());
+            $.ajax({
+                url: '{{ route('musteri_create') }}',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    
+                }
+            })
