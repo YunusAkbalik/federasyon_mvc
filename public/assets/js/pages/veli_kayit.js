@@ -13,6 +13,10 @@ Dashmix.onLoad((() => class {
                         minlength: 11,
                         maxlength: 11,
                     },
+                    "ogrenci_tc": {
+                        minlength: 11,
+                        maxlength: 11,
+                    },
                     "email": {
                         emailWithDot: !0
                     },
@@ -46,7 +50,8 @@ Dashmix.onLoad((() => class {
                     "email": "Lütfen geçerli bir e-posta adresi girin",
                     "gsm_no": "10 Haneli telefon numaranızı başında 0 olmadan girin",
                     "dogum_tarihi": "Lütfen doğum tarihinizi girin",
-                    "signup-terms": "Üye olmak için şartları ve koşulları kabul etmek zorundasınız!"
+                    "signup-terms": "Üye olmak için şartları ve koşulları kabul etmek zorundasınız!",
+                    'ogrenci_tc': "Lütfen geçerli bir T.C Kimlik numarası girin",
                 }
             })
     }

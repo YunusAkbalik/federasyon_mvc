@@ -15,4 +15,10 @@ class OgrenciOkulModel extends Model
         'sinif',
         'brans',
     ];
+
+    public function okulDetails()
+    {
+        return $this->hasOne(OkulModel::class, 'id', 'okul_id');
+    }
+
 }

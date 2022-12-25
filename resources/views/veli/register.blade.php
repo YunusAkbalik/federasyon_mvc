@@ -64,7 +64,8 @@
                                 <!-- Sign Up Form -->
                                 <!-- jQuery Validation (.js-validation-signup class is initialized in js/pages/op_auth_signup.min.js which was auto compiled from _js/pages/op_auth_signup.js) -->
                                 <!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
-                                <form class="js-validation-signup" action="{{ route('veli_kayit_post') }}" method="POST">
+                                <form class="js-validation-signup" action="{{ route('veli_kayit_post') }}"
+                                    method="POST">
                                     @csrf
                                     <div class="mb-4">
                                         <div class="row">
@@ -125,12 +126,26 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="mb-4">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="ogrenci_tc"
+                                                name="ogrenci_tc" placeholder="Öğrenci T.C">
+                                            <button onclick="OgrenciAra(this)" type="button"
+                                                class="btn btn-primary">
+                                                <i class="fa fa-search me-1"></i> Ara
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4 text-center" id="ogrenciDiv">
+
+                                    </div>
                                     <div
                                         class="d-sm-flex justify-content-sm-between align-items-sm-center mb-4 bg-body rounded py-2 px-3">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="signup-terms"
                                                 name="signup-terms">
-                                            <label class="form-check-label" for="signup-terms">Kabul Ediyorum (*)</label>
+                                            <label class="form-check-label" for="signup-terms">Kabul Ediyorum
+                                                (*)</label>
                                         </div>
                                         <div class="fw-semibold fs-sm py-1">
                                             <a class="fw-semibold fs-sm" href="#" data-bs-toggle="modal"
@@ -301,6 +316,50 @@
             });
         </script>
     @endif
+    <script>
+        function OgrenciAra(e) {
+            Dashmix.block('state_loading', '#signblock');
+            $('#ogrenciDiv').empty()
+            var tc = $(e).prev().val()
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('tc', tc);
+            $.ajax({
+                url: '{{ route('getOgrenciFromTc') }}',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    console.log(res);
+                    if (res.error) {
+                        var notFound = `<strong class="text-danger text-bold">Öğrenci Bulunamadı</strong>`
+                        $('#ogrenciDiv').append(notFound)
+                        Dashmix.block('state_normal', '#signblock');
+
+                    } else {
+                        var ogrenci = ` <a class="block block-rounded block-link-pop" href="javascript:void(0)">
+                                            <div
+                                                class="block-content block-content-full d-flex align-items-center justify-content-between">
+                                                <img class="img-avatar img-avatar48"
+                                                    src="{{ asset('assets/media/avatars/avatar16.jpg') }}"
+                                                    alt="">
+                                                <div class="ms-3 text-end">
+                                                    <p class="fw-semibold mb-0">${res.data.ad} ${res.data.soyad}</p>
+                                                    <p class="fs-sm fw-medium text-muted mb-0">
+                                                        ${res.data.okul.okul_details.ad}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>`
+                        $('#ogrenciDiv').append(ogrenci)
+                        Dashmix.block('state_normal', '#signblock');
+
+                    }
+                }
+            })
+        }
+    </script>
 </body>
 
 </html>

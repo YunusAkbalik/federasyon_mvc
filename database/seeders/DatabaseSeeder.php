@@ -4,9 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +20,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $ogrenciRole = Role::create(['name' => "Öğrenci"]);
+        $veliRole = Role::create(['name' => "Veli"]);
+        $adminRole = Role::create(['name' => "Admin"]);
+
         DB::table('users')->insert([
             [
                 'tc_kimlik' => "27256988692",
@@ -55,5 +62,8 @@ class DatabaseSeeder extends Seeder
             ['ilce_id' => 7, 'ad' => "Fatih İlköğretim okulu"],
             ['ilce_id' => 8, 'ad' => "Menemen Gazi İlköğretim okulu"],
         ]);
+      
+        User::find(1)->assignRole("Admin");
+        
     }
 }

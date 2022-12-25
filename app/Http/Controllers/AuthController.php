@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\IlModel;
 use App\Models\OgrenciOkulModel;
+use App\Models\OgrenciVeliModel;
 use App\Models\OkulModel;
 use App\Models\User;
 use Exception;
@@ -81,6 +82,7 @@ class AuthController extends Controller
                 'sinif' => $request->sinif,
                 'brans' => $request->brans
             ]);
+            $newUser->assignRole('Öğrenci');
             return redirect()->route('home')->with("success", "Öğrenci kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('ogrenci_kayit')->withErrors($exception->getMessage());
@@ -133,6 +135,18 @@ class AuthController extends Controller
                 'onayli' => false,
                 'password' => bcrypt('0')
             ]));
+            $newUser->assignRole('Veli');
+            if($request->ogrenci_tc){
+                $ogrenci = User::where('tc_kimlik',$request->ogrenci_tc)->first();
+                if($ogrenci){
+                    if($ogrenci->hasRole('Öğrenci')){
+                        OgrenciVeliModel::create([
+                            'ogrenci_id' => $ogrenci->id,
+                            'veli_id' => $newUser->id,
+                        ]);
+                    }
+                }
+            }
             return redirect()->route('home')->with("success", "Veli kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('veli_kayit')->withErrors($exception->getMessage());
