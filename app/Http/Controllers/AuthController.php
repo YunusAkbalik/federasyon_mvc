@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\IlModel;
+use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
 use App\Models\OgrenciVeliModel;
 use App\Models\OkulModel;
@@ -147,6 +148,8 @@ class AuthController extends Controller
                     }
                 }
             }
+            $logText = "Veli, $newUser->ad $newUser->soyad ($newUser->tc_kimlik) sisteme kayıt oldu";
+            LogModel::create(['kategori_id' => 2 , 'logText' => $logText]);
             return redirect()->route('home')->with("success", "Veli kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('veli_kayit')->withErrors($exception->getMessage());

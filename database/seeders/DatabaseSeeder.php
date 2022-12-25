@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
                 'onayli' => true
             ]
         ]);
+        User::find(1)->assignRole("Admin");
+
         DB::table('il')->insert([
             ['ad' => "İstanbul"],
             ['ad' => "Ankara"],
@@ -62,8 +64,9 @@ class DatabaseSeeder extends Seeder
             ['ilce_id' => 7, 'ad' => "Fatih İlköğretim okulu"],
             ['ilce_id' => 8, 'ad' => "Menemen Gazi İlköğretim okulu"],
         ]);
-      
-        User::find(1)->assignRole("Admin");
-        
+        DB::table('log_kategorileri')->insert([
+            ['ad' => "Login İşlemleri" , "icon" => "key"],
+            ['ad' => "Kayıt İşlemleri" , "icon" => "pencil"],
+        ]);
     }
 }

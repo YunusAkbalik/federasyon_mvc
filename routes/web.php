@@ -33,6 +33,8 @@ Route::post('veli-kayit', [AuthController::class, 'veli_kayit_post'])->middlewar
 Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'])->name('getOgrenciFromTc');
 
 
+
+
 Route::view('/pages/slick', 'pages.slick');
 Route::view('/pages/datatables', 'pages.datatables');
 Route::view('/pages/blank', 'pages.blank');
