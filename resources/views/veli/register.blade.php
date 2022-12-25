@@ -64,7 +64,7 @@
                                 <!-- Sign Up Form -->
                                 <!-- jQuery Validation (.js-validation-signup class is initialized in js/pages/op_auth_signup.min.js which was auto compiled from _js/pages/op_auth_signup.js) -->
                                 <!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
-                                <form class="js-validation-signup" action="#" method="POST">
+                                <form class="js-validation-signup" action="{{ route('veli_kayit_post') }}" method="POST">
                                     @csrf
                                     <div class="mb-4">
                                         <div class="row">
@@ -119,7 +119,7 @@
                                     <div class="mb-4">
                                         <div class="input-group input-group-lg">
                                             <input type="tel" class="form-control" id="gsm_no" name="gsm_no"
-                                                placeholder="Telefon Numarası">
+                                                placeholder="Telefon Numarası (*)">
                                             <span class="input-group-text">
                                                 <i class="fa fa-phone"></i>
                                             </span>
@@ -130,7 +130,7 @@
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="signup-terms"
                                                 name="signup-terms">
-                                            <label class="form-check-label" for="signup-terms">Kabul Ediyorum</label>
+                                            <label class="form-check-label" for="signup-terms">Kabul Ediyorum (*)</label>
                                         </div>
                                         <div class="fw-semibold fs-sm py-1">
                                             <a class="fw-semibold fs-sm" href="#" data-bs-toggle="modal"

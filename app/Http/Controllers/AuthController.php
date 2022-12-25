@@ -81,7 +81,7 @@ class AuthController extends Controller
                 'sinif' => $request->sinif,
                 'brans' => $request->brans
             ]);
-            return redirect()->route('home')->with("success", "Kayıt işlemi başarılı");
+            return redirect()->route('home')->with("success", "Öğrenci kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('ogrenci_kayit')->withErrors($exception->getMessage());
         }
@@ -94,7 +94,49 @@ class AuthController extends Controller
     }
     public function veli_kayit_post(Request $request)
     {
-        dd($request);
+        try {
+            $rules = array(
+                'tc_kimlik' => array('digits:11'),
+                'ad' => array('required'),
+                'soyad' => array('required'),
+                'dogum_tarihi' => array('required'),
+                'gsm_no' => array('required', 'digits:10'),
+            );
+            $attributeNames = array(
+                'tc_kimlik' => "T.C Kimlik",
+                'ad' => "Ad",
+                'soyad' => "Soyad",
+                'dogum_tarihi' => "Doğum Tarihi",
+                'gsm_no' => "Telefon Numarası",
+            );
+            $messages = array(
+                'required' => ':attribute alanı zorunlu.',
+                'digits' => ':attribute alanı :digits hane olmalıdır.',
+            );
+            $validator = Validator::make($request->all(), $rules, $messages, $attributeNames);
+            if ($validator->fails())
+                throw new Exception($validator->errors()->first());
+            $userExist = User::where('tc_kimlik', $request->tc_kimlik)->first();
+            if ($userExist)
+                throw new Exception("Bu T.C Kimlik numarasına ait bir kullanıcı var.");
+            if ($request->email) {
+                $userExist = User::where('email', $request->email)->first();
+                if ($userExist)
+                    throw new Exception("Bu E-posta adresine ait bir kullanıcı var");
+            }
+            if ($request->gsm_no) {
+                $userExist = User::where('gsm_no', $request->gsm_no)->first();
+                if ($userExist)
+                    throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
+            }
+            $newUser = User::create(array_merge($request->all(),[
+                'onayli' => false,
+                'password' => bcrypt('0')
+            ]));
+            return redirect()->route('home')->with("success", "Veli kayıt işlemi başarılı");
+        } catch (Exception $exception) {
+            return redirect()->route('veli_kayit')->withErrors($exception->getMessage());
+        }
     }
     #endregion
 }
