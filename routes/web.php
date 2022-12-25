@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
 use App\Http\Controllers\OkulController;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +21,11 @@ use Illuminate\Support\Facades\Route;
 // Example Routes
 
 
-Route::match(['get', 'post'], '/', function(){
+
+Route::get('/', function () {
     return view('dashboard');
 })->name('home');
+
 
 Route::get('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit'])->middleware('guest')->name('ogrenci_kayit');
 Route::post('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit_post'])->middleware('guest')->name('ogrenci_kayit_post');
@@ -32,7 +35,9 @@ Route::get('veli-kayit', [AuthController::class, 'veli_kayit'])->middleware('gue
 Route::post('veli-kayit', [AuthController::class, 'veli_kayit_post'])->middleware('guest')->name('veli_kayit_post');
 Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'])->name('getOgrenciFromTc');
 
-
+Route::prefix('admin')->group(function () {
+    Route::get('loglar/{cid?}', [LogController::class, 'index'])->name('admin_loglar');
+});
 
 
 Route::view('/pages/slick', 'pages.slick');

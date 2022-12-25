@@ -83,7 +83,7 @@
       'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
   -->
     <div id="page-container"
-        class="sidebar-o enable-page-overlay sidebar-dark side-scroll page-header-fixed main-content-narrow">
+        class="sidebar-o enable-page-overlay sidebar-dark side-scroll page-header-fixed main-content-narrow remember-theme">
         <!-- Side Overlay-->
         <aside id="side-overlay">
             <!-- Side Header -->
@@ -270,7 +270,7 @@
                 <div class="content-side content-side-full">
                     <ul class="nav-main">
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'bayi_dashboard' ? 'active' : '' }}" href="/">
+                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_loglar' ? 'active' : '' }}" href="{{ route('admin_loglar',['cid' => 1]) }}">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>
                                 <span class="nav-main-link-name">Loglar</span>
                             </a>

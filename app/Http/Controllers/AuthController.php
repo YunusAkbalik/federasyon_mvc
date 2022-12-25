@@ -84,6 +84,8 @@ class AuthController extends Controller
                 'brans' => $request->brans
             ]);
             $newUser->assignRole('Öğrenci');
+            $logText = "Öğrenci, $newUser->ad $newUser->soyad ($newUser->tc_kimlik) sisteme kayıt oldu";
+            LogModel::create(['kategori_id' => 2 , 'logText' => $logText]);
             return redirect()->route('home')->with("success", "Öğrenci kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('ogrenci_kayit')->withErrors($exception->getMessage());

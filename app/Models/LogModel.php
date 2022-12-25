@@ -13,4 +13,9 @@ class LogModel extends Model
         'kategori_id',
         'logText',
     ];
+
+    public function kategori()
+    {
+        return $this->hasOne(LogKategoriModel::class, 'id', 'kategori_id');
+    }
 }
