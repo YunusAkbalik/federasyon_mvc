@@ -5,6 +5,7 @@ use App\Http\Controllers\IlceController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
 use App\Http\Controllers\OkulController;
+use App\Http\Controllers\yeniKayitlarController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,8 @@ Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'
 
 Route::prefix('admin')->group(function () {
     Route::get('loglar/{cid?}', [LogController::class, 'index'])->name('admin_loglar');
+    Route::get('yeni-kayitlar', [yeniKayitlarController::class, 'list'])->name('admin_yeni_kayitlar');
+
 });
 
 

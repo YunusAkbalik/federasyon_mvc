@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -23,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $ogrenciRole = Role::create(['name' => "Öğrenci"]);
         $veliRole = Role::create(['name' => "Veli"]);
         $adminRole = Role::create(['name' => "Admin"]);
-
+        $faker = Factory::create("tr_TR");
         DB::table('users')->insert([
             [
                 'tc_kimlik' => "27256988692",
@@ -35,9 +36,28 @@ class DatabaseSeeder extends Seeder
                 'email' => "yunusroose@gmail.com",
                 'password' => bcrypt("123"),
                 'onayli' => true
-            ]
+            ],
         ]);
+        for ($i = 0; $i < 20; $i++) {
+            DB::table('users')->insert([
+                [
+                    'tc_kimlik' => $faker->numerify('###########'),
+                    'ad' => $faker->firstName(),
+                    'soyad' => $faker->lastName(),
+                    'dogum_tarihi' => $faker->date(),
+                    'kan_grubu' => "0RH(+)",
+                    'gsm_no' => $faker->phoneNumber(),
+                    'email' => $faker->unique()->email(),
+                    'password' => bcrypt("123"),
+                    'onayli' => $faker->boolean()
+                ]
+            ]);
+        }
+
         User::find(1)->assignRole("Admin");
+        for ($i = 2; $i <= 21; $i++) {
+            User::find($i)->assignRole($faker->randomElement(['Öğrenci', 'Veli']));
+        }
 
         DB::table('il')->insert([
             ['ad' => "İstanbul"],
@@ -65,8 +85,8 @@ class DatabaseSeeder extends Seeder
             ['ilce_id' => 8, 'ad' => "Menemen Gazi İlköğretim okulu"],
         ]);
         DB::table('log_kategorileri')->insert([
-            ['ad' => "Login İşlemleri" , "icon" => "key"],
-            ['ad' => "Kayıt İşlemleri" , "icon" => "pencil"],
+            ['ad' => "Login İşlemleri", "icon" => "key"],
+            ['ad' => "Kayıt İşlemleri", "icon" => "pencil"],
         ]);
     }
 }

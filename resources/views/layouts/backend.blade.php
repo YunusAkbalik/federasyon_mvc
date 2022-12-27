@@ -8,8 +8,8 @@
     <title>Dashmix - Bootstrap 5 Admin Template &amp; UI Framework</title>
 
     <meta name="description"
-        content="Dashmix - Bootstrap 5 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
-    <meta name="author" content="pixelcave">
+        content="Klüp">
+    <meta name="author" content="roosecs, mngdijital">
     <meta name="robots" content="noindex, nofollow">
 
     <!-- Icons -->
@@ -19,7 +19,7 @@
 
     <!-- Modules -->
     @yield('css')
-    @vite(['resources/sass/main.scss', 'resources/js/dashmix/app.js'])
+    @vite(['resources/sass/main.scss'])
 
     <!-- Alternatively, you can also include a specific color theme after the main stylesheet to alter the default color theme of the template -->
     {{-- @vite(['resources/sass/main.scss', 'resources/sass/dashmix/themes/xwork.scss', 'resources/js/dashmix/app.js']) --}}
@@ -270,9 +270,15 @@
                 <div class="content-side content-side-full">
                     <ul class="nav-main">
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_loglar' ? 'active' : '' }}" href="{{ route('admin_loglar',['cid' => 1]) }}">
+                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_loglar' ? 'active' : '' }}" href="{{ route('admin_loglar') }}">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>
                                 <span class="nav-main-link-name">Loglar</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_yeni_kayitlar' ? 'active' : '' }}" href="{{ route('admin_yeni_kayitlar') }}">
+                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                <span class="nav-main-link-name">Yeni Kayıtlar</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
