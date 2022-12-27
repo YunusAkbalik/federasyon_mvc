@@ -18,6 +18,7 @@ Dashmix.onLoad((() => class {
                         maxlength: 11,
                     },
                     "email": {
+                        required: !0,
                         emailWithDot: !0
                     },
                     "ad": {

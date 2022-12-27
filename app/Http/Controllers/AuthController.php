@@ -116,6 +116,7 @@ class AuthController extends Controller
                 'soyad' => array('required'),
                 'dogum_tarihi' => array('required'),
                 'gsm_no' => array('required', 'digits:10'),
+                'email' => array('required'),
             );
             $attributeNames = array(
                 'tc_kimlik' => "T.C Kimlik",
@@ -123,6 +124,7 @@ class AuthController extends Controller
                 'soyad' => "Soyad",
                 'dogum_tarihi' => "Doğum Tarihi",
                 'gsm_no' => "Telefon Numarası",
+                'email' => "E-posta Adresi",
             );
             $messages = array(
                 'required' => ':attribute alanı zorunlu.',

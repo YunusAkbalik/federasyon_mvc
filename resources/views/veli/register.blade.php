@@ -349,6 +349,10 @@
                                                     <p class="fs-sm fw-medium text-muted mb-0">
                                                         ${res.data.okul.okul_details.ad}
                                                     </p>
+                                                    <hr>
+                                                    <p class="fs-sm fw-medium text-muted mb-0">
+                                                        ${res.data.okul.sinif}. sınıf
+                                                    </p>
                                                 </div>
                                             </div>
                                         </a>`
