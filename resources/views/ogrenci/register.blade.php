@@ -135,6 +135,24 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <input type="number" style="-webkit-text-security: disc;" pattern="[0-9]*" inputmode="numeric" class="form-control" id="password"
+                                                name="password" placeholder="Parola (Sadece Rakam) (*)">
+                                            <span onclick="showPass(this)" class="input-group-text">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <input type="number" style="-webkit-text-security: disc;" pattern="[0-9]*" inputmode="numeric" class="form-control" id="password_again"
+                                                name="password_again" placeholder="Parola Tekrar (*)">
+                                            <span onclick="showPass(this)" class="input-group-text">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                     <hr>
                                     <p class="fw-bold fs-sm text-muted mb-4">Öğrencisi olduğunuz okul bilgileri</p>
                                     <div class="row">
@@ -169,8 +187,13 @@
                                     <div class="row">
                                         <div class="col-xxl-6 mb-4">
                                             <div class="input-group input-group-lg">
-                                                <input type="text" class="form-control" id="sinif"
-                                                    name="sinif" placeholder="Sınıf">
+                                                <select name="sinif" class="form-control" id="sinif">
+                                                    <option value="0" selected disabled>Sınıf</option>
+                                                    @for ($i = 1; $i < 13; $i++)
+                                                        <option value="{{ $i }}">{{ $i }}. sınıf
+                                                        </option>
+                                                    @endfor
+                                                </select>
                                                 <span class="input-group-text">
                                                     <i class="fa fa-graduation-cap"></i>
                                                 </span>
@@ -178,12 +201,28 @@
                                         </div>
                                         <div class="col-xxl-6 mb-4">
                                             <div class="input-group input-group-lg">
-                                                <input type="text" class="form-control" id="brans"
-                                                    name="brans" placeholder="Branş">
+                                                <select name="sube" class="form-control" id="sube">
+                                                    <option value="0" selected disabled>Şube</option>
+                                                    <option value="null">Şube Yok</option>
+
+                                                    @foreach (range('A', 'Z') as $item)
+                                                        <option value="{{ $item }}">{{ $item }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                                 <span class="input-group-text">
-                                                    <i class="fa fa-briefcase"></i>
+                                                    <i class="fa fa-graduation-cap"></i>
                                                 </span>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <input type="text" class="form-control" id="brans" name="brans"
+                                                placeholder="Branş">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-briefcase"></i>
+                                            </span>
                                         </div>
                                     </div>
                                     <div
