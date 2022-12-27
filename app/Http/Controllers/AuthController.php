@@ -34,8 +34,9 @@ class AuthController extends Controller
                 'il' => array('required'),
                 'ilce' => array('required'),
                 'okul' => array('required'),
-                'sinif' => array('required'),
-                'brans' => array('required'),
+                'sinif' => array('required', 'min:1', 'max:12'),
+                'password' => array('required', 'numeric', 'digits:8'),
+                'password_again' => array('required', 'numeric'),
             );
             $attributeNames = array(
                 'tc_kimlik' => "T.C Kimlik",
@@ -46,16 +47,24 @@ class AuthController extends Controller
                 'ilce' => "İlçe",
                 'okul' => "Okul",
                 'sinif' => "Sınıf",
-                'brans' => "Branş",
+                'password' => "Parola",
+                'password_again' => "Parola Tekrar",
             );
             $messages = array(
                 'required' => ':attribute alanı zorunlu.',
+                'digits' => ':attribute alanı :digits hane olmalıdır.',
+                'numeric' => ':attribute alanı rakamlardan oluşmalıdır.',
+                'min' => ':attribute alanı minimum :min olmalıdır.',
+                'max' => ':attribute alanı maksimum :max olmalıdır.',
                 'digits' => ':attribute alanı :digits hane olmalıdır.',
             );
             $validator = Validator::make($request->all(), $rules, $messages, $attributeNames);
             if ($validator->fails())
                 throw new Exception($validator->errors()->first());
-
+            if (!($request->sinif >= 1 && $request->sinif <= 12))
+                throw new Exception("Sınıfınız 1 ile 12 arasında olmalıdır.");
+            if ($request->password != $request->password_again)
+                throw new Exception("Parolanız uyuşmuyor.");
             $userExist = User::where('tc_kimlik', $request->tc_kimlik)->first();
             if ($userExist)
                 throw new Exception("Bu T.C Kimlik numarasına ait bir kullanıcı var.");
@@ -75,17 +84,18 @@ class AuthController extends Controller
 
             $newUser =  User::create(array_merge($request->all(), array(
                 'onayli' => false,
-                'password' => bcrypt("0")
+                'password' => bcrypt($request->password)
             )));
             OgrenciOkulModel::create([
                 'okul_id' => $okul->id,
                 'ogrenci_id' => $newUser->id,
                 'sinif' => $request->sinif,
+                'sube' => $request->sube == "null" ? null:$request->sube,
                 'brans' => $request->brans
             ]);
             $newUser->assignRole('Öğrenci');
             $logText = "Öğrenci, $newUser->ad $newUser->soyad ($newUser->tc_kimlik) sisteme kayıt oldu";
-            LogModel::create(['kategori_id' => 2 , 'logText' => $logText]);
+            LogModel::create(['kategori_id' => 2, 'logText' => $logText]);
             return redirect()->route('home')->with("success", "Öğrenci kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('ogrenci_kayit')->withErrors($exception->getMessage());
@@ -134,15 +144,15 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-            $newUser = User::create(array_merge($request->all(),[
+            $newUser = User::create(array_merge($request->all(), [
                 'onayli' => false,
                 'password' => bcrypt('0')
             ]));
             $newUser->assignRole('Veli');
-            if($request->ogrenci_tc){
-                $ogrenci = User::where('tc_kimlik',$request->ogrenci_tc)->first();
-                if($ogrenci){
-                    if($ogrenci->hasRole('Öğrenci')){
+            if ($request->ogrenci_tc) {
+                $ogrenci = User::where('tc_kimlik', $request->ogrenci_tc)->first();
+                if ($ogrenci) {
+                    if ($ogrenci->hasRole('Öğrenci')) {
                         OgrenciVeliModel::create([
                             'ogrenci_id' => $ogrenci->id,
                             'veli_id' => $newUser->id,
@@ -151,7 +161,7 @@ class AuthController extends Controller
                 }
             }
             $logText = "Veli, $newUser->ad $newUser->soyad ($newUser->tc_kimlik) sisteme kayıt oldu";
-            LogModel::create(['kategori_id' => 2 , 'logText' => $logText]);
+            LogModel::create(['kategori_id' => 2, 'logText' => $logText]);
             return redirect()->route('home')->with("success", "Veli kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('veli_kayit')->withErrors($exception->getMessage());

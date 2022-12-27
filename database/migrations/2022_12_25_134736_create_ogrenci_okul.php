@@ -18,7 +18,8 @@ return new class extends Migration
             $table->integer('okul_id');
             $table->integer('ogrenci_id');
             $table->string('sinif');
-            $table->string('brans');
+            $table->string('sube')->nullable();
+            $table->string('brans')->nullable();
             $table->timestamps();
         });
     }
