@@ -81,10 +81,14 @@ class AuthController extends Controller
             $okul = OkulModel::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
+            $yearNow = date('y');
+            $yearSecond = (string)$yearNow;
+            $start = intval($yearSecond[1]) * 100000;
+            $end = $start + 99999;
             $ozel_id_exist = true;
             $ozel_id = 0;
             while ($ozel_id_exist) {
-                $ozel_id = rand(100000, 999999);
+                $ozel_id = rand($start, $end);
                 if (!(User::where('ozel_id', $ozel_id)->first())) {
                     $ozel_id_exist = false;
                 }
@@ -155,10 +159,14 @@ class AuthController extends Controller
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
 
+            $yearNow = date('y');
+            $yearSecond = (string)$yearNow;
+            $start = intval($yearSecond[1]) * 100000;
+            $end = $start + 99999;
             $ozel_id_exist = true;
             $ozel_id = 0;
             while ($ozel_id_exist) {
-                $ozel_id = rand(100000, 999999);
+                $ozel_id = rand($start, $end);
                 if (!(User::where('ozel_id', $ozel_id)->first())) {
                     $ozel_id_exist = false;
                 }
