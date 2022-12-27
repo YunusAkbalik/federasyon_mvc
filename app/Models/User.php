@@ -20,6 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'tc_kimlik',
+        'ozel_id',
         'ad',
         'soyad',
         'dogum_tarihi',

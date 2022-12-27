@@ -36,6 +36,15 @@ Dashmix.onLoad((() => class {
                         maxlength: 10,
                         required: !0
                     },
+                    "password": {
+                        required: !0,
+                        minlength: 8,
+                        maxlength: 8
+                    },
+                    "password_again": {
+                        required: !0,
+                        equalTo: '#password'
+                    },
                     "signup-terms": {
                         required: !0,
                     },
@@ -45,6 +54,17 @@ Dashmix.onLoad((() => class {
                         required: "Lütfen T.C Kimlik numaranızı girin",
                         minlength: "Lütfen 11 haneli T.C Kimlik numaranızı girin",
                         maxlength: "Lütfen 11 haneli T.C Kimlik numaranızı girin",
+                    },
+                    "password": {
+                        required: "Lütfen parola belirleyin",
+                        minlength: "Parolanız 8 haneli ve rakamlardan oluşmalıdır",
+                        maxlength: "Parolanız 8 haneli ve rakamlardan oluşmalıdır",
+                        number: "Lütfen sadece rakamlardan oluşan bir parola belirleyin",
+                    },
+                    "password_again": {
+                        required: "Lütfen parolanızı tekrar girin",
+                        equalTo: "Parolanız uyuşmuyor",
+                        number: "Lütfen sadece rakamlardan oluşan bir parola belirleyin",
                     },
                     "ad": "Lütfen isminizi girin",
                     "soyad": "Lütfen soyisminizi girin",
@@ -58,3 +78,15 @@ Dashmix.onLoad((() => class {
     }
     static init() { this.initValidation() }
 }.init()));
+
+function showPass(e) {
+    if ($(e).prev().css('-webkit-text-security') == "disc") {
+        $(e).children().removeClass();
+        $(e).children().addClass('fa fa-eye-slash');
+        $(e).prev().css('-webkit-text-security', 'none');
+    } else {
+        $(e).children().removeClass();
+        $(e).children().addClass('fa fa-eye');
+        $(e).prev().css('-webkit-text-security', 'disc');
+    }
+}

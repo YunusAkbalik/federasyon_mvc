@@ -81,16 +81,24 @@ class AuthController extends Controller
             $okul = OkulModel::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
-
+            $ozel_id_exist = true;
+            $ozel_id = 0;
+            while ($ozel_id_exist) {
+                $ozel_id = rand(100000, 999999);
+                if (!(User::where('ozel_id', $ozel_id)->first())) {
+                    $ozel_id_exist = false;
+                }
+            }
             $newUser =  User::create(array_merge($request->all(), array(
                 'onayli' => false,
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
+                'ozel_id' => $ozel_id
             )));
             OgrenciOkulModel::create([
                 'okul_id' => $okul->id,
                 'ogrenci_id' => $newUser->id,
                 'sinif' => $request->sinif,
-                'sube' => $request->sube == "null" ? null:$request->sube,
+                'sube' => $request->sube == "null" ? null : $request->sube,
                 'brans' => $request->brans
             ]);
             $newUser->assignRole('Öğrenci');
@@ -146,9 +154,19 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
+
+            $ozel_id_exist = true;
+            $ozel_id = 0;
+            while ($ozel_id_exist) {
+                $ozel_id = rand(100000, 999999);
+                if (!(User::where('ozel_id', $ozel_id)->first())) {
+                    $ozel_id_exist = false;
+                }
+            }
             $newUser = User::create(array_merge($request->all(), [
                 'onayli' => false,
-                'password' => bcrypt('0')
+                'password' => bcrypt($request->password),
+                'ozel_id' => $ozel_id
             ]));
             $newUser->assignRole('Veli');
             if ($request->ogrenci_tc) {
@@ -169,5 +187,7 @@ class AuthController extends Controller
             return redirect()->route('veli_kayit')->withErrors($exception->getMessage());
         }
     }
+
+
     #endregion
 }

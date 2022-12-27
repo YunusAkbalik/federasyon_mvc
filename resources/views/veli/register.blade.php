@@ -127,6 +127,24 @@
                                         </div>
                                     </div>
                                     <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <input type="number" style="-webkit-text-security : disc;" class="form-control" id="password" name="password"
+                                                placeholder="Parola (Sadece Rakam) (*)">
+                                            <span onclick="showPass(this)" class="input-group-text">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <input type="number" style="-webkit-text-security : disc;" class="form-control" id="password_again" name="password_again"
+                                                placeholder="Parola Tekrar (*)">
+                                            <span onclick="showPass(this)" class="input-group-text">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
                                         <div class="input-group">
                                             <input type="number" class="form-control" id="ogrenci_tc"
                                                 name="ogrenci_tc" placeholder="Öğrenci T.C">

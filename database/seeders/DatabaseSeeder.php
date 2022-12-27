@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'tc_kimlik' => "27256988692",
+                'ozel_id' => $faker->unique()->numerify('######'),
                 'ad' => "Yunus Emre",
                 'soyad' => "Akbalık",
                 'dogum_tarihi' => Carbon::parse("08/08/2000"),
@@ -42,6 +43,7 @@ class DatabaseSeeder extends Seeder
             DB::table('users')->insert([
                 [
                     'tc_kimlik' => $faker->numerify('###########'),
+                    'ozel_id' => $faker->unique()->numerify('######'),
                     'ad' => $faker->firstName(),
                     'soyad' => $faker->lastName(),
                     'dogum_tarihi' => $faker->date(),
