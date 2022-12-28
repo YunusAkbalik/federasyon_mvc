@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-    <title>Dashmix - Bootstrap 5 Admin Template &amp; UI Framework</title>
+    <title>MNG Dijital</title>
 
     <meta name="description"
         content="Klüp">
@@ -279,6 +279,8 @@
                             <a class="nav-main-link {{ Route::currentRouteName() == 'admin_yeni_kayitlar' ? 'active' : '' }}" href="{{ route('admin_yeni_kayitlar') }}">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>
                                 <span class="nav-main-link-name">Yeni Kayıtlar</span>
+                                <span class="nav-main-link-badge badge rounded-pill bg-warning">{{ $yeniKayitAdeti }}</span>
+
                             </a>
                         </li>
                         <li class="nav-main-item">

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\OgrenciOkulModel;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
@@ -51,7 +52,8 @@ class DatabaseSeeder extends Seeder
                     'gsm_no' => $faker->phoneNumber(),
                     'email' => $faker->unique()->email(),
                     'password' => bcrypt("123"),
-                    'onayli' => $faker->boolean()
+                    'onayli' => $faker->boolean(),
+                    'created_at' => now(),
                 ]
             ]);
         }
@@ -60,6 +62,19 @@ class DatabaseSeeder extends Seeder
         for ($i = 2; $i <= 21; $i++) {
             User::find($i)->assignRole($faker->randomElement(['Öğrenci', 'Veli']));
         }
+        $ogrenciler = User::role('Öğrenci')->get();
+        foreach ($ogrenciler as $ogrenci) {
+            $randomOkul = rand(1,8);
+            $randomSinif = rand(1,12);
+            $randomSube = chr(rand(65,90));
+            OgrenciOkulModel::create([
+                'okul_id' => $randomOkul,
+                'ogrenci_id' => $ogrenci->id,
+                'sinif' => $randomSinif,
+                'sube' => $randomSube
+            ]);
+        }
+
 
         DB::table('il')->insert([
             ['ad' => "İstanbul"],
