@@ -39,6 +39,9 @@ Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'
 Route::prefix('admin')->group(function () {
     Route::get('loglar/{cid?}', [LogController::class, 'index'])->name('admin_loglar');
     Route::get('yeni-kayitlar', [yeniKayitlarController::class, 'list'])->name('admin_yeni_kayitlar');
+    Route::get('kontrol/{ozel_id}', [yeniKayitlarController::class, 'kontrolEt'])->name('admin_kontrol');
+    Route::post('kontrol/onayla', [yeniKayitlarController::class, 'onayla'])->name('admin_kontrol_onay');
+    Route::post('kontrol/reddet', [yeniKayitlarController::class, 'reddet'])->name('admin_kontrol_reddet');
 
 });
 

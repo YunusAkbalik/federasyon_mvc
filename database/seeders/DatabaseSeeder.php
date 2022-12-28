@@ -37,7 +37,10 @@ class DatabaseSeeder extends Seeder
                 'gsm_no' => "+905367653403",
                 'email' => "yunusroose@gmail.com",
                 'password' => bcrypt("123"),
-                'onayli' => true
+                'onayli' => true,
+                'ret' => false,
+                'ret_nedeni' => null,
+                'created_at' => now(),
             ],
         ]);
         for ($i = 0; $i < 20; $i++) {
@@ -53,6 +56,8 @@ class DatabaseSeeder extends Seeder
                     'email' => $faker->unique()->email(),
                     'password' => bcrypt("123"),
                     'onayli' => $faker->boolean(),
+                    'ret' => false,
+                    'ret_nedeni' => null,
                     'created_at' => now(),
                 ]
             ]);
@@ -64,9 +69,9 @@ class DatabaseSeeder extends Seeder
         }
         $ogrenciler = User::role('Öğrenci')->get();
         foreach ($ogrenciler as $ogrenci) {
-            $randomOkul = rand(1,8);
-            $randomSinif = rand(1,12);
-            $randomSube = chr(rand(65,90));
+            $randomOkul = rand(1, 8);
+            $randomSinif = rand(1, 12);
+            $randomSube = chr(rand(65, 90));
             OgrenciOkulModel::create([
                 'okul_id' => $randomOkul,
                 'ogrenci_id' => $ogrenci->id,

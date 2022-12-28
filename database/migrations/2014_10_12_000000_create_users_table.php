@@ -27,6 +27,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('onayli');
+            $table->boolean('ret');
+            $table->longText('ret_nedeni')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

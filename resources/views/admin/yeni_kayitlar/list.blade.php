@@ -35,10 +35,10 @@
                                 <td>{{ $ogrenci->created_at }}</td>
                                 <td class="text-center"  style="max-width: 100px">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
+                                        <a href="{{ route('admin_kontrol',['ozel_id' => $ogrenci->ozel_id]) }}" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
                                             data-bs-toggle="tooltip" aria-label="Kontrol Et">
                                             Kontrol Et
-                                        </button>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -74,10 +74,10 @@
                                 <td>{{ $veli->created_at }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
+                                        <a href="{{ route('admin_kontrol',['ozel_id' => $veli->ozel_id]) }}" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
                                             data-bs-toggle="tooltip" aria-label="Kontrol Et">
                                             Kontrol Et
-                                        </button>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>

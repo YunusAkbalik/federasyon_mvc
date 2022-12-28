@@ -28,6 +28,8 @@ class User extends Authenticatable
         'gsm_no',
         'email',
         'onayli',
+        'ret',
+        'ret_nedeni',
         'password'
     ];
 
