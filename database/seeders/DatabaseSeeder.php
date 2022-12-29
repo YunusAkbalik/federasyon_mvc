@@ -26,10 +26,15 @@ class DatabaseSeeder extends Seeder
         $veliRole = Role::create(['name' => "Veli"]);
         $adminRole = Role::create(['name' => "Admin"]);
         $faker = Factory::create("tr_TR");
+        $yearNow = date('y');
+        $yearSecond = (string)$yearNow;
+        $start = intval($yearSecond[1]) * 100000;
+        $end = $start + 99999;
+        $ozel_id = rand($start, $end);
         DB::table('users')->insert([
             [
                 'tc_kimlik' => "27256988692",
-                'ozel_id' => $faker->unique()->numerify('######'),
+                'ozel_id' => $ozel_id,
                 'ad' => "Yunus Emre",
                 'soyad' => "Akbalık",
                 'dogum_tarihi' => Carbon::parse("08/08/2000"),
@@ -43,11 +48,12 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
             ],
         ]);
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 29; $i++) {
+            $ozel_id = rand($start, $end);
             DB::table('users')->insert([
                 [
                     'tc_kimlik' => $faker->numerify('###########'),
-                    'ozel_id' => $faker->unique()->numerify('######'),
+                    'ozel_id' => $ozel_id,
                     'ad' => $faker->firstName(),
                     'soyad' => $faker->lastName(),
                     'dogum_tarihi' => $faker->date(),
@@ -64,7 +70,7 @@ class DatabaseSeeder extends Seeder
         }
 
         User::find(1)->assignRole("Admin");
-        for ($i = 2; $i <= 21; $i++) {
+        for ($i = 2; $i <= 30; $i++) {
             User::find($i)->assignRole($faker->randomElement(['Öğrenci', 'Veli']));
         }
         $ogrenciler = User::role('Öğrenci')->get();
