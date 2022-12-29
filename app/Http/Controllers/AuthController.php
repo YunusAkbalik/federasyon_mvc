@@ -95,6 +95,8 @@ class AuthController extends Controller
             }
             $newUser =  User::create(array_merge($request->all(), array(
                 'onayli' => false,
+                'ret' => false,
+                'ret_nedeni' => null,
                 'password' => bcrypt($request->password),
                 'ozel_id' => $ozel_id
             )));
@@ -173,6 +175,8 @@ class AuthController extends Controller
             }
             $newUser = User::create(array_merge($request->all(), [
                 'onayli' => false,
+                'ret' => false,
+                'ret_nedeni' => null,
                 'password' => bcrypt($request->password),
                 'ozel_id' => $ozel_id
             ]));
