@@ -128,7 +128,8 @@
                                     </div>
                                     <div class="mb-4">
                                         <div class="input-group input-group-lg">
-                                            <input type="number" style="-webkit-text-security : disc;" class="form-control" id="password" name="password"
+                                            <input type="number" style="-webkit-text-security : disc;"
+                                                class="form-control" id="password" name="password"
                                                 placeholder="Parola (Sadece Rakam) (*)">
                                             <span onclick="showPass(this)" class="input-group-text">
                                                 <i class="fa fa-eye"></i>
@@ -137,7 +138,8 @@
                                     </div>
                                     <div class="mb-4">
                                         <div class="input-group input-group-lg">
-                                            <input type="number" style="-webkit-text-security : disc;" class="form-control" id="password_again" name="password_again"
+                                            <input type="number" style="-webkit-text-security : disc;"
+                                                class="form-control" id="password_again" name="password_again"
                                                 placeholder="Parola Tekrar (*)">
                                             <span onclick="showPass(this)" class="input-group-text">
                                                 <i class="fa fa-eye"></i>
@@ -356,7 +358,8 @@
                         Dashmix.block('state_normal', '#signblock');
 
                     } else {
-                        var ogrenci = ` <a class="block block-rounded block-link-pop" href="javascript:void(0)">
+                        if (!res.ogrenciVeliBaglanti) {
+                            var ogrenci = ` <a class="block block-rounded block-link-pop" href="javascript:void(0)">
                                             <div
                                                 class="block-content block-content-full d-flex align-items-center justify-content-between">
                                                 <img class="img-avatar img-avatar48"
@@ -374,9 +377,12 @@
                                                 </div>
                                             </div>
                                         </a>`
-                        $('#ogrenciDiv').append(ogrenci)
+                            $('#ogrenciDiv').append(ogrenci)
+                        } else {
+                            var exist = `<strong class="text-warning text-bold">Öğrencinin Velisi Var</strong>`
+                            $('#ogrenciDiv').append(exist)
+                        }
                         Dashmix.block('state_normal', '#signblock');
-
                     }
                 }
             })

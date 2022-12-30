@@ -185,10 +185,12 @@ class AuthController extends Controller
                 $ogrenci = User::where('tc_kimlik', $request->ogrenci_tc)->first();
                 if ($ogrenci) {
                     if ($ogrenci->hasRole('Öğrenci')) {
-                        OgrenciVeliModel::create([
-                            'ogrenci_id' => $ogrenci->id,
-                            'veli_id' => $newUser->id,
-                        ]);
+                        if (!(OgrenciVeliModel::where('ogrenci_id', $ogrenci->id)->first())) {
+                            OgrenciVeliModel::create([
+                                'ogrenci_id' => $ogrenci->id,
+                                'veli_id' => $newUser->id,
+                            ]);
+                        }
                     }
                 }
             }

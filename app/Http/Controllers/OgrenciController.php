@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OgrenciVeliModel;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,7 +19,13 @@ class OgrenciController extends Controller
                 throw new Exception("Öğrenci Bulunamadı");
             if (!$ogrenci->hasRole('Öğrenci'))
                 throw new Exception("Öğrenci Bulunamadı");
-            return response()->json(['data' => $ogrenci, 'error' => 0]);
+            $ogrenciVeliBaglantisi = OgrenciVeliModel::where('ogrenci_id', $ogrenci->id)->first();
+            if ($ogrenciVeliBaglantisi)
+                $ogrenciVeliBaglantisi = true;
+            else
+                $ogrenciVeliBaglantisi = false;
+
+            return response()->json(['data' => $ogrenci, 'ogrenciVeliBaglanti' => $ogrenciVeliBaglantisi, 'error' => 0]);
         } catch (Exception $exception) {
             return response()->json(['message' => $exception->getMessage(), 'error' => 1]);
         }
