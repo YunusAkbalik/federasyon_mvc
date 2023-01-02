@@ -250,73 +250,7 @@
     <script>
         Dashmix.helpersOnLoad(['jq-notify']);
     </script>
-    <script>
-        function ilSelect(id) {
-            var fd = new FormData();
-            fd.append('_token', $('input[name="_token"]').val());
-            fd.append('id', id);
-            $.ajax({
-                url: "{{ route('getIlcelerFromIlID') }}",
-                method: 'post',
-                data: fd,
-                processData: false,
-                contentType: false,
-                success: function(res) {
-                    if (res.error) {
-                        Dashmix.helpers('jq-notify', {
-                            type: 'danger',
-                            icon: 'fa fa-times me-1',
-                            align: 'center',
-                            message: res.message
-                        });
-                    } else {
-                        Dashmix.block('state_loading', '#signblock');
-                        $('#ilce').empty();
-                        var option = `<option value="0" selected disabled>İlçe seçimi</option>`;
-                        $('#ilce').append(option);
-                        res.data.forEach(element => {
-                            var option = `<option value="${element.id}">${element.ad}</option>`;
-                            $('#ilce').append(option)
-                        });
-                        Dashmix.block('state_normal', '#signblock');
-                    }
-                }
-            })
-        }
-
-        function ilceSelect(id) {
-            var fd = new FormData();
-            fd.append('_token', $('input[name="_token"]').val());
-            fd.append('id', id);
-            $.ajax({
-                url: "{{ route('getOkullarFromIlceID') }}",
-                method: 'post',
-                data: fd,
-                processData: false,
-                contentType: false,
-                success: function(res) {
-                    if (res.error) {
-                        Dashmix.helpers('jq-notify', {
-                            type: 'danger',
-                            icon: 'fa fa-times me-1',
-                            align: 'center',
-                            message: res.message
-                        });
-                    } else {
-                        Dashmix.block('state_loading', '#signblock');
-                        $('#okul').empty();
-                        var option = `<option value="0" selected disabled>Okul seçimi</option>`;
-                        $('#okul').append(option);
-                        res.data.forEach(element => {
-                            var option = `<option value="${element.id}">${element.ad}</option>`;
-                            $('#okul').append(option)
-                        });
-                        Dashmix.block('state_normal', '#signblock');
-                    }
-                }
-            })
-        }
-    </script>
+    
     @if (count($errors))
         <script>
             Dashmix.helpers('jq-notify', {

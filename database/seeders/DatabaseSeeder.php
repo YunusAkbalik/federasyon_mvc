@@ -115,6 +115,7 @@ class DatabaseSeeder extends Seeder
         DB::table('log_kategorileri')->insert([
             ['ad' => "Login İşlemleri", "icon" => "key"],
             ['ad' => "Kayıt İşlemleri", "icon" => "pencil"],
+            ['ad' => "Admin Öğrenci Kayıtları", "icon" => "user-plus"],
         ]);
     }
 }
