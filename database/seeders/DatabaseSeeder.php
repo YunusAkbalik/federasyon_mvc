@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
                 'soyad' => "Akbalık",
                 'dogum_tarihi' => Carbon::parse("08/08/2000"),
                 'kan_grubu' => "0RH(+)",
-                'gsm_no' => "+905367653403",
+                'gsm_no' => "5367653403",
                 'email' => "yunusroose@gmail.com",
                 'password' => bcrypt("123"),
                 'onayli' => true,
