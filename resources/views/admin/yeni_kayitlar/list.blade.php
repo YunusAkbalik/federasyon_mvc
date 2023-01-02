@@ -10,8 +10,9 @@
     <div class="content">
         <div class="block block-rounded">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Öğrenciler</h3>
                 <span class="nav-main-link-badge badge rounded-pill bg-primary">{{ $ogrenciler->count() }}</span>
+                &nbsp;
+                <h3 class="block-title">Öğrenciler</h3>
             </div>
             <div class="block-content">
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
@@ -49,8 +50,9 @@
         </div>
         <div class="block block-rounded">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Veliler</h3>
                 <span class="nav-main-link-badge badge rounded-pill bg-primary">{{ $veliler->count() }}</span>
+                &nbsp;
+                <h3 class="block-title">Veliler</h3>
             </div>
             <div class="block-content">
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
