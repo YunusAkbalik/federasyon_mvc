@@ -324,6 +324,12 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_tek_kullanimlik_sifreler' ? 'active' : '' }}" href="{{ route('admin_tek_kullanimlik_sifreler') }}">
+                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                <span class="nav-main-link-name">Tek Kullanımlık Şifreler</span>
+                            </a>
+                        </li>
                         <li class="nav-main-heading">Various</li>
                         <li class="nav-main-item{{ request()->is('pages/*') ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"

@@ -35,7 +35,6 @@
                                         </span>
                                     </div>
                                 </div>
-        
                             </div>
                             <div class="row">
                                 <div class="col-xxl-6 mb-4">

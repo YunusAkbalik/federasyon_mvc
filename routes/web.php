@@ -5,6 +5,7 @@ use App\Http\Controllers\IlceController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
 use App\Http\Controllers\OkulController;
+use App\Http\Controllers\onePassController;
 use App\Http\Controllers\VeliController;
 use App\Http\Controllers\yeniKayitlarController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,8 @@ Route::post('get-veli-from-tc', [VeliController::class, 'getVeliFromTc'])->name(
 Route::prefix('admin')->group(function () {
     Route::get('loglar/{cid?}', [LogController::class, 'index'])->name('admin_loglar');
     Route::get('yeni-kayitlar', [yeniKayitlarController::class, 'list'])->name('admin_yeni_kayitlar');
+    Route::get('tek-kullanimlik-sifreler', [onePassController::class, 'index'])->name('admin_tek_kullanimlik_sifreler');
+    Route::post('tek-kullanimlik-sifre', [onePassController::class, 'getFromIDorGSM'])->name('admin_tek_kullanimlik_sifre_post');
     Route::prefix('kontrol')->group(function () {
         Route::get('/{ozel_id}', [yeniKayitlarController::class, 'kontrolEt'])->name('admin_kontrol');
         Route::post('onayla', [yeniKayitlarController::class, 'onayla'])->name('admin_kontrol_onay');
