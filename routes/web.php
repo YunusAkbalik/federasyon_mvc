@@ -49,7 +49,7 @@ Route::prefix('admin')->group(function () {
         Route::post('onayla', [yeniKayitlarController::class, 'onayla'])->name('admin_kontrol_onay');
         Route::post('reddet', [yeniKayitlarController::class, 'reddet'])->name('admin_kontrol_reddet');
     });
-    Route::prefix('hesapOlustur')->group(function () {
+    Route::prefix('hesap-olustur')->group(function () {
         Route::get('ogrenci', [AuthController::class, 'ogrenciHesapOlustur'])->name('admin_create_acc_ogrenci');
         Route::post('ogrenci', [AuthController::class, 'ogrenciHesapOlustur_post'])->name('admin_create_acc_ogrenci_post');
         Route::get('veli', [AuthController::class, 'veliHesapOlustur'])->name('admin_create_acc_veli');

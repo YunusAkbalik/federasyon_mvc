@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
             ],
         ]);
-        for ($i = 0; $i < 29; $i++) {
+        for ($i = 0; $i < 199; $i++) {
             $ozel_id = rand($start, $end);
             DB::table('users')->insert([
                 [
@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
         }
 
         User::find(1)->assignRole("Admin");
-        for ($i = 2; $i <= 30; $i++) {
+        for ($i = 2; $i <= 200; $i++) {
             User::find($i)->assignRole($faker->randomElement(['Öğrenci', 'Veli']));
         }
         $ogrenciler = User::role('Öğrenci')->get();

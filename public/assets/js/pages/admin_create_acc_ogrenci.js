@@ -13,6 +13,10 @@ Dashmix.onLoad((() => class {
                         minlength: 11,
                         maxlength: 11,
                     },
+                    "veli_tc": {
+                        minlength: 11,
+                        maxlength: 11,
+                    },
                     "email": {
                         emailWithDot: !0
                     },
@@ -62,6 +66,7 @@ Dashmix.onLoad((() => class {
                     "okul": "Lütfen okul seçin",
                     "sinif": "Lütfen sınıf girin",
                     "sube": "Lütfen şube girin",
+                    "veli_tc": "Lütfen geçerli bir t.c kimlik numarası girin",
                 }
             })
     }
