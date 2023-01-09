@@ -14,7 +14,7 @@
                  <div class="block-content mb-4">
                      <div class="container">
                          <div class="row justify-content-center" id="icerik">
-                             {{-- <div class="col-xl-6">
+                             <div class="col-xl-6">
                                  <div class="block block-rounded">
                                      <div class="block-content block-content-full bg-primary-darker text-center">
                                          <a class="item item-circle mx-auto bg-black-25" href="javascript:void(0)">
@@ -79,36 +79,7 @@
                                          <table class="table table-borderless table-striped table-hover">
                                              <tbody>
                                                  <tr>
-                                                     <td>ID</td>
-                                                     <td><strong>346673</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>Ad Soyad</td>
-                                                     <td><strong>Emirhan Koçyiğit</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>T.C Kimlik</td>
-                                                     <td><strong>90252647495</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>Doğum Tarihi</td>
-                                                     <td><strong>27/05/1975</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>Kan Grubu</td>
-                                                     <td><strong>0 RH (+)</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>GSM No</td>
-                                                     <td><strong>5459548574</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>E-posta</td>
-                                                     <td><strong>ilicali.mert@babacan.org.tr</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>Kullanıcı Durumu</td>
-                                                     <td><strong class="text-success">Onaylı</strong></td>
+                                                     <td class="text-center text-danger"><b>Velisi Yok</b></td>
                                                  </tr>
                                              </tbody>
                                          </table>
@@ -144,7 +115,7 @@
                                          </table>
                                      </div>
                                  </div>
-                             </div> --}}
+                             </div>
 
 
 
@@ -201,17 +172,30 @@
                                   </a>
                              </div>`
                  } else {
-                    var kullaniciDurumu = "Bekliyor"
-                    var durumClass = "warning"
-                    if(res.ogrenci.onayli && res.ogrenci.ret == 0){
-                        kullaniciDurumu = "Onaylı"
-                        durumClass = "success"
-                    }
-                    if(res.ogrenci.onayli == 0 && res.ogrenci.ret){
-                        kullaniciDurumu = "Reddedildi"
-                        durumClass = "danger"
-                    }
-                     var content = ` <div class="col-xl-6">
+                     var kullaniciDurumu = "Bekliyor"
+                     var durumClass = "warning"
+                     if (res.ogrenci.onayli && res.ogrenci.ret == 0) {
+                         kullaniciDurumu = "Onaylı"
+                         durumClass = "success"
+                     }
+                     if (res.ogrenci.onayli == 0 && res.ogrenci.ret) {
+                         kullaniciDurumu = "Reddedildi"
+                         durumClass = "danger"
+                     }
+                     if(res.veli != null){
+                        var veli_kullaniciDurumu = "Bekliyor"
+                     var veli_durumClass = "warning"
+                     if (res.veli.onayli && res.veli.ret == 0) {
+                         veli_kullaniciDurumu = "Onaylı"
+                         veli_durumClass = "success"
+                     }
+                     if (res.veli.onayli == 0 && res.veli.ret) {
+                         veli_kullaniciDurumu = "Reddedildi"
+                         veli_durumClass = "danger"
+                     }
+                     }
+                    
+                     var kisisel = ` <div class="col-xl-6">
                                  <div class="block block-rounded">
                                      <div class="block-content block-content-full bg-primary-darker text-center">
                                          <a class="item item-circle mx-auto bg-black-25" href="javascript:void(0)">
@@ -261,8 +245,9 @@
                                      </div>
                                  </div>
 
-                             </div>
-                             <div class="col-xl-6">
+                             </div>`
+                     if (res.veli == null) {
+                         var veli = `<div class="col-xl-6">
                                  <div class="block block-rounded">
                                      <div class="block-content block-content-full bg-gd-fruit text-center">
                                          <a class="item item-circle mx-auto bg-black-25" href="javascript:void(0)">
@@ -273,46 +258,72 @@
                                          </p>
                                      </div>
                                      <div class="block-content block-content-full">
-                                         <table class="table table-borderless table-striped table-hover">
+                                        <table class="table table-borderless table-striped table-hover">
                                              <tbody>
                                                  <tr>
-                                                     <td>ID</td>
-                                                     <td><strong>346673</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>Ad Soyad</td>
-                                                     <td><strong>Emirhan Koçyiğit</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>T.C Kimlik</td>
-                                                     <td><strong>90252647495</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>Doğum Tarihi</td>
-                                                     <td><strong>27/05/1975</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>Kan Grubu</td>
-                                                     <td><strong>0 RH (+)</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>GSM No</td>
-                                                     <td><strong>5459548574</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>E-posta</td>
-                                                     <td><strong>ilicali.mert@babacan.org.tr</strong></td>
-                                                 </tr>
-                                                 <tr>
-                                                     <td>Kullanıcı Durumu</td>
-                                                     <td><strong class="text-success">Onaylı</strong></td>
+                                                     <td class="text-center text-danger"><b>Velisi Yok</b></td>
                                                  </tr>
                                              </tbody>
                                          </table>
                                      </div>
                                  </div>
-                             </div>
-                             <div class="col-xl-12">
+                             </div>`
+                     } else {
+                         var veli = `<div class="col-xl-6">
+                                 <div class="block block-rounded">
+                                     <div class="block-content block-content-full bg-gd-fruit text-center">
+                                         <a class="item item-circle mx-auto bg-black-25" href="javascript:void(0)">
+                                             <i class="fa fa-2x fa-id-card text-white"></i>
+                                         </a>
+                                         <p class="text-white fs-3 fw-light mt-3 mb-0">
+                                             Veli Bilgileri
+                                         </p>
+                                     </div>
+                                     <div class="block-content block-content-full">
+                                         <table class="table table-borderless table-striped table-hover">
+                                             <tbody>
+                                                <tr>
+                                                     <td>ID</td>
+                                                     <td><strong>${res.veli.ozel_id}</strong></td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>Ad Soyad</td>
+                                                     <td><strong>${res.veli.ad} ${res.veli.soyad}</strong></td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>T.C Kimlik</td>
+                                                     <td><strong>${res.veli.tc_kimlik}</strong></td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>Doğum Tarihi</td>
+                                                     <td><strong>${res.veli.dogum_tarihi}</strong></td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>Kan Grubu</td>
+                                                     <td><strong ${res.veli.kan_grubu == null ? 'class="text-danger"':""}>${res.veli.kan_grubu == null ? 'Yok':res.veli.kan_grubu}</strong></td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>GSM No</td>
+                                                     <td><strong ${res.veli.gsm_no == null ? 'class="text-danger"':""}>${res.veli.gsm_no == null ? 'Yok':res.veli.gsm_no}</strong></td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>E-posta</td>
+                                                     <td><strong ${res.veli.email == null ? 'class="text-danger"':""}>${res.veli.email == null ? 'Yok':res.veli.email}</strong></td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>Kullanıcı Durumu</td>
+                                                     <td><strong class="text-${veli_durumClass}">${veli_kullaniciDurumu}</strong></td>
+                                                 </tr>
+                                             </tbody>
+                                         </table>
+                                     </div>
+                                 </div>
+
+                             </div>`
+                     }
+
+
+                     var okul = `<div class="col-xl-12">
                                  <div class="block block-rounded">
                                      <div class="block-content block-content-full bg-primary text-center">
                                          <a class="item item-circle mx-auto bg-black-25" href="javascript:void(0)">
@@ -327,15 +338,15 @@
                                              <tbody>
                                                  <tr>
                                                      <td>Okul</td>
-                                                     <td><strong>Başöğretmen Atatürk İlköğretim okulu</strong></td>
+                                                     <td><strong>${res.okul.okul_details.ad}</strong></td>
                                                  </tr>
                                                  <tr>
                                                      <td>Sınıf / Şube</td>
-                                                     <td><strong>8/D</strong></td>
+                                                     <td><strong>${res.okul.sinif} / ${res.okul.sube}</strong></td>
                                                  </tr>
                                                  <tr>
                                                      <td>Branş</td>
-                                                     <td><strong class="text-danger">Yok</strong></td>
+                                                     <td><strong ${res.okul.brans == null ? "class='text-danger'":""}>${res.okul.brans == null ? "Yok":res.okul.brans}</strong></td>
                                                  </tr>
                                              </tbody>
                                          </table>
@@ -344,10 +355,10 @@
                              </div>`
                  }
                  $('#icerik').append(content)
-
-                 console.log(res);
+                 $('#icerik').append(kisisel)
+                 $('#icerik').append(veli)
+                 $('#icerik').append(okul)
                  Dashmix.block('state_normal', '#modalBlock');
-
              }
          })
      }

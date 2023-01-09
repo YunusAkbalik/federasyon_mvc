@@ -51,7 +51,11 @@ class OgrenciController extends Controller
                 throw new Exception("Öğrenci bulunamadı");
             $ogrenciOkul = OgrenciOkulModel::where('ogrenci_id',$user->id)->with('okulDetails')->first();
             $veli_id = OgrenciVeliModel::where('ogrenci_id',$user->id)->first();
-            $veli = User::find($veli_id);
+            if($veli_id){
+                $veli = User::find($veli_id->veli_id);
+            }else{
+                $veli = null;
+            }
             return response()->json(array(
                 'ogrenci' => $user,
                 'okul' => $ogrenciOkul,

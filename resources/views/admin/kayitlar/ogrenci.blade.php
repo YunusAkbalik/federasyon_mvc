@@ -37,10 +37,19 @@
                     </thead>
                     <tbody>
                         @foreach ($ogrenciler as $ogrenci)
+                            @php
+                                $durum = 'warning';
+                                if ($ogrenci->onayli && $ogrenci->ret == false) {
+                                    $durum = 'success';
+                                }
+                                if ($ogrenci->ret && $ogrenci->onayli == false) {
+                                    $durum = 'danger';
+                                }
+                            @endphp
                             <tr>
                                 <td> <a href="javascript:void(0)" onclick="getData({{ $ogrenci->id }})"
                                         data-bs-toggle="modal" data-bs-target="#modalHere">{{ $ogrenci->ozel_id }}</a></td>
-                                <td>{{ $ogrenci->ad . ' ' . $ogrenci->soyad }}</td>
+                                <td class="text-{{ $durum }}">{{ $ogrenci->ad . ' ' . $ogrenci->soyad }}</td>
                                 <td>{{ $ogrenci->tc_kimlik }}</td>
                                 <td>{{ $ogrenci->okul->okulDetails->ad }}</td>
                                 <td>{{ date('d/m/Y H:i:s', strtotime($ogrenci->created_at)) }}</td>
