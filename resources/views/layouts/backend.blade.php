@@ -324,6 +324,27 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-main-item{{ request()->is('admin/kayitlar/*') ? ' open' : '' }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                                aria-expanded="true" href="#">
+                                <i class="nav-main-link-icon fa fa-user-plus"></i>
+                                <span class="nav-main-link-name">Kayıtlar</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_ogrenci' ? 'active' : '' }}"
+                                        href="{{ route('admin_list_ogrenci') }}">
+                                        <span class="nav-main-link-name">Öğrenci</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_veli' ? 'active' : '' }}"
+                                        href="{{ route('admin_list_veli') }}">
+                                        <span class="nav-main-link-name">Veli</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::currentRouteName() == 'admin_tek_kullanimlik_sifreler' ? 'active' : '' }}" href="{{ route('admin_tek_kullanimlik_sifreler') }}">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>

@@ -30,4 +30,12 @@ class OgrenciController extends Controller
             return response()->json(['message' => $exception->getMessage(), 'error' => 1]);
         }
     }
+
+    public function list()
+    {
+        $ogrenciler = User::role("Öğrenci")->get();
+        return view('admin.kayitlar.ogrenci')->with([
+            'ogrenciler' => $ogrenciler
+        ]);
+    }
 }

@@ -13,6 +13,12 @@
                 <span class="nav-main-link-badge badge rounded-pill bg-primary">{{ $ogrenciler->count() }}</span>
                 &nbsp;
                 <h3 class="block-title">Öğrenciler</h3>
+                <div class="block-options">
+                    <button type="button" class="btn-block-option" data-toggle="block-option"
+                        data-action="fullscreen_toggle"></button>
+                    <button type="button" class="btn-block-option" data-toggle="block-option"
+                        data-action="content_toggle"></button>
+                </div>
             </div>
             <div class="block-content">
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
@@ -33,10 +39,11 @@
                                 <td>{{ $ogrenci->ad . ' ' . $ogrenci->soyad }}</td>
                                 <td>{{ $ogrenci->tc_kimlik }}</td>
                                 <td>{{ $ogrenci->okul->okulDetails->ad }}</td>
-                                <td>{{ $ogrenci->created_at }}</td>
-                                <td class="text-center"  style="max-width: 100px">
+                                <td>{{ date('d/m/Y H:i:s', strtotime($ogrenci->created_at)) }}</td>
+                                <td class="text-center" style="max-width: 100px">
                                     <div class="btn-group">
-                                        <a href="{{ route('admin_kontrol',['ozel_id' => $ogrenci->ozel_id]) }}" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
+                                        <a href="{{ route('admin_kontrol', ['ozel_id' => $ogrenci->ozel_id]) }}"
+                                            class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
                                             data-bs-toggle="tooltip" aria-label="Kontrol Et">
                                             Kontrol Et
                                         </a>
@@ -53,6 +60,12 @@
                 <span class="nav-main-link-badge badge rounded-pill bg-primary">{{ $veliler->count() }}</span>
                 &nbsp;
                 <h3 class="block-title">Veliler</h3>
+                <div class="block-options">
+                    <button type="button" class="btn-block-option" data-toggle="block-option"
+                        data-action="fullscreen_toggle"></button>
+                    <button type="button" class="btn-block-option" data-toggle="block-option"
+                        data-action="content_toggle"></button>
+                </div>
             </div>
             <div class="block-content">
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
@@ -73,10 +86,11 @@
                                 <td>{{ $veli->ad . ' ' . $veli->soyad }}</td>
                                 <td>{{ $veli->tc_kimlik }}</td>
                                 <td><a href="tel:{{ $veli->gsm_no }}">{{ $veli->gsm_no }}</a></td>
-                                <td>{{ $veli->created_at }}</td>
+                                <td>{{ date('d/m/Y H:i:s', strtotime($veli->created_at)) }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin_kontrol',['ozel_id' => $veli->ozel_id]) }}" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
+                                        <a href="{{ route('admin_kontrol', ['ozel_id' => $veli->ozel_id]) }}"
+                                            class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled"
                                             data-bs-toggle="tooltip" aria-label="Kontrol Et">
                                             Kontrol Et
                                         </a>

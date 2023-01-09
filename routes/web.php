@@ -55,6 +55,10 @@ Route::prefix('admin')->group(function () {
         Route::get('veli', [AuthController::class, 'veliHesapOlustur'])->name('admin_create_acc_veli');
         Route::post('veli', [AuthController::class, 'veliHesapOlustur_post'])->name('admin_create_acc_veli_post');
     });
+    Route::prefix('kayitlar')->group(function () {
+        Route::get('ogrenci', [OgrenciController::class, 'list'])->name('admin_list_ogrenci');
+        Route::get('veli', [VeliController::class, 'list'])->name('admin_list_veli');
+    });
 });
 
 

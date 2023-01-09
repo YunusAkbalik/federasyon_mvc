@@ -29,4 +29,8 @@ class VeliController extends Controller
             return response()->json(['message' => $exception->getMessage(), 'error' => 1]);
         }
     }
+    public function list()
+    {
+        return view('admin.kayitlar.veli');
+    }
 }
