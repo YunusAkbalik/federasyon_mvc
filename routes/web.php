@@ -57,6 +57,8 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('kayitlar')->group(function () {
         Route::get('ogrenci', [OgrenciController::class, 'list'])->name('admin_list_ogrenci');
+        Route::post('ogrenci', [OgrenciController::class, 'get'])->name('admin_get_ogrenci');
+
         Route::get('veli', [VeliController::class, 'list'])->name('admin_list_veli');
     });
 });

@@ -38,8 +38,8 @@
                     <tbody>
                         @foreach ($ogrenciler as $ogrenci)
                             <tr>
-                                <td> <a href="javascript:void(0)" data-bs-toggle="modal"
-                                        data-bs-target="#modalHere">{{ $ogrenci->ozel_id }}</a></td>
+                                <td> <a href="javascript:void(0)" onclick="getData({{ $ogrenci->id }})"
+                                        data-bs-toggle="modal" data-bs-target="#modalHere">{{ $ogrenci->ozel_id }}</a></td>
                                 <td>{{ $ogrenci->ad . ' ' . $ogrenci->soyad }}</td>
                                 <td>{{ $ogrenci->tc_kimlik }}</td>
                                 <td>{{ $ogrenci->okul->okulDetails->ad }}</td>

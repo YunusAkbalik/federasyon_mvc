@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OgrenciOkulModel;
 use App\Models\OgrenciVeliModel;
 use App\Models\User;
 use Exception;
@@ -37,5 +38,28 @@ class OgrenciController extends Controller
         return view('admin.kayitlar.ogrenci')->with([
             'ogrenciler' => $ogrenciler
         ]);
+    }
+    public function get(Request $request)
+    {
+        try {
+            if (!$request->id)
+                throw new Exception("Öğrenci bulunamadı");
+            $user = User::find($request->id);
+            if (!$user)
+                throw new Exception("Öğrenci bulunamadı");
+            if (!$user->hasRole('Öğrenci'))
+                throw new Exception("Öğrenci bulunamadı");
+            $ogrenciOkul = OgrenciOkulModel::where('ogrenci_id',$user->id)->with('okulDetails')->first();
+            $veli_id = OgrenciVeliModel::where('ogrenci_id',$user->id)->first();
+            $veli = User::find($veli_id);
+            return response()->json(array(
+                'ogrenci' => $user,
+                'okul' => $ogrenciOkul,
+                'veli' => $veli,
+                'error' => 0
+            ));
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage(), 'error' => 1]);
+        }
     }
 }
