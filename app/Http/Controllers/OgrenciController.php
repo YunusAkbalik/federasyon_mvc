@@ -66,4 +66,8 @@ class OgrenciController extends Controller
             return response()->json(['message' => $exception->getMessage(), 'error' => 1]);
         }
     }
+    public function dashboard()
+    {
+        dd("Öğrenci Dash");
+    }
 }

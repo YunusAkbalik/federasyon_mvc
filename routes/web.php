@@ -6,6 +6,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
 use App\Http\Controllers\OkulController;
 use App\Http\Controllers\onePassController;
+use App\Http\Controllers\RouteController;
 use App\Http\Controllers\VeliController;
 use App\Http\Controllers\yeniKayitlarController;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +26,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-    return view('dashboard');
-})->name('home');
+
+
+Route::get('/', [AuthController::class, 'login'])->middleware('guest')->name('giris_yap');
+Route::post('login', [AuthController::class, 'loginPost'])->middleware('guest')->name('giris_yap_post');
+Route::get('route', [RouteController::class, 'RouteMe'])->middleware('auth')->name('routeThisGuy');
+
 
 
 Route::get('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit'])->middleware('guest')->name('ogrenci_kayit');
@@ -39,7 +43,8 @@ Route::post('veli-kayit', [AuthController::class, 'veli_kayit_post'])->middlewar
 Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'])->name('getOgrenciFromTc');
 Route::post('get-veli-from-tc', [VeliController::class, 'getVeliFromTc'])->name('getVeliFromTc');
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('role:Admin')->group(function () {
+    Route::get('/', [yeniKayitlarController::class, 'list'])->name('admin_dash');
     Route::get('loglar/{cid?}', [LogController::class, 'index'])->name('admin_loglar');
     Route::get('yeni-kayitlar', [yeniKayitlarController::class, 'list'])->name('admin_yeni_kayitlar');
     Route::get('tek-kullanimlik-sifreler', [onePassController::class, 'index'])->name('admin_tek_kullanimlik_sifreler');
@@ -58,10 +63,18 @@ Route::prefix('admin')->group(function () {
     Route::prefix('kayitlar')->group(function () {
         Route::get('ogrenci', [OgrenciController::class, 'list'])->name('admin_list_ogrenci');
         Route::post('ogrenci', [OgrenciController::class, 'get'])->name('admin_get_ogrenci');
-
         Route::get('veli', [VeliController::class, 'list'])->name('admin_list_veli');
+        Route::post('veli', [VeliController::class, 'get'])->name('admin_get_veli');
     });
 });
+Route::prefix('veli')->middleware('role:Veli')->group(function () {
+    Route::get('/', [VeliController::class, 'dashboard'])->name('veli_dash');
+});
+Route::prefix('ogrenci')->middleware('role:Öğrenci')->group(function () {
+    Route::get('/', [OgrenciController::class, 'dashboard'])->name('ogrenci_dash');
+});
+
+
 
 
 Route::view('/pages/slick', 'pages.slick');

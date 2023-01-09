@@ -11,6 +11,7 @@ use App\Models\onePassesModel;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -126,7 +127,7 @@ class AuthController extends Controller
     {
         try {
             $rules = array(
-                'tc_kimlik' => array('digits:11','required'),
+                'tc_kimlik' => array('digits:11', 'required'),
                 'ad' => array('required'),
                 'soyad' => array('required'),
                 'dogum_tarihi' => array('required'),
@@ -202,7 +203,6 @@ class AuthController extends Controller
             return redirect()->route('veli_kayit')->withErrors($exception->getMessage());
         }
     }
-
 
     #endregion
     #region Admin Hesap Oluştur
@@ -327,7 +327,7 @@ class AuthController extends Controller
     {
         try {
             $rules = array(
-                'tc_kimlik' => array('digits:11','required'),
+                'tc_kimlik' => array('digits:11', 'required'),
                 'ad' => array('required'),
                 'soyad' => array('required'),
                 'dogum_tarihi' => array('required'),
@@ -401,10 +401,35 @@ class AuthController extends Controller
                 'user_id' => $newUser->id,
                 'onePass' => $one_pass
             ]);
-           
+
             return redirect()->route('admin_create_acc_veli')->with("success", "Veli kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return back()->withErrors($exception->getMessage());
+        }
+    }
+    public function login()
+    {
+        return view('auth.index');
+    }
+    public function loginPost(Request $request)
+    {
+        try {
+            $user = User::where(function ($query) use ($request) {
+                $query->where('ozel_id', $request->login_id)
+                    ->orWhere('gsm_no', $request->login_id);
+            })->first();
+            if (!$user)
+                throw new Exception("Böyle bir kullanıcı yok");
+            if ($user->ret)
+                throw new Exception("Kayıt isteğiniz reddedilmiş.");
+            if ($user->onayli == false && $user->ret == false)
+                throw new Exception("Hesabınız onay bekliyor.");
+            if (Auth::attempt(['id' => $user->id, 'password' => $request->login_password], true)) {
+                return redirect()->route('routeThisGuy');
+            } else
+                throw new Exception("ID veya Parola yanlış");
+        } catch (Exception $exception) {
+            return redirect()->route('giris_yap')->withErrors($exception->getMessage());
         }
     }
     #endregion
