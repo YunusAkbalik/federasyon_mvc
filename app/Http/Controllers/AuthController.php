@@ -111,7 +111,7 @@ class AuthController extends Controller
             ]);
             $newUser->assignRole('Öğrenci');
             $logText = "Öğrenci, $newUser->ad $newUser->soyad ($newUser->tc_kimlik) sisteme kayıt oldu";
-            LogModel::create(['kategori_id' => 2, 'logText' => $logText]);
+            LogModel::create(['kategori_id' => 3, 'logText' => $logText]);
             return redirect()->route('home')->with("success", "Öğrenci kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('ogrenci_kayit')->withErrors($exception->getMessage());
@@ -197,7 +197,7 @@ class AuthController extends Controller
                 }
             }
             $logText = "Veli, $newUser->ad $newUser->soyad ($newUser->tc_kimlik) sisteme kayıt oldu";
-            LogModel::create(['kategori_id' => 2, 'logText' => $logText]);
+            LogModel::create(['kategori_id' => 3, 'logText' => $logText]);
             return redirect()->route('home')->with("success", "Veli kayıt işlemi başarılı");
         } catch (Exception $exception) {
             return redirect()->route('veli_kayit')->withErrors($exception->getMessage());
@@ -307,9 +307,9 @@ class AuthController extends Controller
                     }
                 }
             }
-            // $currentUser = auth()->user();
-            // $logText = "Kullanıcı $currentUser->ad $currentUser->soyad sisteme öğrenci ekledi ($user->ozel_id)";
-            // LogModel::create(['kategori_id' => 3, 'logText' => $logText]);
+            $admin = auth()->user();
+            $logText = "Admin $admin->ad $admin->soyad sisteme öğrenci ekledi ($user->ad $user->soyad ($user->ozel_id))";
+            LogModel::create(['kategori_id' => 6, 'logText' => $logText]);
             onePassesModel::create([
                 'user_id' => $user->id,
                 'onePass' => $one_pass
@@ -397,6 +397,9 @@ class AuthController extends Controller
                     }
                 }
             }
+            $admin = auth()->user();
+            $logText = "Admin $admin->ad $admin->soyad sisteme veli ekledi ($newUser->ad $newUser->soyad ($newUser->ozel_id))";
+            LogModel::create(['kategori_id' => 7, 'logText' => $logText]);
             onePassesModel::create([
                 'user_id' => $newUser->id,
                 'onePass' => $one_pass
@@ -407,6 +410,9 @@ class AuthController extends Controller
             return back()->withErrors($exception->getMessage());
         }
     }
+    #endregion
+
+
     public function login()
     {
         return view('auth.index');
@@ -425,6 +431,11 @@ class AuthController extends Controller
             if ($user->onayli == false && $user->ret == false)
                 throw new Exception("Hesabınız onay bekliyor.");
             if (Auth::attempt(['id' => $user->id, 'password' => $request->login_password], true)) {
+                $logText = "$user->ad $user->soyad ($user->ozel_id) sisteme giriş yaptı";
+                LogModel::create([
+                    'kategori_id' => 1,
+                    'logText' => $logText
+                ]);
                 return redirect()->route('routeThisGuy');
             } else
                 throw new Exception("ID veya Parola yanlış");
@@ -432,5 +443,15 @@ class AuthController extends Controller
             return redirect()->route('giris_yap')->withErrors($exception->getMessage());
         }
     }
-    #endregion
+    public function logout()
+    {
+        $user = auth()->user();
+        $logText = "$user->ad $user->soyad ($user->ozel_id) sistemden çıkış yaptı.";
+        LogModel::create([
+            'kategori_id' => 2,
+            'logText' => $logText
+        ]);
+        Auth::logout();
+        return redirect()->route('giris_yap');
+    }
 }

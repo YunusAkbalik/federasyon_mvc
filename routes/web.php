@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AuthController::class, 'login'])->middleware('guest')->name('giris_yap');
 Route::post('login', [AuthController::class, 'loginPost'])->middleware('guest')->name('giris_yap_post');
 Route::get('route', [RouteController::class, 'RouteMe'])->middleware('auth')->name('routeThisGuy');
+Route::get('cikis', [AuthController::class, 'logout'])->middleware('auth')->name('cikis_yap');
 
 
 
@@ -77,6 +78,3 @@ Route::prefix('ogrenci')->middleware('role:Öğrenci')->group(function () {
 
 
 
-Route::view('/pages/slick', 'pages.slick');
-Route::view('/pages/datatables', 'pages.datatables');
-Route::view('/pages/blank', 'pages.blank');

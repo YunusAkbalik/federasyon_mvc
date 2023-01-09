@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\IlceModel;
 use App\Models\IlModel;
+use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
 use App\Models\OkulModel;
 use App\Models\User;
@@ -53,7 +54,6 @@ class yeniKayitlarController extends Controller
                 'okullar' => $okullar,
 
             ));
-            dd($user);
         } catch (Exception $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
         }
@@ -119,6 +119,12 @@ class yeniKayitlarController extends Controller
                 $ogrenci_okul->brans = $request->brans;
                 $ogrenci_okul->save();
             }
+            $admin = auth()->user();
+            $logText = "Admin $admin->ad $admin->soyad , $user->ad $user->soyad ($user->ozel_id) adlı kullanıcıyı onayladı";
+            LogModel::create([
+                'kategori_id' => 4,
+                'logText' => $logText
+            ]);
             return redirect()->route('admin_yeni_kayitlar')->with('success', 'Kullanıcı Onaylandı');
         } catch (Exception $exception) {
             return back()->withErrors($exception->getMessage());
@@ -139,6 +145,13 @@ class yeniKayitlarController extends Controller
             $user->ret = true;
             $user->ret_nedeni = $request->ret_nedeni;
             $user->save();
+
+            $admin = auth()->user();
+            $logText = "Admin $admin->ad $admin->soyad , $user->ad $user->soyad ($user->ozel_id) adlı kullanıcıyı reddetti";
+            LogModel::create([
+                'kategori_id' => 5,
+                'logText' => $logText
+            ]);
             return redirect()->route('admin_yeni_kayitlar')->with('success', 'Kullanıcı Reddedildi');
         } catch (Exception $exception) {
             return back()->withErrors($exception->getMessage());

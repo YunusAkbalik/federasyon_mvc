@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
             ],
         ]);
-        for ($i = 0; $i < 199; $i++) {
+        for ($i = 0; $i < 49; $i++) {
             $ozel_id = rand($start, $end);
             DB::table('users')->insert([
                 [
@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
         }
 
         User::find(1)->assignRole("Admin");
-        for ($i = 2; $i <= 200; $i++) {
+        for ($i = 2; $i <= 50; $i++) {
             User::find($i)->assignRole($faker->randomElement(['Öğrenci', 'Veli']));
         }
         $ogrenciler = User::role('Öğrenci')->get();
@@ -113,9 +113,13 @@ class DatabaseSeeder extends Seeder
             ['ilce_id' => 8, 'ad' => "Menemen Gazi İlköğretim okulu"],
         ]);
         DB::table('log_kategorileri')->insert([
-            ['ad' => "Login İşlemleri", "icon" => "key"],
+            ['ad' => "Giriş İşlemleri", "icon" => "key"],
+            ['ad' => "Çıkış İşlemleri", "icon" => "right-from-bracket"],
             ['ad' => "Kayıt İşlemleri", "icon" => "pencil"],
-            ['ad' => "Admin Öğrenci Kayıtları", "icon" => "user-plus"],
+            ['ad' => "Admin Kullanıcı Onayları", "icon" => "check-to-slot"],
+            ['ad' => "Admin Kullanıcı Retleri", "icon" => "circle-xmark"],
+            ['ad' => "Admin Öğrenci Kayıtları", "icon" => "user-graduate"],
+            ['ad' => "Admin Veli Kayıtları", "icon" => "user"],
         ]);
     }
 }
