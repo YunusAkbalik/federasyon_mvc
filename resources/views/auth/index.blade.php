@@ -122,6 +122,15 @@
             });
         </script>
     @endif
+    @if (Session::has('success'))
+        <script>
+            Dashmix.helpers('jq-notify', {
+                type: 'success',
+                icon: 'fa fa-check me-1',
+                message: '{{ Session::get('success') }}'
+            });
+        </script>
+    @endif
 </body>
 
 </html>

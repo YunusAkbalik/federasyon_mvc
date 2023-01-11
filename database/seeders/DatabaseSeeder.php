@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $ogrenciRole = Role::create(['name' => "Öğrenci"]);
         $veliRole = Role::create(['name' => "Veli"]);
         $adminRole = Role::create(['name' => "Admin"]);
+        $ogretmenRole = Role::create(['name' => "Öğretmen"]);
         $faker = Factory::create("tr_TR");
         $yearNow = date('y');
         $yearSecond = (string)$yearNow;

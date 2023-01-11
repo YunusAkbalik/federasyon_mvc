@@ -37,6 +37,8 @@ Route::get('cikis', [AuthController::class, 'logout'])->middleware('auth')->name
 
 Route::get('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit'])->middleware('guest')->name('ogrenci_kayit');
 Route::post('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit_post'])->middleware('guest')->name('ogrenci_kayit_post');
+Route::get('ogretmen-kayit', [AuthController::class, 'ogretmen_kayit'])->middleware('guest')->name('ogretmen_kayit');
+Route::post('ogretmen-kayit', [AuthController::class, 'ogretmen_kayit_post'])->middleware('guest')->name('ogretmen_kayit_post');
 Route::post('getIlceler', [IlceController::class, 'getIlceFromIl'])->name('getIlcelerFromIlID');
 Route::post('getOkullar', [OkulController::class, 'getOkulsFromIlce'])->name('getOkullarFromIlceID');
 Route::get('veli-kayit', [AuthController::class, 'veli_kayit'])->middleware('guest')->name('veli_kayit');
