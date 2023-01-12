@@ -456,7 +456,7 @@
                                 <!-- END Side Overlay -->
 
                                 <div role="separator" class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)">
+                                <a class="dropdown-item" href="{{ route('cikis_yap') }}">
                                     <i class="far fa-fw fa-arrow-alt-circle-left me-1"></i> Sign Out
                                 </a>
                             </div>
@@ -615,11 +615,6 @@
     <!-- END Page Container -->
 </body>
 <!-- Page JS Plugins -->
-
-
-
-
-
 @if (count($errors))
     <script>
         Dashmix.helpers('jq-notify', {
@@ -629,7 +624,6 @@
         });
     </script>
 @endif
-
 @if (Session::has('success'))
     <script>
         Dashmix.helpers('jq-notify', {
@@ -639,5 +633,4 @@
         });
     </script>
 @endif
-
 </html>

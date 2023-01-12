@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
 use App\Http\Controllers\LogController;
@@ -47,7 +48,7 @@ Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'
 Route::post('get-veli-from-tc', [VeliController::class, 'getVeliFromTc'])->name('getVeliFromTc');
 
 Route::prefix('admin')->middleware('role:Admin')->group(function () {
-    Route::get('/', [yeniKayitlarController::class, 'list'])->name('admin_dash');
+    Route::get('/', [adminController::class, 'dash'])->name('admin_dash');
     Route::get('loglar/{cid?}', [LogController::class, 'index'])->name('admin_loglar');
     Route::get('yeni-kayitlar', [yeniKayitlarController::class, 'list'])->name('admin_yeni_kayitlar');
     Route::get('tek-kullanimlik-sifreler', [onePassController::class, 'index'])->name('admin_tek_kullanimlik_sifreler');
