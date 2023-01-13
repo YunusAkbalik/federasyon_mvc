@@ -10,6 +10,7 @@ use App\Http\Controllers\ogretmenController;
 use App\Http\Controllers\OkulController;
 use App\Http\Controllers\onePassController;
 use App\Http\Controllers\RouteController;
+use App\Http\Controllers\testController;
 use App\Http\Controllers\VeliController;
 use App\Http\Controllers\yeniKayitlarController;
 use App\Models\kurumModel;
@@ -36,6 +37,7 @@ Route::get('/', [AuthController::class, 'login'])->middleware('guest')->name('gi
 Route::post('login', [AuthController::class, 'loginPost'])->middleware('guest')->name('giris_yap_post');
 Route::get('route', [RouteController::class, 'RouteMe'])->middleware('auth')->name('routeThisGuy');
 Route::get('cikis', [AuthController::class, 'logout'])->middleware('auth')->name('cikis_yap');
+Route::get('test', [testController::class, 'test']);
 
 
 
@@ -75,6 +77,8 @@ Route::prefix('admin')->middleware('role:Admin')->group(function () {
     });
     Route::prefix('kurumlar')->group(function () {
         Route::get('/', [kurumController::class, 'list'])->name('admin_list_kurum');
+        Route::get('olustur', [kurumController::class, 'create'])->name('admin_create_kurum');
+        Route::post('olustur', [kurumController::class, 'create_post'])->name('admin_create_kurum_post');
     });
 });
 Route::prefix('veli')->middleware('role:Veli')->group(function () {

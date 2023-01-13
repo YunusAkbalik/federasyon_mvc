@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('ozel_id')->unique();
             $table->string('ad');
             $table->string('soyad');
-            $table->date('dogum_tarihi');
+            $table->date('dogum_tarihi')->nullable();
             $table->string('kan_grubu')->nullable();
             $table->string('gsm_no')->nullable();
             $table->string('email')->nullable()->unique();

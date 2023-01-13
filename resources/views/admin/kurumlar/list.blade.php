@@ -14,7 +14,7 @@
         <div class="content content-full">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
                 <h1 class="flex-grow-1 fs-3 fw-semibold my-2 my-sm-3">Kurumlar</h1>
-                <button class="btn btn-success"><i class="fa-solid fa-plus"></i> Yeni Kurum Oluştur</button>
+                <a href="{{ route('admin_create_kurum') }}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Yeni Kurum Oluştur</a>
             </div>
         </div>
     </div>

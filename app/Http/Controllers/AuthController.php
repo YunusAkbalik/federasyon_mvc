@@ -86,24 +86,13 @@ class AuthController extends Controller
             $okul = OkulModel::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
-            $yearNow = date('y');
-            $yearSecond = (string)$yearNow;
-            $start = intval($yearSecond[1]) * 100000;
-            $end = $start + 99999;
-            $ozel_id_exist = true;
-            $ozel_id = 0;
-            while ($ozel_id_exist) {
-                $ozel_id = rand($start, $end);
-                if (!(User::where('ozel_id', $ozel_id)->first())) {
-                    $ozel_id_exist = false;
-                }
-            }
+            
             $newUser =  User::create(array_merge($request->all(), array(
                 'onayli' => false,
                 'ret' => false,
                 'ret_nedeni' => null,
                 'password' => bcrypt($request->password),
-                'ozel_id' => $ozel_id
+                'ozel_id' => ozel_id_uret()
             )));
             OgrenciOkulModel::create([
                 'okul_id' => $okul->id,
@@ -165,25 +154,12 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-
-            $yearNow = date('y');
-            $yearSecond = (string)$yearNow;
-            $start = intval($yearSecond[1]) * 100000;
-            $end = $start + 99999;
-            $ozel_id_exist = true;
-            $ozel_id = 0;
-            while ($ozel_id_exist) {
-                $ozel_id = rand($start, $end);
-                if (!(User::where('ozel_id', $ozel_id)->first())) {
-                    $ozel_id_exist = false;
-                }
-            }
             $newUser = User::create(array_merge($request->all(), [
                 'onayli' => false,
                 'ret' => false,
                 'ret_nedeni' => null,
                 'password' => bcrypt($request->password),
-                'ozel_id' => $ozel_id
+                'ozel_id' => ozel_id_uret()
             ]));
             $newUser->assignRole('Veli');
             if ($request->ogrenci_tc) {
@@ -256,24 +232,13 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-            $yearNow = date('y');
-            $yearSecond = (string)$yearNow;
-            $start = intval($yearSecond[1]) * 100000;
-            $end = $start + 99999;
-            $ozel_id_exist = true;
-            $ozel_id = 0;
-            while ($ozel_id_exist) {
-                $ozel_id = rand($start, $end);
-                if (!(User::where('ozel_id', $ozel_id)->first())) {
-                    $ozel_id_exist = false;
-                }
-            }
+           
             $newUser = User::create(array_merge($request->all(), [
                 'onayli' => false,
                 'ret' => false,
                 'ret_nedeni' => null,
                 'password' => bcrypt($request->password),
-                'ozel_id' => $ozel_id
+                'ozel_id' => ozel_id_uret()
             ]));
             $newUser->assignRole('Öğretmen');
             $photo = $request->file('photo');
@@ -357,24 +322,12 @@ class AuthController extends Controller
             $okul = OkulModel::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
-            $yearNow = date('y');
-            $yearSecond = (string)$yearNow;
-            $start = intval($yearSecond[1]) * 100000;
-            $end = $start + 99999;
-            $ozel_id_exist = true;
-            $ozel_id = 0;
-            while ($ozel_id_exist) {
-                $ozel_id = rand($start, $end);
-                if (!(User::where('ozel_id', $ozel_id)->first())) {
-                    $ozel_id_exist = false;
-                }
-            }
             $one_pass = rand(100000, 999999);
             $user = User::create(array_merge($request->all(), array(
                 'onayli' => true,
                 'ret' => false,
                 'ret_nedeni' => null,
-                'ozel_id' => $ozel_id,
+                'ozel_id' => ozel_id_uret(),
                 'password' => bcrypt($one_pass)
             )));
             OgrenciOkulModel::create([
@@ -454,26 +407,13 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-            $yearNow = date('y');
-            $yearSecond = (string)$yearNow;
-            $start = intval($yearSecond[1]) * 100000;
-            $end = $start + 99999;
-            $ozel_id_exist = true;
-            $ozel_id = 0;
-            while ($ozel_id_exist) {
-                $ozel_id = rand($start, $end);
-                if (!(User::where('ozel_id', $ozel_id)->first())) {
-                    $ozel_id_exist = false;
-                }
-            }
             $one_pass = rand(100000, 999999);
-
             $newUser = User::create(array_merge($request->all(), [
                 'onayli' => true,
                 'ret' => false,
                 'ret_nedeni' => null,
                 'password' => bcrypt($one_pass),
-                'ozel_id' => $ozel_id
+                'ozel_id' => ozel_id_uret()
             ]));
             $newUser->assignRole('Veli');
             if ($request->ogrenci_tc) {
