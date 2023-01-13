@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ogretmenController extends Controller
+class kurumController extends Controller
 {
     public function dashboard()
     {
-        dd("Öğretmen dash");
+        dd("Kurum dash");
     }
 }

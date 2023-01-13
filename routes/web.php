@@ -3,8 +3,10 @@
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
+use App\Http\Controllers\kurumController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
+use App\Http\Controllers\ogretmenController;
 use App\Http\Controllers\OkulController;
 use App\Http\Controllers\onePassController;
 use App\Http\Controllers\RouteController;
@@ -76,6 +78,12 @@ Route::prefix('veli')->middleware('role:Veli')->group(function () {
 });
 Route::prefix('ogrenci')->middleware('role:Öğrenci')->group(function () {
     Route::get('/', [OgrenciController::class, 'dashboard'])->name('ogrenci_dash');
+});
+Route::prefix('ogretmen')->middleware('role:Öğretmen')->group(function () {
+    Route::get('/', [ogretmenController::class, 'dashboard'])->name('ogretmen_dash');
+});
+Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
+    Route::get('/', [kurumController::class, 'dashboard'])->name('kurum_dash');
 });
 
 

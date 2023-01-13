@@ -22,16 +22,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $ogrenciRole = Role::create(['name' => "Öğrenci"]);
-        $veliRole = Role::create(['name' => "Veli"]);
-        $adminRole = Role::create(['name' => "Admin"]);
-        $ogretmenRole = Role::create(['name' => "Öğretmen"]);
+        Role::create(['name' => "Öğrenci"]);
+        Role::create(['name' => "Veli"]);
+        Role::create(['name' => "Admin"]);
+        Role::create(['name' => "Öğretmen"]);
+        Role::create(['name' => "Kurum Yetkilisi"]);
         $faker = Factory::create("tr_TR");
         $yearNow = date('y');
         $yearSecond = (string)$yearNow;
         $start = intval($yearSecond[1]) * 100000;
         $end = $start + 99999;
         $ozel_id = rand($start, $end);
+
+        // Main acc
         DB::table('users')->insert([
             [
                 'tc_kimlik' => "27256988692",
@@ -49,7 +52,31 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
             ],
         ]);
-        for ($i = 0; $i < 49; $i++) {
+
+
+        // Kurum Acc
+        $ozel_id = rand($start, $end);
+        DB::table('users')->insert([
+            [
+                'tc_kimlik' => $faker->numerify('###########'),
+                'ozel_id' => 123,
+                'ad' => $faker->firstName(),
+                'soyad' => $faker->lastName(),
+                'dogum_tarihi' => $faker->date(),
+                'kan_grubu' => "0RH(+)",
+                'gsm_no' => $faker->phoneNumber(),
+                'email' => $faker->unique()->email(),
+                'password' => bcrypt("123"),
+                'onayli' => true,
+                'ret' => false,
+                'ret_nedeni' => null,
+                'created_at' => now(),
+            ]
+        ]);
+        User::find(2)->assignRole("Kurum Yetkilisi");
+
+        // Random kullanıcılar
+        for ($i = 1; $i <= 48; $i++) {
             $ozel_id = rand($start, $end);
             DB::table('users')->insert([
                 [
@@ -70,10 +97,15 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // Main Acc Perm
         User::find(1)->assignRole("Admin");
-        for ($i = 2; $i <= 50; $i++) {
+
+        // Kullanıcılara random Permler
+        for ($i = 3; $i <= 50; $i++) {
             User::find($i)->assignRole($faker->randomElement(['Öğrenci', 'Veli']));
         }
+
+        // Öğrencilere random okul sınıf tanımlaması
         $ogrenciler = User::role('Öğrenci')->get();
         foreach ($ogrenciler as $ogrenci) {
             $randomOkul = rand(1, 8);
@@ -121,6 +153,31 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Admin Kullanıcı Retleri", "icon" => "circle-xmark"],
             ['ad' => "Admin Öğrenci Kayıtları", "icon" => "user-graduate"],
             ['ad' => "Admin Veli Kayıtları", "icon" => "user"],
+        ]);
+        DB::table('kurumlar')->insert([
+            [
+                'unvan' => "Roosecs eğitim",
+                'telefon' => $faker->phoneNumber(),
+                'adres' => $faker->address(),
+                'vergi_dairesi' => $faker->streetAddress,
+                'vergi_no' => $faker->numerify('###'),
+                'yetkili_kisi' => $faker->firstName() . " " . $faker->lastName(),
+                'yetkili_telefon' => $faker->phoneNumber(),
+                'wp_hatti' => $faker->phoneNumber(),
+                'created_at' => now(),
+                'updated_at' => now(),
+
+            ],
+        ]);
+        DB::table("kurum_hizmetler")->insert([
+            ['kurum_id' => 1, "hizmet" => "Robotik", 'created_at' => now(), 'updated_at' => now()],
+            ['kurum_id' => 1, "hizmet" => "Etüt", 'created_at' => now(), 'updated_at' => now()],
+            ['kurum_id' => 1, "hizmet" => "Kodlama", 'created_at' => now(), 'updated_at' => now()],
+            ['kurum_id' => 1, "hizmet" => "Türkçe", 'created_at' => now(), 'updated_at' => now()],
+            ['kurum_id' => 1, "hizmet" => "İngilizce", 'created_at' => now(), 'updated_at' => now()],
+        ]);
+        DB::table("kurum_user")->insert([
+            ['kurum_id' => 1, "user_id" => 2, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

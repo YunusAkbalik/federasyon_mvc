@@ -18,6 +18,10 @@ class RouteController extends Controller
                 return redirect()->route('veli_dash');
             if ($user->hasRole('Öğrenci'))
                 return redirect()->route('ogrenci_dash');
+            if ($user->hasRole('Öğretmen'))
+                return redirect()->route('ogretmen_dash');
+            if ($user->hasRole('Kurum Yetkilisi'))
+                return redirect()->route('kurum_dash');
                
         } catch (Exception $th) {
             dd($th->getMessage());
