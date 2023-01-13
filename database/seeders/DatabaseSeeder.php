@@ -149,10 +149,11 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Giriş İşlemleri", "icon" => "key"],
             ['ad' => "Çıkış İşlemleri", "icon" => "right-from-bracket"],
             ['ad' => "Kayıt İşlemleri", "icon" => "pencil"],
-            ['ad' => "Admin Kullanıcı Onayları", "icon" => "check-to-slot"],
-            ['ad' => "Admin Kullanıcı Retleri", "icon" => "circle-xmark"],
-            ['ad' => "Admin Öğrenci Kayıtları", "icon" => "user-graduate"],
-            ['ad' => "Admin Veli Kayıtları", "icon" => "user"],
+            ['ad' => "Kullanıcı Onayları", "icon" => "check-to-slot"],
+            ['ad' => "Kullanıcı Retleri", "icon" => "circle-xmark"],
+            ['ad' => "Öğrenci Kayıtları", "icon" => "user-graduate"],
+            ['ad' => "Veli Kayıtları", "icon" => "user"],
+            ['ad' => "Kurum Oluşturmaları", "icon" => "building"],
         ]);
         DB::table('kurumlar')->insert([
             [

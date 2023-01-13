@@ -79,6 +79,7 @@ Route::prefix('admin')->middleware('role:Admin')->group(function () {
         Route::get('/', [kurumController::class, 'list'])->name('admin_list_kurum');
         Route::get('olustur', [kurumController::class, 'create'])->name('admin_create_kurum');
         Route::post('olustur', [kurumController::class, 'create_post'])->name('admin_create_kurum_post');
+        Route::get('duzenle/{id}', [kurumController::class, 'edit'])->name('admin_edit_kurum');
     });
 });
 Route::prefix('veli')->middleware('role:Veli')->group(function () {

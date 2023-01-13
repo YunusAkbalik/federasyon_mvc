@@ -48,8 +48,6 @@ Dashmix.onLoad((() => class {
                         minlength: 10,
                         maxlength: 10,
                     },
-
-
                 },
                 messages: {
                     "ad": "Lütfen isim girin",

@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\kurumHizmetModel;
 use App\Models\kurumModel;
 use App\Models\kurumUserModel;
+use App\Models\LogModel;
 use App\Models\onePassesModel;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class kurumController extends Controller
@@ -30,7 +32,7 @@ class kurumController extends Controller
     public function create_post(Request $request)
     {
         try {
-            $hizmetler =  explode(",",$request->kurum_hizmetler);
+            $hizmetler =  explode(",", $request->kurum_hizmetler);
             $rules = array(
                 'unvan' => array('required'),
                 'telefon' => array('digits:10', 'required'),
@@ -89,13 +91,32 @@ class kurumController extends Controller
             kurumUserModel::create(['kurum_id' => $kurum->id, 'user_id' => $user->id]);
             foreach ($hizmetler as $hizmet) {
                 kurumHizmetModel::create([
-                     'kurum_id' => $kurum->id,
-                     'hizmet' => ucwords(trim($hizmet))
+                    'kurum_id' => $kurum->id,
+                    'hizmet' => ucwords(trim($hizmet))
                 ]);
             }
+            $admin = auth()->user();
+            $logText = "Admin $admin->ad $admin->soyad , Kurum oluşturdu ($kurum->unvan)";
+            LogModel::create([
+                'kategori_id' => 8,
+                'logText' => $logText
+            ]);
             return redirect()->back()->with('success', "Kurum oluşturuldu");
         } catch (Exception $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
+        }
+    }
+    public function edit(Request $request)
+    {
+        try {
+            if (!$request->id)
+                throw new Exception("Kurum bulunamadı");
+            $kurum = kurumModel::find($request->id);
+            if (!$kurum)
+                throw new Exception("Kurum bulunamadı");
+            dd($kurum);
+        } catch (Exception $exception) {
+            return redirect()->route('admin_list_kurum')->withErrors($exception->getMessage());
         }
     }
 }
