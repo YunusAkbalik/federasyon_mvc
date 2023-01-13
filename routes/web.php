@@ -12,6 +12,7 @@ use App\Http\Controllers\onePassController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\VeliController;
 use App\Http\Controllers\yeniKayitlarController;
+use App\Models\kurumModel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,6 +72,9 @@ Route::prefix('admin')->middleware('role:Admin')->group(function () {
         Route::post('ogrenci', [OgrenciController::class, 'get'])->name('admin_get_ogrenci');
         Route::get('veli', [VeliController::class, 'list'])->name('admin_list_veli');
         Route::post('veli', [VeliController::class, 'get'])->name('admin_get_veli');
+    });
+    Route::prefix('kurumlar')->group(function () {
+        Route::get('/', [kurumController::class, 'list'])->name('admin_list_kurum');
     });
 });
 Route::prefix('veli')->middleware('role:Veli')->group(function () {
