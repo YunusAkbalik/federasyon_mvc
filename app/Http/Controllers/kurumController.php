@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Validator;
 
 class kurumController extends Controller
 {
+    public $kurumid = 0;
     public function dashboard()
     {
         dd("Kurum dash");
     }
-
     public function list()
     {
         $kurumlar = kurumModel::all();
@@ -114,9 +114,22 @@ class kurumController extends Controller
             $kurum = kurumModel::find($request->id);
             if (!$kurum)
                 throw new Exception("Kurum bulunamadı");
-            dd($kurum);
+            return view('admin.kurumlar.edit')->with(['kurum' => $kurum]);
         } catch (Exception $exception) {
             return redirect()->route('admin_list_kurum')->withErrors($exception->getMessage());
+        }
+    }
+    public function get(Request $request)
+    {
+        try {
+            if (!$request->id)
+                throw new Exception("Kurum Bulunamadı");
+            $kurum = kurumModel::where('id', $request->id)->with('hizmetler')->with('yetkili')->first();
+            if (!$kurum)
+                throw new Exception("Kurum Bulunamadı");
+            return response()->json(['data' => $kurum]);
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 404);
         }
     }
 }

@@ -14,12 +14,14 @@
         <div class="content content-full">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
                 <h1 class="flex-grow-1 fs-3 fw-semibold my-2 my-sm-3">Kurumlar</h1>
-                <a href="{{ route('admin_create_kurum') }}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Yeni Kurum Oluştur</a>
+                <a href="{{ route('admin_create_kurum') }}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Yeni
+                    Kurum Oluştur</a>
             </div>
         </div>
     </div>
     <!-- END Hero -->
 
+    @include('admin.kurumlar.showModal')
     <!-- Page Content -->
     <div class="content">
         <!-- Your Block -->
@@ -30,30 +32,32 @@
                 </h3>
             </div>
             <div class="block-content">
-               <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Ünvan</th>
-                        <th>Telefon</th>
-                        <th>Yetkili Kişi</th>
-                        <th>Yetkili Telefon</th>
-                        <th>Whatsapp Hattı</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($kurumlar as $kurum)
+                <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
+                    <thead>
                         <tr>
-                            <td>{{ $kurum->id }}</td>
-                            <td>{{ $kurum->unvan }}</td>
-                            <td><a href="tel:{{ $kurum->telefon }}">{{ $kurum->telefon }}</a></td>
-                            <td>{{ $kurum->yetkili_kisi }}</td>
-                            <td><a href="tel:{{ $kurum->yetkili_telefon }}">{{ $kurum->yetkili_telefon }}</a></td>
-                            <td><a href="tel:{{ $kurum->wp_hatti }}">{{ $kurum->wp_hatti }}</a></td>
+                            <th>ID</th>
+                            <th>Ünvan</th>
+                            <th>Telefon</th>
+                            <th>Yetkili Kişi</th>
+                            <th>Yetkili Telefon</th>
+                            <th>Whatsapp Hattı</th>
                         </tr>
-                    @endforeach
-                </tbody>
-               </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($kurumlar as $kurum)
+                            <tr>
+                                <td><a href="javascript:void(0)" onclick="getData({{ $kurum->id }})"
+                                        data-bs-toggle="modal" data-bs-target="#modal-block">{{ $kurum->id }}</a></td>
+                                <td><a href="javascript:void(0)" onclick="getData({{ $kurum->id }})"
+                                        data-bs-toggle="modal" data-bs-target="#modal-block">{{ $kurum->unvan }}</a></td>
+                                <td><a href="tel:{{ $kurum->telefon }}">{{ $kurum->telefon }}</a></td>
+                                <td>{{ $kurum->yetkili_kisi }}</td>
+                                <td><a href="tel:{{ $kurum->yetkili_telefon }}">{{ $kurum->yetkili_telefon }}</a></td>
+                                <td><a href="tel:{{ $kurum->wp_hatti }}">{{ $kurum->wp_hatti }}</a></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- END Your Block -->

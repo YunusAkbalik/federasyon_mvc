@@ -19,4 +19,13 @@ class kurumModel extends Model
         'yetkili_telefon',
         'wp_hatti',
     ];
+
+    public function hizmetler()
+    {
+        return $this->hasMany(kurumHizmetModel::class, 'kurum_id', 'id');
+    }
+    public function yetkili()
+    {
+        return $this->hasOne(kurumUserModel::class, 'kurum_id', 'id')->with('user');
+    }
 }
