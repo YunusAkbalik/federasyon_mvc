@@ -48,6 +48,22 @@ Dashmix.onLoad((() => class {
                     "signup-terms": {
                         required: !0,
                     },
+                    "okul": {
+                        required: !0,
+                    },
+                    "bolum": {
+                        required: !0,
+                    },
+                    "mezun_tarihi": {
+                        required: !0,
+                    },
+                    "sertifikalar": {
+                        required: !0,
+                    },
+                    "oncekiisler": {
+                        required: !0,
+                    },
+
                 },
                 messages: {
                     "tc_kimlik": {
@@ -73,6 +89,12 @@ Dashmix.onLoad((() => class {
                     "dogum_tarihi": "Lütfen doğum tarihinizi girin",
                     "photo": "Lütfen profil fotoğrafı yükleyin",
                     "signup-terms": "Üye olmak için şartları ve koşulları kabul etmek zorundasınız!",
+                    "okul": "Lütfen bu alanı doldurun",
+                    "bolum": "Lütfen bu alanı doldurun",
+                    "mezun_tarihi": "Lütfen bu alanı doldurun",
+                    "sertifikalar": "Lütfen bu alanı doldurun",
+                    "oncekiisler": "Lütfen bu alanı doldurun",
+
                 }
             })
     }

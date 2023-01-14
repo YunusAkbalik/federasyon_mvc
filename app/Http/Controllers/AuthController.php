@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cvCalismaSaatleriModel;
+use App\Models\cvOncekiislerModel;
+use App\Models\cvSertifikaModel;
 use App\Models\IlModel;
 use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
 use App\Models\OgrenciVeliModel;
+use App\Models\ogretmenCvModel;
 use App\Models\ogretmenPhotoModel;
 use App\Models\OkulModel;
 use App\Models\onePassesModel;
@@ -86,7 +90,7 @@ class AuthController extends Controller
             $okul = OkulModel::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
-            
+
             $newUser =  User::create(array_merge($request->all(), array(
                 'onayli' => false,
                 'ret' => false,
@@ -200,6 +204,11 @@ class AuthController extends Controller
                 'gsm_no' => array('required', 'digits:10'),
                 'email' => array('required'),
                 'photo' => array('required'),
+                'okul' => array('required'),
+                'bolum' => array('required'),
+                'mezun_tarihi' => array('required'),
+                'sertifikalar' => array('required'),
+                'oncekiisler' => array('required'),
 
             );
             $attributeNames = array(
@@ -210,6 +219,11 @@ class AuthController extends Controller
                 'gsm_no' => "Telefon Numarası",
                 'email' => "E-posta Adresi",
                 'photo' => "Profil Fotoğrafı",
+                'okul' => "Mezun Olduğunuz Okul",
+                'bolum' => "Mezun Olduğunuz Bölüm",
+                'mezun_tarihi' => "Mezun Olma Tarihiniz",
+                'sertifikalar' => "Sertifikalarınız",
+                'oncekiisler' => "Önceden Çalıştığınız Okullar",
             );
             $messages = array(
                 'required' => ':attribute alanı zorunlu.',
@@ -218,7 +232,8 @@ class AuthController extends Controller
             $validator = Validator::make($request->all(), $rules, $messages, $attributeNames);
             if ($validator->fails())
                 throw new Exception($validator->errors()->first());
-
+            if (!$request->calismaSaati)
+                throw new Exception("Lütfen çalışma saati belirleyin");
             $userExist = User::where('tc_kimlik', $request->tc_kimlik)->first();
             if ($userExist)
                 throw new Exception("Bu T.C Kimlik numarasına ait bir kullanıcı var.");
@@ -232,7 +247,6 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-           
             $newUser = User::create(array_merge($request->all(), [
                 'onayli' => false,
                 'ret' => false,
@@ -255,11 +269,49 @@ class AuthController extends Controller
                 'ogretmen_id' => $newUser->id,
                 'photo_path' => $photoName
             ]);
-            return redirect()->route('giris_yap')->with('success','Kayıt işleminiz başarılı');
+            $cv = ogretmenCvModel::create(array_merge($request->all(), ['ogretmen_id' => $newUser->id]));
+            $sertifikalar =  explode(",", $request->sertifikalar);
+            foreach ($sertifikalar as $sertifika) {
+                cvSertifikaModel::create([
+                    'cv_id' => $cv->id,
+                    'sertifika' => ucwords(trim($sertifika))
+                ]);
+            }
+            $oncekiisler =  explode(",", $request->oncekiisler);
+            foreach ($oncekiisler as $oncekiis) {
+                cvOncekiislerModel::create([
+                    'cv_id' => $cv->id,
+                    'isler' => ucwords(trim($oncekiis))
+                ]);
+            }
+            foreach ($request->calismaSaati as $saat) {
+                if ($saat != 1 && $saat != 2 && $saat != 3)
+                    throw new Exception("Lütfen çalışma saati belirtin");
+                switch ($saat) {
+                    case '1':
+                        cvCalismaSaatleriModel::create([
+                            'cv_id' => $cv->id,
+                            'calismaSaatleri' => "Tam Zamanlı"
+                        ]);
+                        break;
+                    case '2':
+                        cvCalismaSaatleriModel::create([
+                            'cv_id' => $cv->id,
+                            'calismaSaatleri' => "Yarı Zamanlı"
+                        ]);
+                        break;
+                    case '3':
+                        cvCalismaSaatleriModel::create([
+                            'cv_id' => $cv->id,
+                            'calismaSaatleri' => "Uzaktan Eğitim"
+                        ]);
+                        break;
+                }
+            }
+            return redirect()->route('giris_yap')->with('success', 'Kayıt işleminiz başarılı');
         } catch (Exception $exception) {
-            return redirect()->route('ogretmen_kayit')->withErrors($exception->getMessage());
+            return redirect()->back()->withInput($request->all())->withErrors($exception->getMessage());
         }
-        dd($request);
     }
     #endregion
     #region Admin Hesap Oluştur

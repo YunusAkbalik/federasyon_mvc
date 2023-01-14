@@ -28,17 +28,11 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => "Öğretmen"]);
         Role::create(['name' => "Kurum Yetkilisi"]);
         $faker = Factory::create("tr_TR");
-        $yearNow = date('y');
-        $yearSecond = (string)$yearNow;
-        $start = intval($yearSecond[1]) * 100000;
-        $end = $start + 99999;
-        $ozel_id = rand($start, $end);
-
         // Main acc
         DB::table('users')->insert([
             [
                 'tc_kimlik' => "27256988692",
-                'ozel_id' => $ozel_id,
+                'ozel_id' => ozel_id_uret(),
                 'ad' => "Yunus Emre",
                 'soyad' => "Akbalık",
                 'dogum_tarihi' => Carbon::parse("08/08/2000"),
@@ -52,10 +46,7 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
             ],
         ]);
-
-
         // Kurum Acc
-        $ozel_id = rand($start, $end);
         DB::table('users')->insert([
             [
                 'tc_kimlik' => $faker->numerify('###########'),
@@ -77,11 +68,10 @@ class DatabaseSeeder extends Seeder
 
         // Random kullanıcılar
         for ($i = 1; $i <= 48; $i++) {
-            $ozel_id = rand($start, $end);
             DB::table('users')->insert([
                 [
                     'tc_kimlik' => $faker->numerify('###########'),
-                    'ozel_id' => $ozel_id,
+                    'ozel_id' => ozel_id_uret(),
                     'ad' => $faker->firstName(),
                     'soyad' => $faker->lastName(),
                     'dogum_tarihi' => $faker->date(),

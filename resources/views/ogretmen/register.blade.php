@@ -151,6 +151,77 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <p class="fw-bold fs-sm text-muted mb-4">CV Bilgileriniz</p>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <input type="text" class="form-control" id="okul" name="okul"
+                                                placeholder="Mezun Olduğunuz Okul (*)">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-graduation-cap"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <input type="text" class="form-control" id="bolum" name="bolum"
+                                                placeholder="Mezun Olduğunuz Bölüm (*)">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-graduation-cap"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <input type="text" class="form-control" onfocus="(this.type='date')"
+                                                id="mezun_tarihi" name="mezun_tarihi"
+                                                placeholder="Mezun Olma Tarihiniz (*)">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar-days"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <textarea name="sertifikalar" id="sertifikalar" class="form-control"
+                                                placeholder="Sertifikalarınız. Lütfen (,) ile ayırın. Örn : Sertifika X , Sertifika Y" id="sertifikalar"
+                                                cols="30" rows="3"></textarea>
+                                            <span class="input-group-text">
+                                                <i class="fa fa-certificate"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group input-group-lg">
+                                            <textarea name="oncekiisler" id="oncekiisler" class="form-control"
+                                                placeholder="Önceden çalıştığınız okullar ve çalışma süreleri. Lütfen (,) ile ayırın." id="sertifikalar"
+                                                cols="30" rows="3"></textarea>
+                                            <span class="input-group-text">
+                                                <i class="fa fa-briefcase"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Çalışma Saatleriniz</label>
+                                        <div class="space-y-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    id="tam-zamanli" name="calismaSaati[]">
+                                                <label class="form-check-label" for="tam-zamanli">Tam Zamanlı</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="2"
+                                                    id="yari-zamanli" name="calismaSaati[]">
+                                                <label class="form-check-label" for="yari-zamanli">Yarı
+                                                    Zamanlı</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="3"
+                                                    id="uzaktan-egitim" name="calismaSaati[]">
+                                                <label class="form-check-label" for="uzaktan-egitim">Uzaktan
+                                                    Eğitim</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div
                                         class="d-sm-flex justify-content-sm-between align-items-sm-center mb-4 bg-body rounded py-2 px-3">
                                         <div class="form-check">
