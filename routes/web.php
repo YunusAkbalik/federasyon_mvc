@@ -83,6 +83,9 @@ Route::prefix('admin')->middleware('role:Admin')->group(function () {
         Route::post('get', [kurumController::class, 'get'])->name('admin_get_kurum');
     });
     Route::prefix('ogretmenler')->group(function () {
+        Route::post('show_bekleyen', [ogretmenController::class, 'show_bekleyen'])->name('admin_show_ogretmen_bekleyen');
+        Route::post('onayla', [ogretmenController::class, 'onayla'])->name('admin_onayla_ogretmen');
+        Route::post('reddet', [ogretmenController::class, 'reddet'])->name('admin_reddet_ogretmen');
         Route::get('bekleyenler', [ogretmenController::class, 'get_bekleyenler'])->name('admin_bekleyen_ogretmen');
     });
 });

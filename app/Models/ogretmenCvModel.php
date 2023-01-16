@@ -15,4 +15,16 @@ class ogretmenCvModel extends Model
         'bolum',
         'mezun_tarihi',
     ];
+    public function sertifikalar()
+    {
+        return $this->hasMany(cvSertifikaModel::class, 'cv_id', 'id');
+    }
+    public function oncekiisler()
+    {
+        return $this->hasMany(cvOncekiislerModel::class, 'cv_id', 'id');
+    }
+    public function calismasaatleri()
+    {
+        return $this->hasMany(cvCalismaSaatleriModel::class, 'cv_id', 'id');
+    }
 }

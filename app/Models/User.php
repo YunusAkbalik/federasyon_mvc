@@ -56,4 +56,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(OgrenciOkulModel::class, 'ogrenci_id', 'id')->with('okulDetails');
     }
+    public function ogretmen_cv()
+    {
+        return $this->hasOne(ogretmenCvModel::class, 'ogretmen_id', 'id')->with('sertifikalar')->with('oncekiisler')->with('calismasaatleri');
+    }
 }
