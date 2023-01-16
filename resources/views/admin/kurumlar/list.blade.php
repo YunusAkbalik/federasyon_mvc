@@ -53,7 +53,7 @@
                                 <td><a href="tel:{{ $kurum->telefon }}">{{ $kurum->telefon }}</a></td>
                                 <td>{{ $kurum->yetkili_kisi }}</td>
                                 <td><a href="tel:{{ $kurum->yetkili_telefon }}">{{ $kurum->yetkili_telefon }}</a></td>
-                                <td><a href="tel:{{ $kurum->wp_hatti }}">{{ $kurum->wp_hatti }}</a></td>
+                                <td><a href="https://wa.me/90{{ $kurum->wp_hatti }}">+90{{ $kurum->wp_hatti }}</a></td>
                             </tr>
                         @endforeach
                     </tbody>

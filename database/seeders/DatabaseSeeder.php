@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'tc_kimlik' => $faker->numerify('###########'),
-                'ozel_id' => 123,
+                'ozel_id' => ozel_id_uret(),
                 'ad' => $faker->firstName(),
                 'soyad' => $faker->lastName(),
                 'dogum_tarihi' => $faker->date(),
@@ -64,10 +64,31 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
             ]
         ]);
+        // Öğretmen Acc
+        DB::table('users')->insert([
+            [
+                'tc_kimlik' => $faker->numerify('###########'),
+                'ozel_id' => ozel_id_uret(),
+                'ad' => $faker->firstName(),
+                'soyad' => $faker->lastName(),
+                'dogum_tarihi' => $faker->date(),
+                'kan_grubu' => "0RH(+)",
+                'gsm_no' => $faker->phoneNumber(),
+                'email' => $faker->unique()->email(),
+                'password' => bcrypt("123"),
+                'onayli' => true,
+                'ret' => false,
+                'ret_nedeni' => null,
+                'created_at' => now(),
+            ]
+        ]);
+
+        User::find(1)->assignRole("Admin");
         User::find(2)->assignRole("Kurum Yetkilisi");
+        User::find(3)->assignRole("Öğretmen");
 
         // Random kullanıcılar
-        for ($i = 1; $i <= 48; $i++) {
+        for ($i = 1; $i <= 47; $i++) {
             DB::table('users')->insert([
                 [
                     'tc_kimlik' => $faker->numerify('###########'),
@@ -91,7 +112,7 @@ class DatabaseSeeder extends Seeder
         User::find(1)->assignRole("Admin");
 
         // Kullanıcılara random Permler
-        for ($i = 3; $i <= 50; $i++) {
+        for ($i = 4; $i <= 50; $i++) {
             User::find($i)->assignRole($faker->randomElement(['Öğrenci', 'Veli']));
         }
 
@@ -108,7 +129,6 @@ class DatabaseSeeder extends Seeder
                 'sube' => $randomSube
             ]);
         }
-
 
         DB::table('il')->insert([
             ['ad' => "İstanbul"],
@@ -154,7 +174,7 @@ class DatabaseSeeder extends Seeder
                 'vergi_no' => $faker->numerify('###'),
                 'yetkili_kisi' => $faker->firstName() . " " . $faker->lastName(),
                 'yetkili_telefon' => $faker->phoneNumber(),
-                'wp_hatti' => $faker->phoneNumber(),
+                'wp_hatti' => "5367653403",
                 'created_at' => now(),
                 'updated_at' => now(),
 
@@ -169,6 +189,72 @@ class DatabaseSeeder extends Seeder
         ]);
         DB::table("kurum_user")->insert([
             ['kurum_id' => 1, "user_id" => 2, 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
+        // Öğretmen CV Seeds
+        DB::table("ogretmen_cv")->insert([
+            [
+                'ogretmen_id' => 3,
+                "okul" => "Nişantaşı Üniversitesi",
+                "bolum" => "İlkokul Öğretmenlik",
+                "mezun_tarihi" => $faker->date(),
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
+        DB::table("cv_calismasaatleri")->insert([
+            [
+                'cv_id' => 1,
+                'calismaSaatleri' => "Tam Zamanlı",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'cv_id' => 1,
+                'calismaSaatleri' => "Yarı Zamanlı",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'cv_id' => 1,
+                'calismaSaatleri' => "Uzaktan Eğitim",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
+        DB::table("cv_oncekiisler")->insert([
+            [
+                'cv_id' => 1,
+                'isler' => "Güngören şehitler i.ö.o 5 sene tam zamanlı çalıştım",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'cv_id' => 1,
+                'isler' => "Ataşehir İMTEM lisesine  2 senedir aktif olarak uzaktan eğitim veriyorum.",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
+        DB::table("cv_sertifikalar")->insert([
+            [
+                'cv_id' => 1,
+                'sertifika' => "Çok iyi öğretmen sertifikası",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'cv_id' => 1,
+                'sertifika' => "Muhteşem öğretmen sertifikası",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'cv_id' => 1,
+                'sertifika' => "ÜĞğf fena öğretmen sertifikası",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
         ]);
     }
 }

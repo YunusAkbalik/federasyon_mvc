@@ -239,7 +239,7 @@
                                                  <td><span class="text-success">Whatsapp</span> Hattı</td>
                                                  <td>
                                                      <strong><a class="text-success"
-                                                             href="https://wa.me/+90${res.data.wp_hatti}">${res.data.wp_hatti}</a></strong>
+                                                             href="https://wa.me/90${res.data.wp_hatti}">${res.data.wp_hatti}</a></strong>
                                                  </td>
                                              </tr>
                                          </tbody>
