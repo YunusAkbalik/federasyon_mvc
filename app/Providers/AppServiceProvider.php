@@ -27,9 +27,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         view()->composer('layouts.backend', function ($view) {
-            $yeniKayitAdeti = User::role('Öğrenci')->where('onayli', false)->count();
-            $yeniKayitAdeti += User::role('Veli')->where('onayli', false)->count();
-            $view->with('yeniKayitAdeti', $yeniKayitAdeti);
+            $yeniKayitAdeti = User::role('Öğrenci')->where('onayli', false)->where('ret', false)->count();
+            $yeniKayitAdeti += User::role('Veli')->where('onayli', false)->where('ret', false)->count();
+            $bekleyenOgretmenCount = User::role('Öğretmen')->where('onayli', false)->where('ret', false)->count();
+            $view->with(['yeniKayitAdeti' => $yeniKayitAdeti , 'bekleyenOgretmenCount' => $bekleyenOgretmenCount]);
         });
     }
 }

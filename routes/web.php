@@ -81,7 +81,9 @@ Route::prefix('admin')->middleware('role:Admin')->group(function () {
         Route::post('olustur', [kurumController::class, 'create_post'])->name('admin_create_kurum_post');
         Route::get('duzenle/{id}', [kurumController::class, 'edit'])->name('admin_edit_kurum');
         Route::post('get', [kurumController::class, 'get'])->name('admin_get_kurum');
-        
+    });
+    Route::prefix('ogretmenler')->group(function () {
+        Route::get('bekleyenler', [ogretmenController::class, 'get_bekleyenler'])->name('admin_bekleyen_ogretmen');
     });
 });
 Route::prefix('veli')->middleware('role:Veli')->group(function () {

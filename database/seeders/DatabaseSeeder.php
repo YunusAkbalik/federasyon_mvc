@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
                 'gsm_no' => $faker->phoneNumber(),
                 'email' => $faker->unique()->email(),
                 'password' => bcrypt("123"),
-                'onayli' => true,
+                'onayli' => false,
                 'ret' => false,
                 'ret_nedeni' => null,
                 'created_at' => now(),

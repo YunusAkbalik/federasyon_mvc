@@ -7,8 +7,7 @@
 
     <title>MNG Dijital</title>
 
-    <meta name="description"
-        content="Klüp">
+    <meta name="description" content="Klüp">
     <meta name="author" content="roosecs, mngdijital">
     <meta name="robots" content="noindex, nofollow">
 
@@ -270,17 +269,21 @@
                 <div class="content-side content-side-full">
                     <ul class="nav-main">
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_loglar' ? 'active' : '' }}" href="{{ route('admin_loglar') }}">
+                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_loglar' ? 'active' : '' }}"
+                                href="{{ route('admin_loglar') }}">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>
                                 <span class="nav-main-link-name">Loglar</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_yeni_kayitlar' ? 'active' : '' }}" href="{{ route('admin_yeni_kayitlar') }}">
+                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_yeni_kayitlar' ? 'active' : '' }}"
+                                href="{{ route('admin_yeni_kayitlar') }}">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>
                                 <span class="nav-main-link-name">Yeni Kayıtlar</span>
-                                <span class="nav-main-link-badge badge rounded-pill bg-warning">{{ $yeniKayitAdeti }}</span>
-
+                                @if ($yeniKayitAdeti >= 1)
+                                    <span
+                                        class="nav-main-link-badge badge rounded-pill bg-warning">{{ $yeniKayitAdeti }}</span>
+                                @endif
                             </a>
                         </li>
                         <li class="nav-main-item">
@@ -295,7 +298,7 @@
                                 <span class="nav-main-link-name">Veli Kayıt Sayfası</span>
                             </a>
                         </li>
-                     
+
                         <li class="nav-main-item">
                             <a class="nav-main-link{{ request()->is('/') ? ' active' : '' }}" href="/">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>
@@ -346,16 +349,42 @@
                             </ul>
                         </li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_tek_kullanimlik_sifreler' ? 'active' : '' }}" href="{{ route('admin_tek_kullanimlik_sifreler') }}">
+                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_tek_kullanimlik_sifreler' ? 'active' : '' }}"
+                                href="{{ route('admin_tek_kullanimlik_sifreler') }}">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>
                                 <span class="nav-main-link-name">Tek Kullanımlık Şifreler</span>
                             </a>
                         </li>
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_kurum' ? 'active' : '' }}" href="{{ route('admin_list_kurum') }}">
+                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_kurum' ? 'active' : '' }}"
+                                href="{{ route('admin_list_kurum') }}">
                                 <i class="nav-main-link-icon fa fa-location-arrow"></i>
                                 <span class="nav-main-link-name">Kurumlar</span>
                             </a>
+                        </li>
+                        <li class="nav-main-item{{ request()->is('admin/ogretmenler/*') ? ' open' : '' }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                                aria-expanded="true" href="#">
+                                <i class="nav-main-link-icon fa fa-user-plus"></i>
+                                <span class="nav-main-link-name">Öğretmenler</span>
+                                @if ($bekleyenOgretmenCount >= 1)
+                                    <span
+                                        class="nav-main-link-badge badge rounded-pill bg-warning">{{ $bekleyenOgretmenCount }}</span>
+                                @endif
+
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::currentRouteName() == 'admin_bekleyen_ogretmen' ? 'active' : '' }}"
+                                        href="{{ route('admin_bekleyen_ogretmen') }}">
+                                        <span class="nav-main-link-name">Bekleyenler</span>
+                                        @if ($bekleyenOgretmenCount >= 1)
+                                            <span
+                                                class="nav-main-link-badge badge rounded-pill bg-warning">{{ $bekleyenOgretmenCount }}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-main-heading">Various</li>
                         <li class="nav-main-item{{ request()->is('pages/*') ? ' open' : '' }}">
@@ -639,4 +668,5 @@
         });
     </script>
 @endif
+
 </html>
