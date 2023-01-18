@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'tc_kimlik' => "27256988692",
-                'ozel_id' => ozel_id_uret(),
+                'ozel_id' => 1,
                 'ad' => "Yunus Emre",
                 'soyad' => "Akbalık",
                 'dogum_tarihi' => Carbon::parse("08/08/2000"),
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'tc_kimlik' => $faker->numerify('###########'),
-                'ozel_id' => ozel_id_uret(),
+                'ozel_id' => 2,
                 'ad' => $faker->firstName(),
                 'soyad' => $faker->lastName(),
                 'dogum_tarihi' => $faker->date(),
@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'tc_kimlik' => $faker->numerify('###########'),
-                'ozel_id' => ozel_id_uret(),
+                'ozel_id' => 3,
                 'ad' => $faker->firstName(),
                 'soyad' => $faker->lastName(),
                 'dogum_tarihi' => $faker->date(),
@@ -107,9 +107,6 @@ class DatabaseSeeder extends Seeder
                 ]
             ]);
         }
-
-        // Main Acc Perm
-        User::find(1)->assignRole("Admin");
 
         // Kullanıcılara random Permler
         for ($i = 4; $i <= 50; $i++) {

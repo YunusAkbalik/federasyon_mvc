@@ -341,8 +341,8 @@
                                                      <td><strong>${res.okul.okul_details.ad}</strong></td>
                                                  </tr>
                                                  <tr>
-                                                     <td>Sınıf / Şube</td>
-                                                     <td><strong>${res.okul.sinif} / ${res.okul.sube}</strong></td>
+                                                     <td>Sınıf ${res.okul.sube == "null" ? "":"/ Şube"}</td>
+                                                     <td><strong>${res.okul.sinif} ${res.okul.sube == "null" ? "":"/ "+res.okul.sube}</strong></td>
                                                  </tr>
                                                  <tr>
                                                      <td>Branş</td>

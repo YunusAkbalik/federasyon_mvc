@@ -15,10 +15,9 @@ use Illuminate\Support\Facades\Validator;
 
 class kurumController extends Controller
 {
-    public $kurumid = 0;
     public function dashboard()
     {
-        dd("Kurum dash");
+        return view('kurum.dash');
     }
     public function list()
     {

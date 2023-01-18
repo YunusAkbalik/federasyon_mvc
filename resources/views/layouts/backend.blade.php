@@ -268,159 +268,171 @@
                 <!-- Side Navigation -->
                 <div class="content-side content-side-full">
                     <ul class="nav-main">
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_loglar' ? 'active' : '' }}"
-                                href="{{ route('admin_loglar') }}">
-                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                <span class="nav-main-link-name">Loglar</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_yeni_kayitlar' ? 'active' : '' }}"
-                                href="{{ route('admin_yeni_kayitlar') }}">
-                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                <span class="nav-main-link-name">Yeni Kayıtlar</span>
-                                @if ($yeniKayitAdeti >= 1)
-                                    <span
-                                        class="nav-main-link-badge badge rounded-pill bg-warning">{{ $yeniKayitAdeti }}</span>
-                                @endif
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{ route('ogrenci_kayit') }}">
-                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                <span class="nav-main-link-name">Öğrenci Kayıt Sayfası</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{ route('veli_kayit') }}">
-                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                <span class="nav-main-link-name">Veli Kayıt Sayfası</span>
-                            </a>
-                        </li>
+                        @role('Admin')
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::currentRouteName() == 'admin_loglar' ? 'active' : '' }}"
+                                    href="{{ route('admin_loglar') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Loglar</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::currentRouteName() == 'admin_yeni_kayitlar' ? 'active' : '' }}"
+                                    href="{{ route('admin_yeni_kayitlar') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Yeni Kayıtlar</span>
+                                    @if ($yeniKayitAdeti >= 1)
+                                        <span
+                                            class="nav-main-link-badge badge rounded-pill bg-warning">{{ $yeniKayitAdeti }}</span>
+                                    @endif
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="{{ route('ogrenci_kayit') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Öğrenci Kayıt Sayfası</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="{{ route('veli_kayit') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Veli Kayıt Sayfası</span>
+                                </a>
+                            </li>
 
-                        <li class="nav-main-item">
-                            <a class="nav-main-link{{ request()->is('/') ? ' active' : '' }}" href="/">
-                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                <span class="nav-main-link-name">Dashboard</span>
-                                <span class="nav-main-link-badge badge rounded-pill bg-primary">5</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item{{ request()->is('admin/hesap-olustur/*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                                aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon fa fa-user-plus"></i>
-                                <span class="nav-main-link-name">Hesap Oluştur</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link {{ Route::currentRouteName() == 'admin_create_acc_ogrenci' ? 'active' : '' }}"
-                                        href="{{ route('admin_create_acc_ogrenci') }}">
-                                        <span class="nav-main-link-name">Öğrenci</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link {{ Route::currentRouteName() == 'admin_create_acc_veli' ? 'active' : '' }}"
-                                        href="{{ route('admin_create_acc_veli') }}">
-                                        <span class="nav-main-link-name">Veli</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-item{{ request()->is('admin/kayitlar/*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                                aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon fa fa-user-plus"></i>
-                                <span class="nav-main-link-name">Kayıtlar</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_ogrenci' ? 'active' : '' }}"
-                                        href="{{ route('admin_list_ogrenci') }}">
-                                        <span class="nav-main-link-name">Öğrenci</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_veli' ? 'active' : '' }}"
-                                        href="{{ route('admin_list_veli') }}">
-                                        <span class="nav-main-link-name">Veli</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_tek_kullanimlik_sifreler' ? 'active' : '' }}"
-                                href="{{ route('admin_tek_kullanimlik_sifreler') }}">
-                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                <span class="nav-main-link-name">Tek Kullanımlık Şifreler</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_kurum' ? 'active' : '' }}"
-                                href="{{ route('admin_list_kurum') }}">
-                                <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                <span class="nav-main-link-name">Kurumlar</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item{{ request()->is('admin/ogretmenler/*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                                aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon fa fa-user-plus"></i>
-                                <span class="nav-main-link-name">Öğretmenler</span>
-                                @if ($bekleyenOgretmenCount >= 1)
-                                    <span
-                                        class="nav-main-link-badge badge rounded-pill bg-warning">{{ $bekleyenOgretmenCount }}</span>
-                                @endif
+                            <li class="nav-main-item">
+                                <a class="nav-main-link{{ request()->is('/') ? ' active' : '' }}" href="/">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Dashboard</span>
+                                    <span class="nav-main-link-badge badge rounded-pill bg-primary">5</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item{{ request()->is('admin/hesap-olustur/*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                                    aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa fa-user-plus"></i>
+                                    <span class="nav-main-link-name">Hesap Oluştur</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link {{ Route::currentRouteName() == 'admin_create_acc_ogrenci' ? 'active' : '' }}"
+                                            href="{{ route('admin_create_acc_ogrenci') }}">
+                                            <span class="nav-main-link-name">Öğrenci</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link {{ Route::currentRouteName() == 'admin_create_acc_veli' ? 'active' : '' }}"
+                                            href="{{ route('admin_create_acc_veli') }}">
+                                            <span class="nav-main-link-name">Veli</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-main-item{{ request()->is('admin/kayitlar/*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                                    aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa fa-user-plus"></i>
+                                    <span class="nav-main-link-name">Kayıtlar</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_ogrenci' ? 'active' : '' }}"
+                                            href="{{ route('admin_list_ogrenci') }}">
+                                            <span class="nav-main-link-name">Öğrenci</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_veli' ? 'active' : '' }}"
+                                            href="{{ route('admin_list_veli') }}">
+                                            <span class="nav-main-link-name">Veli</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::currentRouteName() == 'admin_tek_kullanimlik_sifreler' ? 'active' : '' }}"
+                                    href="{{ route('admin_tek_kullanimlik_sifreler') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Tek Kullanımlık Şifreler</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::currentRouteName() == 'admin_list_kurum' ? 'active' : '' }}"
+                                    href="{{ route('admin_list_kurum') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Kurumlar</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item{{ request()->is('admin/ogretmenler/*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                                    aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa fa-user-plus"></i>
+                                    <span class="nav-main-link-name">Öğretmenler</span>
+                                    @if ($bekleyenOgretmenCount >= 1)
+                                        <span
+                                            class="nav-main-link-badge badge rounded-pill bg-warning">{{ $bekleyenOgretmenCount }}</span>
+                                    @endif
 
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link {{ Route::currentRouteName() == 'admin_bekleyen_ogretmen' ? 'active' : '' }}"
-                                        href="{{ route('admin_bekleyen_ogretmen') }}">
-                                        <span class="nav-main-link-name">Bekleyenler</span>
-                                        @if ($bekleyenOgretmenCount >= 1)
-                                            <span
-                                                class="nav-main-link-badge badge rounded-pill bg-warning">{{ $bekleyenOgretmenCount }}</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-heading">Various</li>
-                        <li class="nav-main-item{{ request()->is('pages/*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                                aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon fa fa-lightbulb"></i>
-                                <span class="nav-main-link-name">Examples</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/datatables') ? ' active' : '' }}"
-                                        href="/pages/datatables">
-                                        <span class="nav-main-link-name">DataTables</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/slick') ? ' active' : '' }}"
-                                        href="/pages/slick">
-                                        <span class="nav-main-link-name">Slick Slider</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/blank') ? ' active' : '' }}"
-                                        href="/pages/blank">
-                                        <span class="nav-main-link-name">Blank</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-heading">More</li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="/">
-                                <i class="nav-main-link-icon fa fa-globe"></i>
-                                <span class="nav-main-link-name">Landing</span>
-                            </a>
-                        </li>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link {{ Route::currentRouteName() == 'admin_bekleyen_ogretmen' ? 'active' : '' }}"
+                                            href="{{ route('admin_bekleyen_ogretmen') }}">
+                                            <span class="nav-main-link-name">Bekleyenler</span>
+                                            @if ($bekleyenOgretmenCount >= 1)
+                                                <span
+                                                    class="nav-main-link-badge badge rounded-pill bg-warning">{{ $bekleyenOgretmenCount }}</span>
+                                            @endif
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-main-heading">Various</li>
+                            <li class="nav-main-item{{ request()->is('pages/*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                                    aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon fa fa-lightbulb"></i>
+                                    <span class="nav-main-link-name">Examples</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->is('pages/datatables') ? ' active' : '' }}"
+                                            href="/pages/datatables">
+                                            <span class="nav-main-link-name">DataTables</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->is('pages/slick') ? ' active' : '' }}"
+                                            href="/pages/slick">
+                                            <span class="nav-main-link-name">Slick Slider</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->is('pages/blank') ? ' active' : '' }}"
+                                            href="/pages/blank">
+                                            <span class="nav-main-link-name">Blank</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-main-heading">More</li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="/">
+                                    <i class="nav-main-link-icon fa fa-globe"></i>
+                                    <span class="nav-main-link-name">Landing</span>
+                                </a>
+                            </li>
+                        @endrole
+
+                        @role('Kurum Yetkilisi')
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::currentRouteName() == 'kurum_ogretmen_bekleyenler' ? 'active' : '' }}"
+                                    href="{{ route('kurum_ogretmen_bekleyenler') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Atama Bekleyen Öğretmenler</span>
+                                </a>
+                            </li>
+                        @endrole
                     </ul>
                 </div>
                 <!-- END Side Navigation -->

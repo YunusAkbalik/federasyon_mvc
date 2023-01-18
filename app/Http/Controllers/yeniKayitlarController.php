@@ -95,13 +95,6 @@ class yeniKayitlarController extends Controller
                 $okul = OkulModel::find($request->okul);
                 if (!$okul)
                     throw new Exception("Okul bilgisi bulunamadı");
-                $subeOkey = false;
-                foreach (range('A', 'Z') as $item) {
-                    if ($request->sube == $item)
-                        $subeOkey = true;
-                }
-                if (!$subeOkey)
-                    throw new Exception("Şube bilgisi Alınamadı");
             }
 
             $user->ad = $request->ad;

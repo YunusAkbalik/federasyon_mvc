@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Kurum\OgretmenController as KurumOgretmenController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
@@ -100,8 +101,7 @@ Route::prefix('ogretmen')->middleware('role:Öğretmen')->group(function () {
 });
 Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
     Route::get('/', [kurumController::class, 'dashboard'])->name('kurum_dash');
+    Route::prefix('ogretmen')->group(function () {
+        Route::get('atamaBekleyenler', [KurumOgretmenController::class, 'atamaBekleyenler'])->name('kurum_ogretmen_bekleyenler');
+    });
 });
-
-
-
-
