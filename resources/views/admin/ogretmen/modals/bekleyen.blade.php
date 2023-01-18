@@ -388,7 +388,7 @@
                                              <div class="col-xl-4 col-md-6 border-end border-black-op">
                                                  <div class="py-3">
                                                      <div class="item item-circle bg-black-25 mx-auto">
-                                                         <i class="fa fa-school text-white"></i>
+                                                         <i class="fa fa-2x fa-school text-white"></i>
                                                      </div>
                                                      <p class="text-white fs-3 fw-medium mt-3 mb-0">
                                                          ${res.data.ogretmen_cv.okul}
@@ -401,7 +401,7 @@
                                              <div class="col-xl-4 col-md-6 border-end border-black-op">
                                                  <div class="py-3">
                                                      <div class="item item-circle bg-black-25 mx-auto">
-                                                         <i class="fa fa-chalkboard-user text-white"></i>
+                                                         <i class="fa fa-2x fa-chalkboard-user text-white"></i>
                                                      </div>
                                                      <p class="text-white fs-3 fw-medium mt-3 mb-0">
                                                          ${res.data.ogretmen_cv.bolum}
@@ -414,7 +414,7 @@
                                              <div class="col-xl-4 col-md-6">
                                                  <div class="py-3">
                                                      <div class="item item-circle bg-black-25 mx-auto">
-                                                         <i class="fa fa-calendar-days text-white"></i>
+                                                         <i class="fa fa-2x fa-calendar-days text-white"></i>
                                                      </div>
                                                      <p class="text-white fs-3 fw-medium mt-3 mb-0">
                                                          ${res.data.ogretmen_cv.mezun_tarihi}
