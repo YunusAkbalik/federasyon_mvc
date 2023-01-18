@@ -64,4 +64,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(ogretmenKurumModel::class, 'ogretmen_id', 'id');
     }
+    public function ogr_talepleri()
+    {
+        return $this->hasMany(kurumOgretmenTalepModel::class, 'ogretmen_id', 'id');
+    }
 }

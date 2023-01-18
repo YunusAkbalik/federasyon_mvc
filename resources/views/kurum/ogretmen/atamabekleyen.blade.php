@@ -4,8 +4,10 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
 @section('content')
+    @include('kurum.ogretmen.modals.atamaBekleyen')
     <!-- Hero -->
     <div class="bg-body-light">
         <div class="content content-full">
@@ -35,17 +37,25 @@
                             <th>Mezuniyet Okulu</th>
                             <th>Mezuniyet Bölümü</th>
                             <th>Mezuniyet Tarihi</th>
+                            <th>Durum</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($ogretmenler as $ogretmen)
                             <tr>
-                                <td>{{ $ogretmen->ozel_id }}</td>
+                                <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalHere"
+                                        onclick="getData({{ $ogretmen->id }})">{{ $ogretmen->ozel_id }}</a> </td>
                                 <td>{{ $ogretmen->ad . ' ' . $ogretmen->soyad }}</td>
                                 <td>{{ date('d/m/Y', strtotime($ogretmen->dogum_tarihi)) }}</td>
                                 <td>{{ $ogretmen->ogretmen_cv->okul }}</td>
                                 <td>{{ $ogretmen->ogretmen_cv->bolum }}</td>
                                 <td>{{ date('d/m/Y', strtotime($ogretmen->ogretmen_cv->mezun_tarihi)) }}</td>
+                                <td>
+                                    <h4 style="position: relative;
+                                    margin: auto;"><span
+                                            class="badge bg-{{ in_array($ogretmen->id,$talepler) ? "primary":"success" }}"><i class="fa-solid fa-{{ in_array($ogretmen->id,$talepler) ? "clock":"circle-check" }}"></i> {{ in_array($ogretmen->id,$talepler) ? "Bekleniyor":"Müsait" }}</span>
+                                    </h4>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -69,4 +79,5 @@
     <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/atamaBekleyenHocalar.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 @endsection

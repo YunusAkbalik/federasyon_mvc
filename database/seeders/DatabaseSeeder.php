@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
                 'ad' => $faker->firstName(),
                 'soyad' => $faker->lastName(),
                 'dogum_tarihi' => $faker->date(),
-                'kan_grubu' => "0RH(+)",
+                'kan_grubu' => kan_grubu_uret(),
                 'gsm_no' => $faker->phoneNumber(),
                 'email' => $faker->unique()->email(),
                 'password' => bcrypt("123"),
@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
                 'ad' => $faker->firstName(),
                 'soyad' => $faker->lastName(),
                 'dogum_tarihi' => $faker->date(),
-                'kan_grubu' => "0RH(+)",
+                'kan_grubu' => kan_grubu_uret(),
                 'gsm_no' => $faker->phoneNumber(),
                 'email' => $faker->unique()->email(),
                 'password' => bcrypt("123"),
@@ -89,6 +89,7 @@ class DatabaseSeeder extends Seeder
 
         // Random kullanıcılar
         for ($i = 1; $i <= 47; $i++) {
+           
             DB::table('users')->insert([
                 [
                     'tc_kimlik' => $faker->numerify('###########'),
@@ -96,7 +97,7 @@ class DatabaseSeeder extends Seeder
                     'ad' => $faker->firstName(),
                     'soyad' => $faker->lastName(),
                     'dogum_tarihi' => $faker->date(),
-                    'kan_grubu' => "0RH(+)",
+                    'kan_grubu' => kan_grubu_uret(),
                     'gsm_no' => $faker->phoneNumber(),
                     'email' => $faker->unique()->email(),
                     'password' => bcrypt("123"),
@@ -161,6 +162,8 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Öğrenci Kayıtları", "icon" => "user-graduate"],
             ['ad' => "Veli Kayıtları", "icon" => "user"],
             ['ad' => "Kurum Oluşturmaları", "icon" => "building"],
+            ['ad' => "Öğretmen Onayları", "icon" => "check-to-slot"],
+            ['ad' => "Öğretmen Retleri", "icon" => "circle-xmark"],
         ]);
         DB::table('kurumlar')->insert([
             [

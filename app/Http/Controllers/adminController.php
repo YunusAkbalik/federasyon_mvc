@@ -8,6 +8,6 @@ class adminController extends Controller
 {
     public function dash()
     {
-        return redirect()->route('admin_yeni_kayitlar');
+        return redirect()->route('admin_loglar');
     }
 }

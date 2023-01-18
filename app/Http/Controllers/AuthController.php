@@ -514,7 +514,8 @@ class AuthController extends Controller
             if ($user->onayli == false && $user->ret == false)
                 throw new Exception("Hesabınız onay bekliyor.");
             if (Auth::attempt(['id' => $user->id, 'password' => $request->login_password], true)) {
-                $logText = "$user->ad $user->soyad ($user->ozel_id) sisteme giriş yaptı";
+                $role = auth()->user()->getRoleNames()[0];
+                $logText = "$role, $user->ad $user->soyad ($user->ozel_id) sisteme giriş yaptı";
                 LogModel::create([
                     'kategori_id' => 1,
                     'logText' => $logText
@@ -529,7 +530,8 @@ class AuthController extends Controller
     public function logout()
     {
         $user = auth()->user();
-        $logText = "$user->ad $user->soyad ($user->ozel_id) sistemden çıkış yaptı.";
+        $role = auth()->user()->getRoleNames()[0];
+        $logText = "$role, $user->ad $user->soyad ($user->ozel_id) sistemden çıkış yaptı.";
         LogModel::create([
             'kategori_id' => 2,
             'logText' => $logText

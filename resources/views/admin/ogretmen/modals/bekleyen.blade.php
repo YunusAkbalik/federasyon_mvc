@@ -270,10 +270,10 @@
                      </div>
                  </div>
                  <div class="block-content block-content-full text-end bg-body" id="buttonsContent">
-                     <button type="button" class="btn btn-sm btn-success" onclick="onayla(1)"
+                     {{-- <button type="button" class="btn btn-sm btn-success" onclick="onayla(1)"
                          data-bs-dismiss="modal">Onayla</button>
                      <button type="button" class="btn btn-sm btn-danger" onclick="reddet_alert(1)">Reddet</button>
-                     <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-dismiss="modal">Kapat</button>
+                     <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-dismiss="modal">Kapat</button> --}}
                  </div>
              </div>
          </div>

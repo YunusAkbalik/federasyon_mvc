@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogModel;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -51,6 +52,13 @@ class ogretmenController extends Controller
                 throw new Exception("Öğretmen zaten onaylı veya reddedilmiş");
             $ogretmen->onayli = true;
             $ogretmen->save();
+            $user = auth()->user();
+            $role = $user->getRoleNames()[0];
+            $logText = "$role $user->ad $user->soyad ($user->ozel_id), Öğretmen $ogretmen->ad $ogretmen->soyad ($ogretmen->ozel_id) onayladı";
+            LogModel::create([
+                'kategori_id' => 9,
+                'logText' => $logText
+            ]);
             return response()->json(['message' => "Öğretmen $ogretmen->ad $ogretmen->soyad, onaylandı"]);
         } catch (Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 404);
@@ -71,6 +79,13 @@ class ogretmenController extends Controller
             $ogretmen->ret = true;
             $ogretmen->ret_nedeni = $request->ret_nedeni;
             $ogretmen->save();
+            $user = auth()->user();
+            $role = $user->getRoleNames()[0];
+            $logText = "$role $user->ad $user->soyad ($user->ozel_id), Öğretmen $ogretmen->ad $ogretmen->soyad ($ogretmen->ozel_id) reddetti";
+            LogModel::create([
+                'kategori_id' => 10,
+                'logText' => $logText
+            ]);
             return response()->json(['message' => "Öğretmen $ogretmen->ad $ogretmen->soyad, reddedildi"]);
         } catch (Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 404);

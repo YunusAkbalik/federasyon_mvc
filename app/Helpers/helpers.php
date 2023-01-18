@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Faker\Factory;
 
 if (!function_exists('ozel_id_uret')) {
     function ozel_id_uret()
@@ -18,5 +19,15 @@ if (!function_exists('ozel_id_uret')) {
             }
         }
         return $ozel_id;
+    }
+}
+if (!function_exists('kan_grubu_uret')) {
+    function kan_grubu_uret()
+    {
+        $faker = Factory::create("tr_TR");
+        $kan_grubu = $faker->randomElement(['0', 'A', 'B', 'AB']);
+        $pozOrNeg = $faker->randomElement(['+', '-']);
+        $kan_grubu = $kan_grubu . "RH(" . $pozOrNeg . ")";
+        return $kan_grubu;
     }
 }

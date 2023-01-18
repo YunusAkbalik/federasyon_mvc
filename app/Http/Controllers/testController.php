@@ -8,6 +8,6 @@ class testController extends Controller
 {
     public function test()
     {
-        dd(ozel_id_uret());
+        dd(auth()->user()->getRoleNames()[0]);
     }
 }

@@ -103,5 +103,7 @@ Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
     Route::get('/', [kurumController::class, 'dashboard'])->name('kurum_dash');
     Route::prefix('ogretmen')->group(function () {
         Route::get('atamaBekleyenler', [KurumOgretmenController::class, 'atamaBekleyenler'])->name('kurum_ogretmen_bekleyenler');
+        Route::post('atamaBekleyenler', [KurumOgretmenController::class, 'show_bekleyen'])->name('kurum_ogretmen_bekleyenler_show');
+        Route::post('atamaBekleyenler_talep', [KurumOgretmenController::class, 'talep_et'])->name('kurum_ogretmen_bekleyenler_talep');
     });
 });
