@@ -12,6 +12,7 @@ class kurumOgretmenTalepModel extends Model
     protected $fillable = [
         'kurum_id',
         'ogretmen_id',
+        'sonuc',
     ];
 
     public function kurum()

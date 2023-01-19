@@ -100,6 +100,8 @@ Route::prefix('ogrenci')->middleware('role:Öğrenci')->group(function () {
 Route::prefix('ogretmen')->middleware('role:Öğretmen')->group(function () {
     Route::get('/', [ogretmenController::class, 'dashboard'])->name('ogretmen_dash');
     Route::get('talepler', [talepController::class, 'list'])->name('ogretmen_talep_list');
+    Route::post('talepSonuclandir', [talepController::class, 'sonuclandir'])->name('ogretmen_talep_sonuclandir');
+
 
 });
 Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {

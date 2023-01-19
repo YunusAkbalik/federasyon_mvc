@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer("kurum_id");
             $table->integer("ogretmen_id");
+            $table->boolean("sonuc")->nullable();
             $table->timestamps();
         });
     }

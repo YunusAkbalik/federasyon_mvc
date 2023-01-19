@@ -33,11 +33,11 @@
                             <div class="btn-group float-end">
 
                                 <button type="button" class="btn btn-sm btn-alt-success js-bs-tooltip-enabled"
-                                    data-bs-toggle="tooltip" aria-label="Edit">
+                                    data-bs-toggle="tooltip" onclick="sonuclandir({{ $talep->id }},1)" aria-label="Edit">
                                     <i class="fa fa-check"></i> Kabul Et
                                 </button>
                                 <button type="button" class="btn btn-sm btn-alt-danger js-bs-tooltip-enabled"
-                                    data-bs-toggle="tooltip" aria-label="Delete">
+                                    data-bs-toggle="tooltip" onclick="sonuclandir({{ $talep->id }},0)" aria-label="Delete">
                                     <i class="fa fa-times"></i> Reddet
                                 </button>
                             </div>
@@ -63,4 +63,40 @@
         <!-- END Your Block -->
     </div>
     <!-- END Page Content -->
+@endsection
+@section('js')
+    <script>
+        function sonuclandir(id, sonuc) {
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('id', id);
+            fd.append('sonuc', sonuc);
+            $.ajax({
+                url: '{{ route('ogretmen_talep_sonuclandir') }}',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    Dashmix.helpers('jq-notify', {
+                        align: 'center',
+                        message: res.message,
+                        type: "success",
+                        icon: 'fa fa-check me-1'
+                    });
+                    setTimeout(location.reload.bind(location), 1000);
+
+                },
+                error: function(res) {
+                    Dashmix.helpers('jq-notify', {
+                        align: 'center',
+                        message: res.responseJSON.message,
+                        type: "danger",
+                        icon: 'fa fa-times me-1'
+                    });
+                    setTimeout(location.reload.bind(location), 1000);
+                }
+            })
+        }
+    </script>
 @endsection
