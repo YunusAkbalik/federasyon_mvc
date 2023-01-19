@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\kurumModel;
 use App\Models\kurumOgretmenTalepModel;
 use App\Models\kurumUserModel;
+use App\Models\LogModel;
 use App\Models\ogretmenKurumModel;
 use App\Models\User;
 use Exception;
@@ -78,6 +79,12 @@ class OgretmenController extends Controller
             kurumOgretmenTalepModel::create([
                 'kurum_id' => $kurum->kurum_id,
                 'ogretmen_id' => $request->id,
+            ]);
+            $kurumReal = kurumModel::find($kurum->kurum_id);
+            $logText = "Kurum '$kurumReal->unvan', $ogretmen->ad $ogretmen->soyad ($ogretmen->ozel_id) öğretmene talep yolladı";
+            LogModel::create([
+                'kategori_id' => 11,
+                'logText'=>$logText
             ]);
             return response()->json(['message' => "$ogretmen->ad $ogretmen->soyad öğretmene talep gönderildi."]);
         } catch (Exception $ex) {
