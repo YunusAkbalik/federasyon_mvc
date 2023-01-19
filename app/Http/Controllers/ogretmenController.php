@@ -11,7 +11,7 @@ class ogretmenController extends Controller
 {
     public function dashboard()
     {
-        dd("Öğretmen dash");
+        return view('ogretmen.dashboard');
     }
     public function get_bekleyenler()
     {

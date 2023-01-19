@@ -7,6 +7,7 @@ use App\Http\Controllers\IlceController;
 use App\Http\Controllers\kurumController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
+use App\Http\Controllers\Ogretmen\talepController;
 use App\Http\Controllers\ogretmenController;
 use App\Http\Controllers\OkulController;
 use App\Http\Controllers\onePassController;
@@ -98,6 +99,8 @@ Route::prefix('ogrenci')->middleware('role:Öğrenci')->group(function () {
 });
 Route::prefix('ogretmen')->middleware('role:Öğretmen')->group(function () {
     Route::get('/', [ogretmenController::class, 'dashboard'])->name('ogretmen_dash');
+    Route::get('talepler', [talepController::class, 'list'])->name('ogretmen_talep_list');
+
 });
 Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
     Route::get('/', [kurumController::class, 'dashboard'])->name('kurum_dash');
