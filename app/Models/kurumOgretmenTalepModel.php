@@ -18,4 +18,8 @@ class kurumOgretmenTalepModel extends Model
     {
         return $this->hasOne(kurumModel::class, 'id', 'kurum_id');
     }
+    public function kurum_owner()
+    {
+        return $this->hasOne(kurumUserModel::class, 'kurum_id', 'kurum_id')->with('user');
+    }
 }

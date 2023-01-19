@@ -10,7 +10,7 @@ class talepController extends Controller
 {
     public function list()
     {
-        $talepler = kurumOgretmenTalepModel::where('ogretmen_id',auth()->user()->id)->with('kurum')->get();
+        $talepler = kurumOgretmenTalepModel::where('ogretmen_id',auth()->user()->id)->with('kurum')->with('kurum_owner')->get();
         return view('ogretmen.talepler')->with([
             'talepler' => $talepler
         ]);

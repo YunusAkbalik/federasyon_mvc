@@ -45,7 +45,11 @@
                             <tr>
                                 <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalHere"
                                         onclick="getData({{ $ogretmen->id }})">{{ $ogretmen->ozel_id }}</a> </td>
-                                <td>{{ $ogretmen->ad . ' ' . $ogretmen->soyad }}</td>
+                                <td>
+                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalHere"
+                                        onclick="getData({{ $ogretmen->id }})">
+                                        {{ $ogretmen->ad . ' ' . $ogretmen->soyad }}</a>
+                                </td>
                                 <td>{{ date('d/m/Y', strtotime($ogretmen->dogum_tarihi)) }}</td>
                                 <td>{{ $ogretmen->ogretmen_cv->okul }}</td>
                                 <td>{{ $ogretmen->ogretmen_cv->bolum }}</td>
@@ -53,7 +57,9 @@
                                 <td>
                                     <h4 style="position: relative;
                                     margin: auto;"><span
-                                            class="badge bg-{{ in_array($ogretmen->id,$talepler) ? "primary":"success" }}"><i class="fa-solid fa-{{ in_array($ogretmen->id,$talepler) ? "clock":"circle-check" }}"></i> {{ in_array($ogretmen->id,$talepler) ? "Bekleniyor":"Müsait" }}</span>
+                                            class="badge bg-{{ in_array($ogretmen->id, $talepler) ? 'primary' : 'success' }}"><i
+                                                class="fa-solid fa-{{ in_array($ogretmen->id, $talepler) ? 'clock' : 'circle-check' }}"></i>
+                                            {{ in_array($ogretmen->id, $talepler) ? 'Bekleniyor' : 'Müsait' }}</span>
                                     </h4>
                                 </td>
                             </tr>

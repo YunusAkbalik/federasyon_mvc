@@ -34,7 +34,10 @@
                     <tr>
                         <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalHere"
                                 onclick="getData({{ $x->id }})">{{ $x->ozel_id }}</a> </td>
-                        <td>{{ $x->ad . ' ' . $x->soyad }}</td>
+                        <td>
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalHere"
+                                onclick="getData({{ $x->id }})">{{ $x->ad . ' ' . $x->soyad }}</a>
+                        </td>
                         <td>{{ $x->tc_kimlik }}</td>
                         <td>{{ $x->created_at }}</td>
                     </tr>
