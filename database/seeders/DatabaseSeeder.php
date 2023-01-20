@@ -165,6 +165,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Öğretmen Onayları", "icon" => "check-to-slot"],
             ['ad' => "Öğretmen Retleri", "icon" => "circle-xmark"],
             ['ad' => "Öğretmen Talepleri", "icon" => "hand"],
+            ['ad' => "Talep Yanıtları", "icon" => "comment-dots"],
         ]);
         DB::table('kurumlar')->insert([
             [
