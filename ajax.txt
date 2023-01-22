@@ -1,13 +1,30 @@
 var fd = new FormData();
-            fd.append('_token', $('input[name="_token"]').val());
-            fd.append('ad', $('#ad').val());
-            $.ajax({
-                url: '{{ route('musteri_create') }}',
-                method: 'post',
-                data: fd,
-                processData: false,
-                contentType: false,
-                success: function(res) {
-                    
-                }
-            })
+fd.append('_token', $('input[name="_token"]').val());
+fd.append('ad', ad);
+$.ajax({
+    url: '{{ route('kurum_okul_add') }}',
+    method: 'post',
+    data: fd,
+    processData: false,
+    contentType: false,
+    success: function(res) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Atama Yapıldı!',
+            text: res.message,
+            confirmButtonText: "Tamam"
+        }).then((result) => {
+            location.reload();
+        })
+    },
+    error: function(res) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Hata!',
+            text: res.responseJSON.message,
+            confirmButtonText: "Tamam"
+        }).then((result) => {
+            location.reload();
+        })
+    }
+})

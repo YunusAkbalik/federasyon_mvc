@@ -4,6 +4,7 @@ use App\Http\Controllers\Kurum\OgretmenController as KurumOgretmenController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
+use App\Http\Controllers\Kurum\kurumOkulController;
 use App\Http\Controllers\kurumController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
@@ -110,5 +111,9 @@ Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
         Route::get('atamaBekleyenler', [KurumOgretmenController::class, 'atamaBekleyenler'])->name('kurum_ogretmen_bekleyenler');
         Route::post('atamaBekleyenler', [KurumOgretmenController::class, 'show_bekleyen'])->name('kurum_ogretmen_bekleyenler_show');
         Route::post('atamaBekleyenler_talep', [KurumOgretmenController::class, 'talep_et'])->name('kurum_ogretmen_bekleyenler_talep');
+    });
+    Route::prefix('okul')->group(function () {
+        Route::get('/', [kurumOkulController::class, 'index'])->name('kurum_okul_index');
+        Route::post('ekle', [kurumOkulController::class, 'add'])->name('kurum_okul_add');
     });
 });

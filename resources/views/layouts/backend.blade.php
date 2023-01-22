@@ -432,6 +432,13 @@
                                     <span class="nav-main-link-name">Atama Bekleyen Öğretmenler</span>
                                 </a>
                             </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::currentRouteName() == 'kurum_okul_index' ? 'active' : '' }}"
+                                    href="{{ route('kurum_okul_index') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Okul</span>
+                                </a>
+                            </li>
                         @endrole
 
                         @role('Öğretmen')
