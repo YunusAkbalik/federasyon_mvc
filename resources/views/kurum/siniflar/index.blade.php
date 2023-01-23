@@ -97,6 +97,7 @@
         }
         window.addEventListener('DOMContentLoaded', (event) => {
             var okulsec = getCookie('okulsec')
+            console.log(okulsec);
             if (okulsec != null && okulsec != "null") {
                 if (okulsec != $('#okullar').val()) {
                     $('#okullar').val(okulsec)
@@ -141,6 +142,7 @@
                 processData: false,
                 contentType: false,
                 success: function(res) {
+                    console.log(res);
                     var addContent = `<div class="col-xl-4 col-lg-6 col-md-6 ">
                         <div class="block block-rounded block-link-shadow">
                             <div class="block-content block-content-full d-flex align-items-center justify-content-between">
@@ -157,14 +159,14 @@
                     $('#content').append(addContent)
                     res.data.forEach(element => {
                         var content = `<div class="col-xl-4 col-lg-6 col-md-6 ">
-                            <a class="block block-rounded block-link-shadow" href="javascript:void(0)">
+                            <a class="block block-rounded block-link-shadow" href="sinif/${element.id}">
                                 <div class="block-content block-content-full d-flex align-items-center justify-content-between">
                                     <div class="me-3">
                                         <p class="fs-lg fw-semibold mb-0">
                                             ${element.ad}
                                         </p>
                                         <p class="text-muted mb-0">
-                                            0 Öğrenci
+                                            ${element.ogrenciler.length} Öğrenci
                                         </p>
                                     </div>
                                     <div class="item item-circle bg-body-light">
@@ -182,14 +184,21 @@
                 },
                 error: function(res) {
                     Dashmix.layout('header_loader_off');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: res.responseJSON.message,
-                        confirmButtonText: "Tamam"
-                    }).then((result) => {
+                    if (res.responseJSON.message == "Okul bilgisi alınamadı") {
+                        document.cookie = "okulsec=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                         location.reload();
-                    })
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: res.responseJSON.message,
+                            confirmButtonText: "Tamam"
+                        }).then((result) => {
+                            location.reload();
+                        })
+                    }
+
 
                 }
 

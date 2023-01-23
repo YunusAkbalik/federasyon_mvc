@@ -14,4 +14,9 @@ class sinifModel extends Model
         'okul_id',
         'ad',
     ];
+    public function ogrenciler()
+    {
+        return $this->hasMany(ogrenciSinifModel::class, 'sinif_id', 'id');
+    }
+  
 }
