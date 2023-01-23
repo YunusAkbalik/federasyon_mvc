@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
+use App\Models\IlModel;
 use App\Models\kurumModel;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
@@ -18,18 +19,20 @@ class kurumOkulController extends Controller
         $kurumiliski = kurumUserModel::where('user_id', auth()->user()->id)->first();
         $kurum = kurumModel::find($kurumiliski->kurum_id);
         $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
+        $iller = IlModel::all();
         return view('kurum.okullar.index')->with([
             'tumOkullar' => $tumOkullar,
             'kurumOkullar' => $kurumOkullar,
+            'iller' => $iller,
         ]);
     }
 
     public function add(Request $request)
     {
         try {
-            if (!$request->ad)
+            if (!$request->okul_id)
                 throw new Exception("Okul Bulunamadı");
-            $okul = OkulModel::where('ad', $request->ad)->first();
+            $okul = OkulModel::find($request->okul_id);
             if (!$okul)
                 throw new Exception("Okul Bulunamadı");
             $kurumiliski = kurumUserModel::where('user_id', auth()->user()->id)->first();

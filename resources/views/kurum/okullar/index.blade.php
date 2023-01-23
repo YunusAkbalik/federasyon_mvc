@@ -15,16 +15,43 @@
 
     <!-- Page Content -->
     <div class="content">
-        <div class="input-group mb-4">
-            <input list="okul" id="yeni_okul" placeholder="Okul Adı" class="form-control">
-            <datalist id="okul">
-                @foreach ($tumOkullar as $okul)
-                    <option value="{{ $okul->ad }}">
-                @endforeach
-            </datalist>
-            <button type="button" onclick="okulEkle()" class="btn btn-success">
-                Okul Ekle <i class="fa fa-plus me-1"></i>
-            </button>
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="input-group input-group-lg">
+                            <select name="il" onchange="ilSelect(this.value)" class="form-control" id="il">
+                                <option value="0" disabled selected> İl seçimi</option>
+                                @foreach ($iller as $il)
+                                    <option value="{{ $il->id }}">{{ $il->ad }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group input-group-lg">
+                            <select name="ilce" onchange="ilceSelect(this.value)" class="form-control" id="ilce">
+                                <option value="0" disabled selected> İlçe seçimi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="input-group input-group-lg">
+                            <select name="okul" class="form-control" id="okul">
+                                <option value="0" disabled selected> Okul seçimi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12 d-grid">
+                        <button class="btn btn-success" onclick="okulEkle()" type="button">Okul Ekle</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             @foreach ($kurumOkullar as $okul)
@@ -71,10 +98,10 @@
     <script src="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         function okulEkle() {
-            var ad = $('#yeni_okul').val();
+            var okul_id = $('#okul').val();
             var fd = new FormData();
             fd.append('_token', $('input[name="_token"]').val());
-            fd.append('ad', ad);
+            fd.append('okul_id', okul_id);
             $.ajax({
                 url: '{{ route('kurum_okul_add') }}',
                 method: 'post',
@@ -98,6 +125,75 @@
                         text: res.responseJSON.message,
                         confirmButtonText: "Tamam"
                     })
+                }
+            })
+        }
+
+        function ilSelect(id) {
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('id', id);
+            $.ajax({
+                url: "{{ route('getIlcelerFromIlID') }}",
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    if (res.error) {
+                        Dashmix.helpers('jq-notify', {
+                            type: 'danger',
+                            icon: 'fa fa-times me-1',
+                            align: 'center',
+                            message: res.message
+                        });
+                    } else {
+                        Dashmix.block('state_loading', '#signblock');
+                        $('#ilce').empty();
+                        var option = `<option value="0" selected disabled>İlçe seçimi</option>`;
+                        $('#ilce').append(option);
+                        $('#okul').empty();
+                        var option2 = `<option value="0" selected disabled>Okul seçimi</option>`;
+                        $('#okul').append(option2);
+                        res.data.forEach(element => {
+                            var option = `<option value="${element.id}">${element.ad}</option>`;
+                            $('#ilce').append(option)
+                        });
+                        Dashmix.block('state_normal', '#signblock');
+                    }
+                }
+            })
+        }
+
+        function ilceSelect(id) {
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('id', id);
+            $.ajax({
+                url: "{{ route('getOkullarFromIlceID') }}",
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    if (res.error) {
+                        Dashmix.helpers('jq-notify', {
+                            type: 'danger',
+                            icon: 'fa fa-times me-1',
+                            align: 'center',
+                            message: res.message
+                        });
+                    } else {
+                        Dashmix.block('state_loading', '#signblock');
+                        $('#okul').empty();
+                        var option = `<option value="0" selected disabled>Okul seçimi</option>`;
+                        $('#okul').append(option);
+                        res.data.forEach(element => {
+                            var option = `<option value="${element.id}">${element.ad}</option>`;
+                            $('#okul').append(option)
+                        });
+                        Dashmix.block('state_normal', '#signblock');
+                    }
                 }
             })
         }
