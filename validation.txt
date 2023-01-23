@@ -1,0 +1,15 @@
+ $rules = array(
+                'okul_id' => array('required'),
+                'yeniSinifAd' => array('required', 'string', 'max:3'),
+            );
+            $attributeNames = array(
+                'Okul' => "Okul",
+                'yeniSinifAd' => "Sınıf Adı",
+            );
+            $messages = array(
+                'required' => ':attribute alanı zorunlu.',
+                'max' => ':attribute alanı maksimum :max karakter olmalıdır.',
+            );
+            $validator = Validator::make($request->all(), $rules, $messages, $attributeNames);
+            if ($validator->fails())
+                throw new Exception($validator->errors()->first());

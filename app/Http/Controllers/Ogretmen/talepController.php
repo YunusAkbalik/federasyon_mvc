@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\kurumModel;
 use App\Models\kurumOgretmenTalepModel;
 use App\Models\LogModel;
+use App\Models\ogretmenKurumModel;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,10 @@ class talepController extends Controller
             if ($request->sonuc == 1) {
                 $talep->sonuc = true;
                 $durum = "onayladı";
+                ogretmenKurumModel::create([
+                    'ogretmen_id' => auth()->user()->id,
+                    'kurum_id' => $talep->kurum_id
+                ]);
             } else {
                 $talep->sonuc = false;
                 $durum = "reddetti";

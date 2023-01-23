@@ -5,6 +5,7 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
 use App\Http\Controllers\Kurum\kurumOkulController;
+use App\Http\Controllers\Kurum\kurumSinifController;
 use App\Http\Controllers\kurumController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
@@ -115,5 +116,10 @@ Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
     Route::prefix('okul')->group(function () {
         Route::get('/', [kurumOkulController::class, 'index'])->name('kurum_okul_index');
         Route::post('ekle', [kurumOkulController::class, 'add'])->name('kurum_okul_add');
+    });
+    Route::prefix('sinif')->group(function () {
+        Route::get('/', [kurumSinifController::class, 'index'])->name('kurum_sinif_index');
+        Route::post('ekle', [kurumSinifController::class, 'add'])->name('kurum_sinif_add');
+        Route::post('get', [kurumSinifController::class, 'get'])->name('kurum_sinif_get');
     });
 });

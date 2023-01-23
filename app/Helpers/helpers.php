@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\kurumModel;
+use App\Models\kurumUserModel;
 use App\Models\User;
 use Faker\Factory;
 
@@ -29,5 +31,13 @@ if (!function_exists('kan_grubu_uret')) {
         $pozOrNeg = $faker->randomElement(['+', '-']);
         $kan_grubu = $kan_grubu . "RH(" . $pozOrNeg . ")";
         return $kan_grubu;
+    }
+}
+if (!function_exists('get_current_kurum')) {
+    function get_current_kurum()
+    {
+       $kurumUser = kurumUserModel::where('user_id',auth()->user()->id)->first();
+       $kurum = kurumModel::find($kurumUser->kurum_id);
+       return $kurum;
     }
 }
