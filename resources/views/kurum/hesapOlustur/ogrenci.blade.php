@@ -104,7 +104,7 @@
                                         @endforeach
                                     </select>
                                     <span class="input-group-text">
-                                        <i class="fa fa-users-rectangle"></i>
+                                        <i class="fa fa-school-flag"></i>
                                     </span>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                         <option value="0" selected disabled>Kurum Sınıfı</option>
                                     </select>
                                     <span class="input-group-text">
-                                        <i class="fa fa-users-rectangle"></i>
+                                        <i class="fa fa-chalkboard-user"></i>
                                     </span>
                                 </div>
                             </div>
