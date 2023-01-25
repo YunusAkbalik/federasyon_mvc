@@ -93,6 +93,31 @@
                                     </span>
                                 </div>
                             </div>
+                            <p class="fw-bold fs-sm text-muted mb-4">Kurum bilgileri</p>
+                            <div class="mb-4">
+                                <div class="input-group input-group-lg">
+                                    <select name="kurum_okul" onchange="okulSelect(this.value)" id="kurum_okul"
+                                        class="form-control">
+                                        <option value="0" selected disabled>Kurum Okulu</option>
+                                        @foreach ($kurumOkullar as $okul)
+                                            <option value="{{ $okul->okul->id }}">{{ $okul->okul->ad }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="input-group-text">
+                                        <i class="fa fa-users-rectangle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="input-group input-group-lg">
+                                    <select name="kurum_sinif" id="kurum_sinif" class="form-control">
+                                        <option value="0" selected disabled>Kurum Sınıfı</option>
+                                    </select>
+                                    <span class="input-group-text">
+                                        <i class="fa fa-users-rectangle"></i>
+                                    </span>
+                                </div>
+                            </div>
                             <p class="fw-bold fs-sm text-muted mb-4">Okul bilgileri</p>
                             <div class="row">
                                 <div class="col-xxl-6 mb-4">
@@ -165,31 +190,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <p class="fw-bold fs-sm text-muted mb-4">Kurum bilgileri</p>
-                            <div class="mb-4">
-                                <div class="input-group input-group-lg">
-                                    <select name="kurum_okul" onchange="okulSelect(this.value)" id="kurum_okul"
-                                        class="form-control">
-                                        <option value="0" selected disabled>Kurum Okulu</option>
-                                        @foreach ($kurumOkullar as $okul)
-                                            <option value="{{ $okul->id }}">{{ $okul->okul->ad }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="input-group-text">
-                                        <i class="fa fa-users-rectangle"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="input-group input-group-lg">
-                                    <select name="kurum_sinif" id="kurum_sinif" class="form-control">
-                                        <option value="0" selected disabled>Kurum Sınıfı</option>
-                                    </select>
-                                    <span class="input-group-text">
-                                        <i class="fa fa-users-rectangle"></i>
-                                    </span>
-                                </div>
-                            </div>
+
                             <p class="fw-bold fs-sm text-muted mb-4">Veli bilgileri</p>
                             <div class="mb-4">
                                 <div class="input-group input-group-lg">
@@ -224,7 +225,7 @@
     <script src="{{ asset('assets/js/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/kurum_create_acc_ogrenci.js') }}"></script>
     <script>
-        function ilSelect(id) {
+        function ilSelect(id , secimyap = 0) {
             Dashmix.block('state_loading', '#signblock');
             var fd = new FormData();
             fd.append('_token', $('input[name="_token"]').val());
@@ -252,6 +253,9 @@
                             var option = `<option value="${element.id}">${element.ad}</option>`;
                             $('#ilce').append(option)
                         });
+                        if(secimyap != 0){
+                            $('#ilce').val(secimyap)
+                        }
                     }
                 }
             })
@@ -275,12 +279,12 @@
                         var option = `<option value="0" selected="" disabled="">Sınıf Yok</option>`;
                         $('#kurum_sinif').append(option);
                     }
-
                     res.data.forEach(element => {
                         var option = `<option value="${element.id}">${element.ad}</option>`;
                         $('#kurum_sinif').append(option)
                     });
                     console.log(res);
+                    getIlIlce(id)
                 },
                 error: function(res) {
                     Dashmix.block('state_normal', '#signblock');
@@ -295,7 +299,34 @@
             })
         }
 
-        function ilceSelect(id) {
+        function getIlIlce(okul_id) {
+            Dashmix.block('state_loading', '#signblock');
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('id', okul_id);
+            $.ajax({
+                url: '{{ route('kurum_get_ililce_from_okul') }}',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    console.log(res);
+                    $('#il').val(res.data.il)
+                    ilSelect(res.data.il , res.data.ilce)
+                    ilceSelect(res.data.ilce , res.data.okul)
+                    Dashmix.block('state_normal', '#signblock');
+
+                },
+                error: function(res) {
+                    console.log(res.responseJSON.message);
+                    Dashmix.block('state_normal', '#signblock');
+
+                }
+            })
+        }
+
+        function ilceSelect(id , secimyap = 0) {
             Dashmix.block('state_loading', '#signblock');
             var fd = new FormData();
             fd.append('_token', $('input[name="_token"]').val());
@@ -323,6 +354,10 @@
                             var option = `<option value="${element.id}">${element.ad}</option>`;
                             $('#okul').append(option)
                         });
+
+                        if(secimyap != 0){
+                            $('#okul').val(secimyap)
+                        }
                     }
                 }
             })
