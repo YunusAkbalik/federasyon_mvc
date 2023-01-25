@@ -4,6 +4,7 @@ use App\Http\Controllers\Kurum\OgretmenController as KurumOgretmenController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
+use App\Http\Controllers\Kurum\kurumOgrenciController;
 use App\Http\Controllers\Kurum\kurumOkulController;
 use App\Http\Controllers\Kurum\kurumSinifController;
 use App\Http\Controllers\kurumController;
@@ -124,4 +125,11 @@ Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
         Route::post('ekle', [kurumSinifController::class, 'add'])->name('kurum_sinif_add');
         Route::post('get', [kurumSinifController::class, 'get'])->name('kurum_sinif_get');
     });
+    Route::prefix('hesap-olustur')->group(function () {
+        Route::get('ogrenci', [kurumOgrenciController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_ogrenci');
+        Route::post('ogrenci', [kurumOgrenciController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_ogrenci_post');
+        Route::post('getSinifFromOkul', [kurumSinifController::class, 'getSiniflar'])->name('kurum_get_sinif_from_okul');
+
+    });
+    
 });

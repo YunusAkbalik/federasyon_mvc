@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
 use App\Models\ogrenciSinifModel;
+use App\Models\OkulModel;
 use App\Models\sinifModel;
 use App\Models\User;
 use Exception;
@@ -126,6 +127,32 @@ class kurumSinifController extends Controller
                 'ogrenci_id' => $ogrenci->id,
             ]);
             return response()->json(['message' => "Öğrenci $ogrenci->ad $ogrenci->soyad, sınıfa eklendi"]);
+        } catch (Exception $ex) {
+            return response()->json(['message' => $ex->getMessage()], 404);
+        }
+    }
+    public function getSiniflar(Request $request)
+    {
+        try {
+            if (!$request->okul_id)
+                throw new Exception("Sınıf bilgisi alınamadı");
+            $okul = OkulModel::find($request->okul_id);
+            if (!$okul)
+                throw new Exception("Okul bilgisi alınamadı");
+            $kurum = get_current_kurum();
+            if (!$kurum)
+                throw new Exception("Kurum bilgisi alınamadı");
+            $kurumOkulExist = kurumOkulModel::where([
+                'okul_id' => $okul->id,
+                'kurum_id' => $kurum->id,
+            ]);
+            if (!$kurumOkulExist)
+                throw new Exception("Okul bilgisi alınamadı");
+            $sinif = sinifModel::where([
+                'kurum_id' => $kurum->id,
+                'okul_id' => $okul->id,
+            ])->get();
+            return response()->json(['data' => $sinif]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
         }
