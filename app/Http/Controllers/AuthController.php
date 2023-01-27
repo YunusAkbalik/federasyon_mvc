@@ -6,6 +6,8 @@ use App\Models\cvCalismaSaatleriModel;
 use App\Models\cvOncekiislerModel;
 use App\Models\cvSertifikaModel;
 use App\Models\IlModel;
+use App\Models\kurumLogModel;
+use App\Models\kurumUserModel;
 use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
 use App\Models\OgrenciVeliModel;
@@ -520,6 +522,16 @@ class AuthController extends Controller
                     'kategori_id' => 1,
                     'logText' => $logText
                 ]);
+
+                if ($role == "Kurum Yetkilisi") {
+                    $kurumlogText = "$user->ad $user->soyad ($user->ozel_id) sisteme giriş yaptı";
+                    kurumLogModel::create([
+                        'kategori_id' => 1,
+                        'logText' => $kurumlogText,
+                        'kurum_id' => get_current_kurum()->id
+                    ]);
+                }
+
                 return redirect()->route('routeThisGuy');
             } else
                 throw new Exception("ID veya Parola yanlış");
@@ -531,11 +543,20 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $role = auth()->user()->getRoleNames()[0];
-        $logText = "$role, $user->ad $user->soyad ($user->ozel_id) sistemden çıkış yaptı.";
+        $logText = "$role, $user->ad $user->soyad ($user->ozel_id) sistemden çıkış yaptı";
         LogModel::create([
             'kategori_id' => 2,
             'logText' => $logText
         ]);
+
+        if ($role == "Kurum Yetkilisi") {
+            $kurumlogText = "$user->ad $user->soyad ($user->ozel_id) sistemden çıkış yaptı";
+            kurumLogModel::create([
+                'kategori_id' => 2,
+                'logText' => $kurumlogText,
+                'kurum_id' => get_current_kurum()->id
+            ]);
+        }
         Auth::logout();
         return redirect()->route('giris_yap');
     }
