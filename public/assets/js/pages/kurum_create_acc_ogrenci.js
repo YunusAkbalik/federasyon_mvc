@@ -51,6 +51,9 @@ Dashmix.onLoad((() => class {
                     "kurum_sinif": {
                         required: !0,
                     },
+                    "kurum_okul": {
+                        required: !0,
+                    },
 
                 },
                 messages: {
@@ -71,6 +74,7 @@ Dashmix.onLoad((() => class {
                     "sube": "Lütfen şube girin",
                     "veli_tc": "Lütfen geçerli bir t.c kimlik numarası girin",
                     "kurum_sinif": "Lütfen sınıf seçin",
+                    "kurum_okul": "Lütfen okul seçin",
                 }
             })
     }

@@ -7,9 +7,11 @@ use App\Models\IlModel;
 use App\Models\kurumOkulModel;
 use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
+use App\Models\ogrenciSinifModel;
 use App\Models\OgrenciVeliModel;
 use App\Models\OkulModel;
 use App\Models\onePassesModel;
+use App\Models\sinifModel;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -21,7 +23,7 @@ class kurumOgrenciController extends Controller
     {
         $iller = IlModel::all();
         $kurum = get_current_kurum();
-        $kurumOkullar = kurumOkulModel::where('kurum_id',$kurum->id)->with('okul')->get();
+        $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('okul')->get();
         return view('kurum.hesapOlustur.ogrenci')->with(array(
             'iller' => $iller,
             'kurumOkullar' => $kurumOkullar,
@@ -40,6 +42,8 @@ class kurumOgrenciController extends Controller
                 'okul' => array('required'),
                 'sinif' => array('required'),
                 'sube' => array('required'),
+                'kurum_okul' => array('required'),
+                'kurum_sinif' => array('required'),
 
             );
             $attributeNames = array(
@@ -52,6 +56,8 @@ class kurumOgrenciController extends Controller
                 'okul' => "Okul",
                 'sinif' => "Sınıf",
                 'sube' => "Şube",
+                'kurum_okul' => "Kurum Okul",
+                'kurum_sinif' => "Kurum Sınıf",
 
             );
             $messages = array(
@@ -79,6 +85,15 @@ class kurumOgrenciController extends Controller
             $okul = OkulModel::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
+            $kurum = get_current_kurum();
+            $kurumOkulExist = kurumOkulModel::where('okul_id', $request->kurum_okul)->where('kurum_id', $kurum->id)->first();
+            if (!$kurumOkulExist)
+                throw new Exception("Kurumunuz bu okula hizmet vermiyor");
+            $sinif = sinifModel::find($request->kurum_sinif);
+            if (!$sinif)
+                throw new Exception("Sınıf Bulunamadı");
+            if ($sinif->kurum_id != $kurum->id)
+                throw new Exception("Sınıf Bulunamadı");
             $one_pass = rand(100000, 999999);
             $user = User::create(array_merge($request->all(), array(
                 'onayli' => true,
@@ -109,6 +124,10 @@ class kurumOgrenciController extends Controller
                     }
                 }
             }
+            ogrenciSinifModel::create([
+                'sinif_id' => $sinif->id,
+                'ogrenci_id' => $user->id
+            ]);
             $admin = auth()->user();
             $logText = "Kurum Yetkilisi $admin->ad $admin->soyad ($admin->ozel_id) sisteme öğrenci ekledi ($user->ad $user->soyad ($user->ozel_id))";
             LogModel::create(['kategori_id' => 6, 'logText' => $logText]);
