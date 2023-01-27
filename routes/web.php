@@ -4,6 +4,7 @@ use App\Http\Controllers\Kurum\OgretmenController as KurumOgretmenController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
+use App\Http\Controllers\Kurum\kurumLogController;
 use App\Http\Controllers\Kurum\kurumOgrenciController;
 use App\Http\Controllers\Kurum\kurumOkulController;
 use App\Http\Controllers\Kurum\kurumSinifController;
@@ -105,11 +106,10 @@ Route::prefix('ogretmen')->middleware('role:Öğretmen')->group(function () {
     Route::get('/', [ogretmenController::class, 'dashboard'])->name('ogretmen_dash');
     Route::get('talepler', [talepController::class, 'list'])->name('ogretmen_talep_list');
     Route::post('talepSonuclandir', [talepController::class, 'sonuclandir'])->name('ogretmen_talep_sonuclandir');
-
-
 });
 Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
     Route::get('/', [kurumController::class, 'dashboard'])->name('kurum_dash');
+    Route::get('loglar/{cid?}', [kurumLogController::class, 'index'])->name('kurum_loglar');
     Route::prefix('ogretmen')->group(function () {
         Route::get('atamaBekleyenler', [KurumOgretmenController::class, 'atamaBekleyenler'])->name('kurum_ogretmen_bekleyenler');
         Route::post('atamaBekleyenler', [KurumOgretmenController::class, 'show_bekleyen'])->name('kurum_ogretmen_bekleyenler_show');
@@ -134,5 +134,4 @@ Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
         Route::get('veli', [kurumVeliController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_veli');
         Route::post('veli', [kurumVeliController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_veli_post');
     });
-    
 });
