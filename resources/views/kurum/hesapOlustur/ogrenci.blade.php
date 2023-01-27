@@ -225,7 +225,7 @@
     <script src="{{ asset('assets/js/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/kurum_create_acc_ogrenci.js') }}"></script>
     <script>
-        function ilSelect(id , secimyap = 0) {
+        function ilSelect(id, secimyap = 0) {
             Dashmix.block('state_loading', '#signblock');
             var fd = new FormData();
             fd.append('_token', $('input[name="_token"]').val());
@@ -253,7 +253,7 @@
                             var option = `<option value="${element.id}">${element.ad}</option>`;
                             $('#ilce').append(option)
                         });
-                        if(secimyap != 0){
+                        if (secimyap != 0) {
                             $('#ilce').val(secimyap)
                         }
                     }
@@ -261,7 +261,7 @@
             })
         }
 
-        function okulSelect(id) {
+        function okulSelect(id, sinifsec = 0) {
             Dashmix.block('state_loading', '#signblock');
             var fd = new FormData();
             fd.append('_token', $('input[name="_token"]').val());
@@ -285,6 +285,9 @@
                     });
                     console.log(res);
                     getIlIlce(id)
+                    if (sinifsec != 0) {
+                        $('#kurum_sinif').val(sinifsec)
+                    }
                 },
                 error: function(res) {
                     Dashmix.block('state_normal', '#signblock');
@@ -313,8 +316,8 @@
                 success: function(res) {
                     console.log(res);
                     $('#il').val(res.data.il)
-                    ilSelect(res.data.il , res.data.ilce)
-                    ilceSelect(res.data.ilce , res.data.okul)
+                    ilSelect(res.data.il, res.data.ilce)
+                    ilceSelect(res.data.ilce, res.data.okul)
                     Dashmix.block('state_normal', '#signblock');
 
                 },
@@ -326,7 +329,7 @@
             })
         }
 
-        function ilceSelect(id , secimyap = 0) {
+        function ilceSelect(id, secimyap = 0) {
             Dashmix.block('state_loading', '#signblock');
             var fd = new FormData();
             fd.append('_token', $('input[name="_token"]').val());
@@ -355,7 +358,7 @@
                             $('#okul').append(option)
                         });
 
-                        if(secimyap != 0){
+                        if (secimyap != 0) {
                             $('#okul').val(secimyap)
                         }
                     }
@@ -411,4 +414,12 @@
             })
         }
     </script>
+    @if ($sinif != null)
+        <script>
+            window.addEventListener('DOMContentLoaded', (event) => {
+                $('#kurum_okul').val({{ $okulsecim }})
+                okulSelect({{ $okulsecim }}, {{ $sinif }})
+            });
+        </script>
+    @endif
 @endsection

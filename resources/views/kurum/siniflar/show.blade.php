@@ -45,7 +45,7 @@
             </div>
             <div class="col-md-6">
                 <a class="block block-rounded  text-center d-flex flex-column h-100 mb-0"
-                    href="{{ route('kurum_hesapOlustur_ogrenci') }}">
+                    href="{{ route('kurum_hesapOlustur_ogrenci',['sinif' => $sinif->id]) }}">
                     <div
                         class="block-content  block-content-full flex-grow-1 d-flex justify-content-center align-items-center">
                         <div>

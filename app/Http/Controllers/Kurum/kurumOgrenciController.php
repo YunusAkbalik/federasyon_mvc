@@ -15,18 +15,37 @@ use App\Models\sinifModel;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class kurumOgrenciController extends Controller
 {
-    public function hesapOlustur()
+    public function hesapOlustur(Request $request)
     {
+        $sinif = $request->sinif ? $request->sinif : null;
+        $okul = null;
+        if ($sinif != null) {
+            $sinifModel = sinifModel::find($sinif);
+            if (!$sinifModel) {
+                $sinif = null;
+                $okul = null;
+            } else {
+                if ($sinifModel->kurum_id != get_current_kurum()->id) {
+                    $sinif = null;
+                    $okul = null;
+                }else{
+                    $okul = $sinifModel->okul_id;
+                }
+            }
+        }
         $iller = IlModel::all();
         $kurum = get_current_kurum();
         $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('okul')->get();
         return view('kurum.hesapOlustur.ogrenci')->with(array(
             'iller' => $iller,
             'kurumOkullar' => $kurumOkullar,
+            'sinif' => $sinif,
+            'okulsecim' => $okul,
         ));
     }
     public function hesapOlustur_post(Request $request)
