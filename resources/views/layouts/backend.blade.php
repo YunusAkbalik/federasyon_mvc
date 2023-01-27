@@ -453,6 +453,13 @@
                                     <span class="nav-main-link-name">Öğrenci hesabı oluştur</span>
                                 </a>
                             </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::currentRouteName() == 'kurum_hesapOlustur_veli' ? 'active' : '' }}"
+                                    href="{{ route('kurum_hesapOlustur_veli') }}">
+                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                    <span class="nav-main-link-name">Veli hesabı oluştur</span>
+                                </a>
+                            </li>
                         @endrole
 
                         @role('Öğretmen')

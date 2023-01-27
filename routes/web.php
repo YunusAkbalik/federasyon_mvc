@@ -7,6 +7,7 @@ use App\Http\Controllers\IlceController;
 use App\Http\Controllers\Kurum\kurumOgrenciController;
 use App\Http\Controllers\Kurum\kurumOkulController;
 use App\Http\Controllers\Kurum\kurumSinifController;
+use App\Http\Controllers\Kurum\kurumVeliController;
 use App\Http\Controllers\kurumController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
@@ -130,7 +131,8 @@ Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
         Route::post('ogrenci', [kurumOgrenciController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_ogrenci_post');
         Route::post('getSinifFromOkul', [kurumSinifController::class, 'getSiniflar'])->name('kurum_get_sinif_from_okul');
         Route::post('getIlIlceFromOkul', [kurumOkulController::class, 'getIlIlceFromOkul'])->name('kurum_get_ililce_from_okul');
-
+        Route::get('veli', [kurumVeliController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_veli');
+        Route::post('veli', [kurumVeliController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_veli_post');
     });
     
 });

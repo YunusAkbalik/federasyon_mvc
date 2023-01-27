@@ -169,6 +169,17 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Sınıf Oluşturmaları", "icon" => "person-chalkboard"],
             ['ad' => "Sınıfa Öğrenci Eklemeleri", "icon" => "person-chalkboard"],
         ]);
+        DB::table('kurum_log_kategori')->insert([
+            ['ad' => "Giriş İşlemleri", "icon" => "key"],
+            ['ad' => "Çıkış İşlemleri", "icon" => "right-from-bracket"],
+            ['ad' => "Öğrenci Kayıtları", "icon" => "user-graduate"],
+            ['ad' => "Veli Kayıtları", "icon" => "user"],
+            ['ad' => "Öğretmen Onayları", "icon" => "check-to-slot"],
+            ['ad' => "Öğretmen Retleri", "icon" => "circle-xmark"],
+            ['ad' => "Öğretmen Talepleri", "icon" => "hand"],
+            ['ad' => "Sınıf Oluşturmaları", "icon" => "person-chalkboard"],
+            ['ad' => "Sınıfa Öğrenci Eklemeleri", "icon" => "person-chalkboard"],
+        ]);
         DB::table('kurumlar')->insert([
             [
                 'unvan' => "Roosecs eğitim",

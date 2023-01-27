@@ -20,7 +20,7 @@
             <div class="block-content">
                 <div class="row justify-content-center">
                     <div class="col-sm-8 col-xl-6">
-                        <form class="js-validation-signup" action="{{ route('admin_create_acc_veli_post') }}" method="POST">
+                        <form class="js-validation-signup" action="{{ route('kurum_hesapOlustur_veli_post') }}" method="POST">
                             @csrf
                             <div class="mb-4">
                                 <div class="row">
