@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
+use App\Models\kurumLogModel;
 use App\Models\kurumModel;
 use App\Models\kurumOgretmenTalepModel;
 use App\Models\kurumUserModel;
@@ -80,12 +81,24 @@ class OgretmenController extends Controller
                 'kurum_id' => $kurum->kurum_id,
                 'ogretmen_id' => $request->id,
             ]);
-            $kurumReal = kurumModel::find($kurum->kurum_id);
-            $logText = "Kurum '$kurumReal->unvan', $ogretmen->ad $ogretmen->soyad ($ogretmen->ozel_id) öğretmene talep yolladı";
+
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), $ogretmen->ad $ogretmen->soyad ($ogretmen->ozel_id) öğretmene talep yolladı";
             LogModel::create([
                 'kategori_id' => 11,
-                'logText'=>$logText
+                'logText' => $logText
             ]);
+
+            $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), $ogretmen->ad $ogretmen->soyad ($ogretmen->ozel_id) öğretmene talep yolladı";
+            kurumLogModel::create([
+                'kategori_id' => 7,
+                'logText' => $kurumLogText,
+                'kurum_id' => get_current_kurum()->id
+            ]);
+
+
+         
+
             return response()->json(['message' => "$ogretmen->ad $ogretmen->soyad öğretmene talep gönderildi."]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);

@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
 
         // Random kullanıcılar
         for ($i = 1; $i <= 47; $i++) {
-           
+
             DB::table('users')->insert([
                 [
                     'tc_kimlik' => $faker->numerify('###########'),
@@ -168,6 +168,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Talep Yanıtları", "icon" => "comment-dots"],
             ['ad' => "Sınıf Oluşturmaları", "icon" => "person-chalkboard"],
             ['ad' => "Sınıfa Öğrenci Eklemeleri", "icon" => "person-chalkboard"],
+            ['ad' => "Kurum Okul İşlemleri", "icon" => "person-chalkboard"],
         ]);
         DB::table('kurum_log_kategori')->insert([
             ['ad' => "Giriş İşlemleri", "icon" => "key"],
@@ -179,6 +180,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Öğretmen Talepleri", "icon" => "hand"],
             ['ad' => "Sınıf Oluşturmaları", "icon" => "person-chalkboard"],
             ['ad' => "Sınıfa Öğrenci Eklemeleri", "icon" => "person-chalkboard"],
+            ['ad' => "Kurum Okul İşlemleri", "icon" => "person-chalkboard"],
         ]);
         DB::table('kurumlar')->insert([
             [

@@ -11,6 +11,7 @@ class kurumLogModel extends Model
     protected $table = "kurum_log";
     protected $fillable = [
         'kategori_id',
+        'kurum_id',
         'logText',
     ];
 

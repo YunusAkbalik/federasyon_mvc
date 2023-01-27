@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ogretmen;
 
 use App\Http\Controllers\Controller;
+use App\Models\kurumLogModel;
 use App\Models\kurumModel;
 use App\Models\kurumOgretmenTalepModel;
 use App\Models\LogModel;
@@ -33,6 +34,7 @@ class talepController extends Controller
                 throw new Exception("Bir hata oluştu");
             if ($request->sonuc == 1) {
                 $talep->sonuc = true;
+                $kurumLogKategori = 5;
                 $durum = "onayladı";
                 ogretmenKurumModel::create([
                     'ogretmen_id' => auth()->user()->id,
@@ -41,15 +43,27 @@ class talepController extends Controller
             } else {
                 $talep->sonuc = false;
                 $durum = "reddetti";
+                $kurumLogKategori = 6;
             }
             $talep->save();
             $ogretmen = auth()->user();
             $kurum = kurumModel::find($talep->kurum_id);
+
+
             $logText = "Öğretmen $ogretmen->ad $ogretmen->soyad ($ogretmen->ozel_id), Kurum '$kurum->unvan', talebini $durum.";
             LogModel::create([
                 'kategori_id' => 12,
                 'logText' => $logText,
             ]);
+
+            $kurumlogText = "Öğretmen $ogretmen->ad $ogretmen->soyad ($ogretmen->ozel_id), talebinizi $durum.";
+            kurumLogModel::create([
+                'kategori_id' => $kurumLogKategori,
+                'logText' => $kurumlogText,
+                'kurum_id' => $kurum->id
+            ]);
+
+
             return response()->json(['message' => "Talep sonuçlandı"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);

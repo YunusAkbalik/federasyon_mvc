@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
 use App\Models\IlModel;
+use App\Models\kurumLogModel;
 use App\Models\kurumOkulModel;
 use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
@@ -150,6 +151,13 @@ class kurumOgrenciController extends Controller
             $admin = auth()->user();
             $logText = "Kurum Yetkilisi $admin->ad $admin->soyad ($admin->ozel_id) sisteme öğrenci ekledi ($user->ad $user->soyad ($user->ozel_id))";
             LogModel::create(['kategori_id' => 6, 'logText' => $logText]);
+
+            $kurumLogText = "$admin->ad $admin->soyad ($admin->ozel_id), sisteme öğrenci ekledi ($user->ad $user->soyad ($user->ozel_id))";
+            kurumLogModel::create([
+                'kategori_id' => 3,
+                'kurum_id' => get_current_kurum()->id,
+                'logText' => $kurumLogText,
+            ]);
             onePassesModel::create([
                 'user_id' => $user->id,
                 'onePass' => $one_pass

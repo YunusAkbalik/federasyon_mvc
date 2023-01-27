@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Kurum;
 use App\Http\Controllers\Controller;
 use App\Models\IlceModel;
 use App\Models\IlModel;
+use App\Models\kurumLogModel;
 use App\Models\kurumModel;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
+use App\Models\LogModel;
 use App\Models\OkulModel;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,7 +22,7 @@ class kurumOkulController extends Controller
         $kurumiliski = kurumUserModel::where('user_id', auth()->user()->id)->first();
         $kurum = kurumModel::find($kurumiliski->kurum_id);
         $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('siniflar')->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
-        
+
         $iller = IlModel::all();
         return view('kurum.okullar.index')->with([
             'tumOkullar' => $tumOkullar,
@@ -50,6 +52,15 @@ class kurumOkulController extends Controller
                 'okul_id' => $okul->id,
                 'kurum_id' => $kurum->id,
             ]);
+
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' adlı okulu kurum üzerine aldı.";
+            LogModel::create(['kategori_id' => 15, 'logText' => $logText]);
+
+            $kurumlogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' adlı okulu kurum üzerine aldı.";
+            kurumLogModel::create(['kategori_id' => 10, 'logText' => $kurumlogText, 'kurum_id' => get_current_kurum()->id]);
+
+
             return response()->json(['message' => "Okul kurumunuza başarıyla atandı"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);

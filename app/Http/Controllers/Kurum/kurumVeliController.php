@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
+use App\Models\kurumLogModel;
+use App\Models\kurumModel;
 use App\Models\LogModel;
 use App\Models\OgrenciVeliModel;
 use App\Models\onePassesModel;
@@ -78,9 +80,14 @@ class kurumVeliController extends Controller
                     }
                 }
             }
+
             $logUser = auth()->user();
             $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), sisteme veli ekledi ($newUser->ad $newUser->soyad ($newUser->ozel_id))";
             LogModel::create(['kategori_id' => 7, 'logText' => $logText]);
+
+            $kurumlogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), sisteme veli ekledi ($newUser->ad $newUser->soyad ($newUser->ozel_id))";
+            kurumLogModel::create(['kategori_id' => 4, 'logText' => $kurumlogText , 'kurum_id' => get_current_kurum()->id]);
+
             onePassesModel::create([
                 'user_id' => $newUser->id,
                 'onePass' => $one_pass

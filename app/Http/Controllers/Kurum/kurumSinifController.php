@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
+use App\Models\kurumLogModel;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
 use App\Models\LogModel;
@@ -59,9 +60,21 @@ class kurumSinifController extends Controller
                 'okul_id' => $request->okul_id,
                 'ad' => $request->yeniSinifAd,
             ]);
+
+
             $logUser = auth()->user();
             $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' okuluna '$request->yeniSinifAd' adlı sınıfı açtı";
             LogModel::create(['kategori_id' => 13, 'logText' => $logText]);
+
+            $kurumlogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' adlı okula '$request->yeniSinifAd' adlı sınıfı açtı";
+            kurumLogModel::create([
+                'kategori_id' => 8,
+                'logText' => $kurumlogText,
+                'kurum_id' => get_current_kurum()->id,
+            ]);
+
+
+
             return response()->json(['message' => "$request->yeniSinifAd sınıfı oluşturuldu."]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
@@ -136,6 +149,10 @@ class kurumSinifController extends Controller
             $logUser = auth()->user();
             $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), Öğrenci $ogrenci->ad $ogrenci->soyad ($ogrenci->ozel_id) sınıfa ekledi; '$sinif->ad'";
             LogModel::create(['kategori_id' => 14, 'logText' => $logText]);
+
+
+            $kurumlogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), Öğrenci $ogrenci->ad $ogrenci->soyad ($ogrenci->ozel_id) sınıfa ekledi; '$sinif->ad'";
+            kurumLogModel::create(['kategori_id' => 9, 'logText' => $kurumlogText , 'kurum_id' => get_current_kurum()->id]);
             return response()->json(['message' => "Öğrenci $ogrenci->ad $ogrenci->soyad, sınıfa eklendi"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
