@@ -13,4 +13,8 @@ class ogrenciSinifModel extends Model
         'sinif_id',
         'ogrenci_id',
     ];
+    public function ogrenci()
+    {
+        return $this->hasOne(User::class, 'id', 'ogrenci_id');
+    }
 }

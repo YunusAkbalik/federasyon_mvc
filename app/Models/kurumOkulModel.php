@@ -17,4 +17,8 @@ class kurumOkulModel extends Model
     {
         return $this->hasOne(OkulModel::class, 'id', 'okul_id');
     }
+    public function siniflar()
+    {
+        return $this->hasMany(sinifModel::class, 'okul_id', 'okul_id')->with('ogrenciler');
+    }
 }

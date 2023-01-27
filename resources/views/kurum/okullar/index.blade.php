@@ -56,7 +56,7 @@
         <div class="row">
             @foreach ($kurumOkullar as $okul)
                 <div class="col-xxl-3 col-xl-4 col-md-6">
-                    <a class="block block-rounded text-center" href="javascript:void(0)">
+                    <a class="block block-rounded text-center" onclick="okul({{ $okul->okul->id }})" href="javascript:void(0)">
                         <div
                             class="block-content block-content-full block-content-sm bg-primary border-bottom border-white-op">
                             <p class="fw-semibold text-white mb-0">{{ $okul->okul->ad }}</p>
@@ -72,7 +72,13 @@
                                         <i class="fa fa-fw fa-graduation-cap text-primary"></i>
                                     </div>
                                     <p class="fs-sm fw-medium text-muted mb-0">
-                                        0 Öğrenci
+                                        @php
+                                            $ogrencilerTotal = 0;
+                                            foreach ($okul->siniflar as $key) {
+                                                $ogrencilerTotal += $key->ogrenciler->count();
+                                            }
+                                        @endphp
+                                        {{ $ogrencilerTotal }} Öğrenci
                                     </p>
                                 </div>
                                 <div class="col-6">
@@ -80,7 +86,7 @@
                                         <i class="fa fa-fw fa-chalkboard-user text-primary"></i>
                                     </div>
                                     <p class="fs-sm fw-medium text-muted mb-0">
-                                        0 Sınıf
+                                        {{ $okul->siniflar->count() }} Sınıf
                                     </p>
                                 </div>
                             </div>
@@ -196,6 +202,12 @@
                     }
                 }
             })
+        }
+
+        function okul(id) {
+            document.cookie = "okulsec=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "okulsec=" + id;
+            location.href = "{{ route('kurum_sinif_index') }}";         
         }
     </script>
 @endsection

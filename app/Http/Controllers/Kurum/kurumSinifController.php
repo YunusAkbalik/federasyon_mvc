@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kurum;
 use App\Http\Controllers\Controller;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
+use App\Models\LogModel;
 use App\Models\ogrenciSinifModel;
 use App\Models\OkulModel;
 use App\Models\sinifModel;
@@ -52,11 +53,15 @@ class kurumSinifController extends Controller
             $sinifExist = sinifModel::where('kurum_id', $kurum->id)->where('okul_id', $request->okul_id)->where('ad', $request->yeniSinifAd)->first();
             if ($sinifExist)
                 throw new Exception("Bu sınıf okulunuzda mevcut");
+            $okul = OkulModel::find($request->okul_id);
             sinifModel::create([
                 'kurum_id' => $kurum->id,
                 'okul_id' => $request->okul_id,
                 'ad' => $request->yeniSinifAd,
             ]);
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' okuluna '$request->yeniSinifAd' adlı sınıfı açtı";
+            LogModel::create(['kategori_id' => 13, 'logText' => $logText]);
             return response()->json(['message' => "$request->yeniSinifAd sınıfı oluşturuldu."]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
@@ -90,8 +95,10 @@ class kurumSinifController extends Controller
             $kurum = get_current_kurum();
             if ($sinif->kurum_id != $kurum->id)
                 throw new Exception("Sınıf Bulunamadı");
+            $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->get();
             return view('kurum.siniflar.show')->with([
-                'sinif' => $sinif
+                'sinif' => $sinif,
+                'ogrenciler' => $ogrenciler,
             ]);
         } catch (Exception $ex) {
             return redirect()->back()->withErrors($ex->getMessage());
@@ -126,6 +133,9 @@ class kurumSinifController extends Controller
                 'sinif_id' => $request->sinif_id,
                 'ogrenci_id' => $ogrenci->id,
             ]);
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), Öğrenci $ogrenci->ad $ogrenci->soyad ($ogrenci->ozel_id) sınıfa ekledi; '$sinif->ad'";
+            LogModel::create(['kategori_id' => 14, 'logText' => $logText]);
             return response()->json(['message' => "Öğrenci $ogrenci->ad $ogrenci->soyad, sınıfa eklendi"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);

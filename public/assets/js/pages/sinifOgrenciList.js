@@ -268,7 +268,7 @@ Dashmix.onLoad((() => class {
                 ],
                 language: trLaung,
                 order: [
-                    [4, 'desc']
+                    [1, 'desc']
                 ]
             }), jQuery.extend(!0, jQuery.fn.DataTable.Buttons.defaults, {
                 dom: { button: { className: "btn btn-sm btn-primary" } }

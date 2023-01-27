@@ -1,0 +1,3 @@
+$logUser = auth()->user();
+$logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' okuluna '$request->yeniSinifAd' adlı sınıfı açtı";
+LogModel::create(['kategori_id' => 13, 'logText' => $logText]);

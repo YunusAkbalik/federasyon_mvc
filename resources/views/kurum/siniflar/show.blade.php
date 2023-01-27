@@ -1,7 +1,10 @@
 @extends('layouts.backend')
 @section('css')
-<link rel="stylesheet" href="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.css') }}">
-    
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
 @section('content')
     <!-- Hero -->
@@ -41,7 +44,8 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <a class="block block-rounded  text-center d-flex flex-column h-100 mb-0" href="javascript:void(0)">
+                <a class="block block-rounded  text-center d-flex flex-column h-100 mb-0"
+                    href="{{ route('kurum_hesapOlustur_ogrenci') }}">
                     <div
                         class="block-content  block-content-full flex-grow-1 d-flex justify-content-center align-items-center">
                         <div>
@@ -59,7 +63,22 @@
                         <h3 class="block-title">Öğrenci <small>Listesi</small></h3>
                     </div>
                     <div class="block-content">
-                        <table></table>
+                        <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Ad Soyad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($ogrenciler as $ogrenci)
+                                    <tr>
+                                        <td>{{ $ogrenci->ogrenci->ozel_id }}</td>
+                                        <td>{{ $ogrenci->ogrenci->ad . ' ' . $ogrenci->ogrenci->soyad }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -68,8 +87,19 @@
     <!-- END Page Content -->
 @endsection
 @section('js')
-<script src="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-
+    <script src="{{ asset('assets/js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/sinifOgrenciList.js') }}"></script>
     <script>
         function ogrenciEkleTc(sinif_id) {
             var tc = $('#tc').val();
