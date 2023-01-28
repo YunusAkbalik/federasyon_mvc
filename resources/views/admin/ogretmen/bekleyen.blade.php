@@ -39,7 +39,7 @@
                                 onclick="getData({{ $x->id }})">{{ $x->ad . ' ' . $x->soyad }}</a>
                         </td>
                         <td>{{ $x->tc_kimlik }}</td>
-                        <td>{{ $x->created_at }}</td>
+                        <td>{{ date('d/m/Y H:i:s', strtotime($x->created_at)) }}</td>
                     </tr>
                 @endforeach
             </tbody>
