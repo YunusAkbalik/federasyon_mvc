@@ -19,9 +19,9 @@ class kurumOkulController extends Controller
     public function index()
     {
         $tumOkullar = OkulModel::orderBy('ad')->get();
-        $kurumiliski = kurumUserModel::where('user_id', auth()->user()->id)->first();
-        $kurum = kurumModel::find($kurumiliski->kurum_id);
-        $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('siniflar')->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
+        $kurum = get_current_kurum();
+        $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('KurumOzelsiniflar')->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
+        
 
         $iller = IlModel::all();
         return view('kurum.okullar.index')->with([

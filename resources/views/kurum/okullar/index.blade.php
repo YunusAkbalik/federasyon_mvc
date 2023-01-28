@@ -74,7 +74,7 @@
                                     <p class="fs-sm fw-medium text-muted mb-0">
                                         @php
                                             $ogrencilerTotal = 0;
-                                            foreach ($okul->siniflar as $key) {
+                                            foreach ($okul->KurumOzelsiniflar as $key) {
                                                 $ogrencilerTotal += $key->ogrenciler->count();
                                             }
                                         @endphp
@@ -86,7 +86,7 @@
                                         <i class="fa fa-fw fa-chalkboard-user text-primary"></i>
                                     </div>
                                     <p class="fs-sm fw-medium text-muted mb-0">
-                                        {{ $okul->siniflar->count() }} Sınıf
+                                        {{ $okul->KurumOzelsiniflar->count() }} Sınıf
                                     </p>
                                 </div>
                             </div>

@@ -167,8 +167,8 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Öğretmen Talepleri", "icon" => "hand"],
             ['ad' => "Talep Yanıtları", "icon" => "comment-dots"],
             ['ad' => "Sınıf Oluşturmaları", "icon" => "person-chalkboard"],
-            ['ad' => "Sınıfa Öğrenci Eklemeleri", "icon" => "person-chalkboard"],
-            ['ad' => "Kurum Okul İşlemleri", "icon" => "person-chalkboard"],
+            ['ad' => "Sınıfa Öğrenci Eklemeleri", "icon" => "user-plus"],
+            ['ad' => "Kurum Okul İşlemleri", "icon" => "school-flag"],
         ]);
         DB::table('kurum_log_kategori')->insert([
             ['ad' => "Giriş İşlemleri", "icon" => "key"],
@@ -179,8 +179,8 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Öğretmen Retleri", "icon" => "circle-xmark"],
             ['ad' => "Öğretmen Talepleri", "icon" => "hand"],
             ['ad' => "Sınıf Oluşturmaları", "icon" => "person-chalkboard"],
-            ['ad' => "Sınıfa Öğrenci Eklemeleri", "icon" => "person-chalkboard"],
-            ['ad' => "Kurum Okul İşlemleri", "icon" => "person-chalkboard"],
+            ['ad' => "Sınıfa Öğrenci Eklemeleri", "icon" => "user-plus"],
+            ['ad' => "Kurum Okul İşlemleri", "icon" => "school-flag"],
         ]);
         DB::table('kurumlar')->insert([
             [
