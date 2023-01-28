@@ -221,10 +221,10 @@
                     <!-- Logo -->
                     <a class="fw-semibold text-white tracking-wide" href="/">
                         <span class="smini-visible">
-                            D<span class="opacity-75">x</span>
+                            M<span class="opacity-75">D</span>
                         </span>
                         <span class="smini-hidden">
-                            Dash<span class="opacity-75">mix</span>
+                            MNG<span class="opacity-75">Dijital</span>
                         </span>
                     </a>
                     <!-- END Logo -->
@@ -518,12 +518,12 @@
                         <button type="button" class="btn btn-alt-secondary" id="page-header-user-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-user d-sm-none"></i>
-                            <span class="d-none d-sm-inline-block">Admin</span>
+                            <span class="d-none d-sm-inline-block">{{ auth()->user()->ad }}</span>
                             <i class="fa fa-fw fa-angle-down opacity-50 ms-1 d-none d-sm-inline-block"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="page-header-user-dropdown">
                             <div class="bg-primary-dark rounded-top fw-semibold text-white text-center p-3">
-                                User Options
+                                {{ auth()->user()->soyad }}
                             </div>
                             <div class="p-2">
                                 <a class="dropdown-item" href="javascript:void(0)">
@@ -543,13 +543,13 @@
                                 <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
                                 <a class="dropdown-item" href="javascript:void(0)" data-toggle="layout"
                                     data-action="side_overlay_toggle">
-                                    <i class="far fa-fw fa-building me-1"></i> Settings
+                                    <i class="far fa-fw fa-building me-1"></i> Ayarlar
                                 </a>
                                 <!-- END Side Overlay -->
 
                                 <div role="separator" class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('cikis_yap') }}">
-                                    <i class="far fa-fw fa-arrow-alt-circle-left me-1"></i> Sign Out
+                                    <i class="far fa-fw fa-arrow-alt-circle-left me-1"></i> Çıkış Yap
                                 </a>
                             </div>
                         </div>
@@ -692,11 +692,11 @@
             <div class="content py-0">
                 <div class="row fs-sm">
                     <div class="col-sm-6 order-sm-2 mb-1 mb-sm-0 text-center text-sm-end">
-                        Crafted with <i class="fa fa-heart text-danger"></i> by <a class="fw-semibold"
-                            href="https://1.envato.market/ydb" target="_blank">pixelcave</a>
+                        <i class="fa fa-heart text-danger"></i> ile <a class="fw-semibold"
+                        href="https://www.instagram.com/mngdigital/" target="_blank">MNG Dijital</a> tarafından yazıldı 
                     </div>
                     <div class="col-sm-6 order-sm-1 text-center text-sm-start">
-                        <a class="fw-semibold" href="https://1.envato.market/r6y" target="_blank">Dashmix</a> &copy;
+                        <a class="fw-semibold" href="https://1.envato.market/r6y" target="_blank">MNG Dijital</a> &copy;
                         <span data-toggle="year-copy"></span>
                     </div>
                 </div>
