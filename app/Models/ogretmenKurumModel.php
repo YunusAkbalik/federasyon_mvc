@@ -13,4 +13,8 @@ class ogretmenKurumModel extends Model
         'ogretmen_id',
         'kurum_id',
     ];
+    public function kurum()
+    {
+        return $this->hasOne(kurumModel::class, 'id', 'kurum_id');
+    }
 }

@@ -273,5 +273,14 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
         ]);
+        DB::table("ogretmen_photo")->insert([
+            [
+                'ogretmen_id' => 3,
+                'photo_path' => "teacher.jpg",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            
+        ]);
     }
 }

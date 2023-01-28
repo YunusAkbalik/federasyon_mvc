@@ -64,7 +64,6 @@
                                     </div>
                                     <div
                                         class="d-sm-flex justify-content-sm-between align-items-sm-center text-center text-sm-start mb-4">
-
                                         <div class="fw-semibold fs-sm py-1">
                                             <a onclick="alert('İnş bulursun')" href="javascript:void(0)">Şifremi Unuttum
                                                 <i class="fa-solid fa-fish"></i></a>
@@ -74,6 +73,19 @@
                                         <button type="submit" class="btn btn-hero btn-primary">
                                             <i class="fa fa-fw fa-sign-in-alt opacity-50 me-1"></i> Giriş Yap
                                         </button>
+                                    </div>
+                                    <div class="d-sm-flex justify-content-sm-between align-items-sm-center text-center text-sm-start mb-4">
+                                        <a href="{{ route('ogrenci_kayit') }}" class="btn btn-hero btn-outline-primary">
+                                            <i class="fa fa-fw fa-graduation-cap opacity-50 me-1"></i> Öğrenci Kayıt
+                                        </a>
+                                        <a href="{{ route('veli_kayit') }}" class="btn btn-hero btn-outline-primary">
+                                            <i class="fa fa-fw fa-users opacity-50 me-1"></i> Veli Kayıt
+                                        </a>
+                                    </div>
+                                    <div class="text-center mb-4">
+                                        <a href="{{ route('ogretmen_kayit') }}" class="btn btn-hero btn-outline-primary">
+                                            <i class="fa fa-fw fa-chalkboard-user opacity-50 me-1"></i> Öğretmen Kayıt
+                                        </a>
                                     </div>
                                 </form>
                             </div>

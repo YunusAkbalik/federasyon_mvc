@@ -288,19 +288,6 @@
                                 </a>
                             </li>
                             <li class="nav-main-item">
-                                <a class="nav-main-link" href="{{ route('ogrenci_kayit') }}">
-                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                    <span class="nav-main-link-name">Öğrenci Kayıt Sayfası</span>
-                                </a>
-                            </li>
-                            <li class="nav-main-item">
-                                <a class="nav-main-link" href="{{ route('veli_kayit') }}">
-                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                    <span class="nav-main-link-name">Veli Kayıt Sayfası</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-main-item">
                                 <a class="nav-main-link{{ request()->is('/') ? ' active' : '' }}" href="/">
                                     <i class="nav-main-link-icon fa fa-location-arrow"></i>
                                     <span class="nav-main-link-name">Dashboard</span>
@@ -383,6 +370,12 @@
                                                 <span
                                                     class="nav-main-link-badge badge rounded-pill bg-warning">{{ $bekleyenOgretmenCount }}</span>
                                             @endif
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link {{ Route::currentRouteName() == 'admin_aktif_ogretmen_list' ? 'active' : '' }}"
+                                            href="{{ route('admin_aktif_ogretmen_list') }}">
+                                            <span class="nav-main-link-name">Aktifler</span>
                                         </a>
                                     </li>
                                 </ul>

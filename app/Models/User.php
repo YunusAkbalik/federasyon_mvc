@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Controllers\ogretmenController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -62,10 +64,14 @@ class User extends Authenticatable
     }
     public function kurum()
     {
-        return $this->hasOne(ogretmenKurumModel::class, 'ogretmen_id', 'id');
+        return $this->hasOne(ogretmenKurumModel::class, 'ogretmen_id', 'id')->with('kurum');
     }
     public function ogr_talepleri()
     {
         return $this->hasMany(kurumOgretmenTalepModel::class, 'ogretmen_id', 'id');
+    }
+    public function photo()
+    {
+        return $this->hasOne(ogretmenPhotoModel::class, 'ogretmen_id', 'id');
     }
 }

@@ -16,7 +16,7 @@ class ogretmenController extends Controller
     public function get_bekleyenler()
     {
         try {
-            $bekleyenler = User::role("Öğretmen")->where('onayli', false)->where('ret', false)->get();
+            $bekleyenler = User::role("Öğretmen")->where('onayli', false)->where('ret', false)->with('photo')->get();
             return view('admin.ogretmen.bekleyen')->with(['data' => $bekleyenler]);
         } catch (Exception $exception) {
             return redirect()->back()->withErrors($exception->getMessage());
@@ -90,5 +90,13 @@ class ogretmenController extends Controller
         } catch (Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 404);
         }
+    }
+    public function aktifList()
+    {
+        $ogretmenler = User::Role('Öğretmen')->where('onayli',true)->where('ret',false)->with('kurum')->with('photo')->get();
+        return view('admin.ogretmen.aktif')->with([
+            'ogretmenler' => $ogretmenler
+        ]);
+
     }
 }

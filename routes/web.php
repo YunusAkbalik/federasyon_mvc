@@ -94,6 +94,7 @@ Route::prefix('admin')->middleware('role:Admin')->group(function () {
         Route::post('onayla', [ogretmenController::class, 'onayla'])->name('admin_onayla_ogretmen');
         Route::post('reddet', [ogretmenController::class, 'reddet'])->name('admin_reddet_ogretmen');
         Route::get('bekleyenler', [ogretmenController::class, 'get_bekleyenler'])->name('admin_bekleyen_ogretmen');
+        Route::get('aktif', [ogretmenController::class, 'aktifList'])->name('admin_aktif_ogretmen_list');
     });
 });
 Route::prefix('veli')->middleware('role:Veli')->group(function () {
