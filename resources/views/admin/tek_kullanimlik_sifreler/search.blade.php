@@ -189,7 +189,6 @@
                     $('#userDivGet').empty()
                     $('#btnDiv').empty()
                     $('#newPassDiv').empty()
-
                     var errorContent = ` <div class="block block-rounded bg-xplay text-white h-100 mb-0">
                                 <div class="block-content text-center py-5">
                                     <p class="mb-4">
@@ -222,7 +221,6 @@
                 contentType: false,
                 success: function(res) {
                     $('#newPassDiv').empty()
-
                     var passDiv = ` <div class="input-group input-group-lg">
                             <div class="input-group">
                                 <input type="text" value="${res.onePass}" readonly class="form-control"
@@ -233,7 +231,6 @@
                             </div>
                         </div>`
                     $('#newPassDiv').append(passDiv)
-                    console.log(res);
                 },
                 error: function(res) {
                     $('#newPassDiv').empty()
