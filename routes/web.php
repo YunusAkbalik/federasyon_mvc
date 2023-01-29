@@ -67,6 +67,8 @@ Route::middleware('onePass')->group(function () {
         Route::get('yeni-kayitlar', [yeniKayitlarController::class, 'list'])->name('admin_yeni_kayitlar');
         Route::get('tek-kullanimlik-sifreler', [onePassController::class, 'index'])->name('admin_tek_kullanimlik_sifreler');
         Route::post('tek-kullanimlik-sifre', [onePassController::class, 'getFromIDorGSM'])->name('admin_tek_kullanimlik_sifre_post');
+        Route::post('tek-kullanimlik-sifre-user-get', [onePassController::class, 'getUser'])->name('admin_tek_kullanimlik_sifre_get_user_post');
+        Route::post('tek-kullanimlik-sifre-user-generate', [onePassController::class, 'generateOnePass'])->name('admin_tek_kullanimlik_sifre_generate_post');
         Route::prefix('kontrol')->group(function () {
             Route::get('/{ozel_id}', [yeniKayitlarController::class, 'kontrolEt'])->name('admin_kontrol');
             Route::post('onayla', [yeniKayitlarController::class, 'onayla'])->name('admin_kontrol_onay');
