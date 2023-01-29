@@ -59,80 +59,88 @@ Route::post('veli-kayit', [AuthController::class, 'veli_kayit_post'])->middlewar
 Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'])->name('getOgrenciFromTc');
 Route::post('get-veli-from-tc', [VeliController::class, 'getVeliFromTc'])->name('getVeliFromTc');
 
-Route::prefix('admin')->middleware('role:Admin')->group(function () {
-    Route::get('/', [adminController::class, 'dash'])->name('admin_dash');
-    Route::get('loglar/{cid?}', [LogController::class, 'index'])->name('admin_loglar');
-    Route::get('yeni-kayitlar', [yeniKayitlarController::class, 'list'])->name('admin_yeni_kayitlar');
-    Route::get('tek-kullanimlik-sifreler', [onePassController::class, 'index'])->name('admin_tek_kullanimlik_sifreler');
-    Route::post('tek-kullanimlik-sifre', [onePassController::class, 'getFromIDorGSM'])->name('admin_tek_kullanimlik_sifre_post');
-    Route::prefix('kontrol')->group(function () {
-        Route::get('/{ozel_id}', [yeniKayitlarController::class, 'kontrolEt'])->name('admin_kontrol');
-        Route::post('onayla', [yeniKayitlarController::class, 'onayla'])->name('admin_kontrol_onay');
-        Route::post('reddet', [yeniKayitlarController::class, 'reddet'])->name('admin_kontrol_reddet');
+
+Route::middleware('onePass')->group(function () {
+    Route::prefix('admin')->middleware('role:Admin')->group(function () {
+        Route::get('/', [adminController::class, 'dash'])->name('admin_dash');
+        Route::get('loglar/{cid?}', [LogController::class, 'index'])->name('admin_loglar');
+        Route::get('yeni-kayitlar', [yeniKayitlarController::class, 'list'])->name('admin_yeni_kayitlar');
+        Route::get('tek-kullanimlik-sifreler', [onePassController::class, 'index'])->name('admin_tek_kullanimlik_sifreler');
+        Route::post('tek-kullanimlik-sifre', [onePassController::class, 'getFromIDorGSM'])->name('admin_tek_kullanimlik_sifre_post');
+        Route::prefix('kontrol')->group(function () {
+            Route::get('/{ozel_id}', [yeniKayitlarController::class, 'kontrolEt'])->name('admin_kontrol');
+            Route::post('onayla', [yeniKayitlarController::class, 'onayla'])->name('admin_kontrol_onay');
+            Route::post('reddet', [yeniKayitlarController::class, 'reddet'])->name('admin_kontrol_reddet');
+        });
+        Route::prefix('hesap-olustur')->group(function () {
+            Route::get('ogrenci', [AuthController::class, 'ogrenciHesapOlustur'])->name('admin_create_acc_ogrenci');
+            Route::post('ogrenci', [AuthController::class, 'ogrenciHesapOlustur_post'])->name('admin_create_acc_ogrenci_post');
+            Route::get('veli', [AuthController::class, 'veliHesapOlustur'])->name('admin_create_acc_veli');
+            Route::post('veli', [AuthController::class, 'veliHesapOlustur_post'])->name('admin_create_acc_veli_post');
+        });
+        Route::prefix('kayitlar')->group(function () {
+            Route::get('ogrenci', [OgrenciController::class, 'list'])->name('admin_list_ogrenci');
+            Route::post('ogrenci', [OgrenciController::class, 'get'])->name('admin_get_ogrenci');
+            Route::get('veli', [VeliController::class, 'list'])->name('admin_list_veli');
+            Route::post('veli', [VeliController::class, 'get'])->name('admin_get_veli');
+        });
+        Route::prefix('kurumlar')->group(function () {
+            Route::get('/', [kurumController::class, 'list'])->name('admin_list_kurum');
+            Route::get('olustur', [kurumController::class, 'create'])->name('admin_create_kurum');
+            Route::post('olustur', [kurumController::class, 'create_post'])->name('admin_create_kurum_post');
+            Route::get('duzenle/{id}', [kurumController::class, 'edit'])->name('admin_edit_kurum');
+            Route::post('get', [kurumController::class, 'get'])->name('admin_get_kurum');
+        });
+        Route::prefix('ogretmenler')->group(function () {
+            Route::post('show_bekleyen', [ogretmenController::class, 'show_bekleyen'])->name('admin_show_ogretmen_bekleyen');
+            Route::post('onayla', [ogretmenController::class, 'onayla'])->name('admin_onayla_ogretmen');
+            Route::post('reddet', [ogretmenController::class, 'reddet'])->name('admin_reddet_ogretmen');
+            Route::get('bekleyenler', [ogretmenController::class, 'get_bekleyenler'])->name('admin_bekleyen_ogretmen');
+            Route::get('aktif', [ogretmenController::class, 'aktifList'])->name('admin_aktif_ogretmen_list');
+        });
     });
-    Route::prefix('hesap-olustur')->group(function () {
-        Route::get('ogrenci', [AuthController::class, 'ogrenciHesapOlustur'])->name('admin_create_acc_ogrenci');
-        Route::post('ogrenci', [AuthController::class, 'ogrenciHesapOlustur_post'])->name('admin_create_acc_ogrenci_post');
-        Route::get('veli', [AuthController::class, 'veliHesapOlustur'])->name('admin_create_acc_veli');
-        Route::post('veli', [AuthController::class, 'veliHesapOlustur_post'])->name('admin_create_acc_veli_post');
+    Route::prefix('veli')->middleware('role:Veli')->group(function () {
+        Route::get('/', [VeliController::class, 'dashboard'])->name('veli_dash');
     });
-    Route::prefix('kayitlar')->group(function () {
-        Route::get('ogrenci', [OgrenciController::class, 'list'])->name('admin_list_ogrenci');
-        Route::post('ogrenci', [OgrenciController::class, 'get'])->name('admin_get_ogrenci');
-        Route::get('veli', [VeliController::class, 'list'])->name('admin_list_veli');
-        Route::post('veli', [VeliController::class, 'get'])->name('admin_get_veli');
+    Route::prefix('ogrenci')->middleware('role:Öğrenci')->group(function () {
+        Route::get('/', [OgrenciController::class, 'dashboard'])->name('ogrenci_dash');
     });
-    Route::prefix('kurumlar')->group(function () {
-        Route::get('/', [kurumController::class, 'list'])->name('admin_list_kurum');
-        Route::get('olustur', [kurumController::class, 'create'])->name('admin_create_kurum');
-        Route::post('olustur', [kurumController::class, 'create_post'])->name('admin_create_kurum_post');
-        Route::get('duzenle/{id}', [kurumController::class, 'edit'])->name('admin_edit_kurum');
-        Route::post('get', [kurumController::class, 'get'])->name('admin_get_kurum');
+    Route::prefix('ogretmen')->middleware('role:Öğretmen')->group(function () {
+        Route::get('/', [ogretmenController::class, 'dashboard'])->name('ogretmen_dash');
+        Route::get('talepler', [talepController::class, 'list'])->name('ogretmen_talep_list');
+        Route::post('talepSonuclandir', [talepController::class, 'sonuclandir'])->name('ogretmen_talep_sonuclandir');
     });
-    Route::prefix('ogretmenler')->group(function () {
-        Route::post('show_bekleyen', [ogretmenController::class, 'show_bekleyen'])->name('admin_show_ogretmen_bekleyen');
-        Route::post('onayla', [ogretmenController::class, 'onayla'])->name('admin_onayla_ogretmen');
-        Route::post('reddet', [ogretmenController::class, 'reddet'])->name('admin_reddet_ogretmen');
-        Route::get('bekleyenler', [ogretmenController::class, 'get_bekleyenler'])->name('admin_bekleyen_ogretmen');
-        Route::get('aktif', [ogretmenController::class, 'aktifList'])->name('admin_aktif_ogretmen_list');
+    Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
+        Route::get('/', [kurumController::class, 'dashboard'])->name('kurum_dash');
+        Route::get('loglar/{cid?}', [kurumLogController::class, 'index'])->name('kurum_loglar');
+        Route::prefix('ogretmen')->group(function () {
+            Route::get('atamaBekleyenler', [KurumOgretmenController::class, 'atamaBekleyenler'])->name('kurum_ogretmen_bekleyenler');
+            Route::post('atamaBekleyenler', [KurumOgretmenController::class, 'show_bekleyen'])->name('kurum_ogretmen_bekleyenler_show');
+            Route::post('atamaBekleyenler_talep', [KurumOgretmenController::class, 'talep_et'])->name('kurum_ogretmen_bekleyenler_talep');
+        });
+        Route::prefix('okul')->group(function () {
+            Route::get('/', [kurumOkulController::class, 'index'])->name('kurum_okul_index');
+            Route::post('ekle', [kurumOkulController::class, 'add'])->name('kurum_okul_add');
+        });
+        Route::prefix('sinif')->group(function () {
+            Route::get('/', [kurumSinifController::class, 'index'])->name('kurum_sinif_index');
+            Route::get('/{id}', [kurumSinifController::class, 'show'])->name('kurum_sinif_show');
+            Route::post('ogrenciEkleTc', [kurumSinifController::class, 'ogrenciEkleTc'])->name('kurum_sinif_add_ogrenci_tc');
+            Route::post('ekle', [kurumSinifController::class, 'add'])->name('kurum_sinif_add');
+            Route::post('get', [kurumSinifController::class, 'get'])->name('kurum_sinif_get');
+        });
+        Route::prefix('hesap-olustur')->group(function () {
+            Route::get('ogrenci', [kurumOgrenciController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_ogrenci');
+            Route::post('ogrenci', [kurumOgrenciController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_ogrenci_post');
+            Route::post('getSinifFromOkul', [kurumSinifController::class, 'getSiniflar'])->name('kurum_get_sinif_from_okul');
+            Route::post('getIlIlceFromOkul', [kurumOkulController::class, 'getIlIlceFromOkul'])->name('kurum_get_ililce_from_okul');
+            Route::get('veli', [kurumVeliController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_veli');
+            Route::post('veli', [kurumVeliController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_veli_post');
+        });
     });
 });
-Route::prefix('veli')->middleware('role:Veli')->group(function () {
-    Route::get('/', [VeliController::class, 'dashboard'])->name('veli_dash');
-});
-Route::prefix('ogrenci')->middleware('role:Öğrenci')->group(function () {
-    Route::get('/', [OgrenciController::class, 'dashboard'])->name('ogrenci_dash');
-});
-Route::prefix('ogretmen')->middleware('role:Öğretmen')->group(function () {
-    Route::get('/', [ogretmenController::class, 'dashboard'])->name('ogretmen_dash');
-    Route::get('talepler', [talepController::class, 'list'])->name('ogretmen_talep_list');
-    Route::post('talepSonuclandir', [talepController::class, 'sonuclandir'])->name('ogretmen_talep_sonuclandir');
-});
-Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
-    Route::get('/', [kurumController::class, 'dashboard'])->name('kurum_dash');
-    Route::get('loglar/{cid?}', [kurumLogController::class, 'index'])->name('kurum_loglar');
-    Route::prefix('ogretmen')->group(function () {
-        Route::get('atamaBekleyenler', [KurumOgretmenController::class, 'atamaBekleyenler'])->name('kurum_ogretmen_bekleyenler');
-        Route::post('atamaBekleyenler', [KurumOgretmenController::class, 'show_bekleyen'])->name('kurum_ogretmen_bekleyenler_show');
-        Route::post('atamaBekleyenler_talep', [KurumOgretmenController::class, 'talep_et'])->name('kurum_ogretmen_bekleyenler_talep');
-    });
-    Route::prefix('okul')->group(function () {
-        Route::get('/', [kurumOkulController::class, 'index'])->name('kurum_okul_index');
-        Route::post('ekle', [kurumOkulController::class, 'add'])->name('kurum_okul_add');
-    });
-    Route::prefix('sinif')->group(function () {
-        Route::get('/', [kurumSinifController::class, 'index'])->name('kurum_sinif_index');
-        Route::get('/{id}', [kurumSinifController::class, 'show'])->name('kurum_sinif_show');
-        Route::post('ogrenciEkleTc', [kurumSinifController::class, 'ogrenciEkleTc'])->name('kurum_sinif_add_ogrenci_tc');
-        Route::post('ekle', [kurumSinifController::class, 'add'])->name('kurum_sinif_add');
-        Route::post('get', [kurumSinifController::class, 'get'])->name('kurum_sinif_get');
-    });
-    Route::prefix('hesap-olustur')->group(function () {
-        Route::get('ogrenci', [kurumOgrenciController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_ogrenci');
-        Route::post('ogrenci', [kurumOgrenciController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_ogrenci_post');
-        Route::post('getSinifFromOkul', [kurumSinifController::class, 'getSiniflar'])->name('kurum_get_sinif_from_okul');
-        Route::post('getIlIlceFromOkul', [kurumOkulController::class, 'getIlIlceFromOkul'])->name('kurum_get_ililce_from_okul');
-        Route::get('veli', [kurumVeliController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_veli');
-        Route::post('veli', [kurumVeliController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_veli_post');
-    });
+
+Route::prefix('parola')->group(function () {
+    Route::get('yeni', [onePassController::class, 'changePass'])->name('onePass_change');
+    Route::post('yeni', [onePassController::class, 'changePost'])->name('onePass_change_post');
 });
