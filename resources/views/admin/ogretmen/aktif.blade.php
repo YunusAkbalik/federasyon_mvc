@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/magnific-popup/magnific-popup.css') }}">
 @endsection
 @section('content')
     <!-- Hero -->
@@ -24,10 +25,21 @@
 
     <!-- Page Content -->
     <div class="content">
+
+        <div id="imageModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl text-center">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img style="max-width: 500px" src="{{ asset('uploads/teacher_photos/teacher.jpg') }}"
+                            class="img-responsive">
+                    </div>
+                </div>
+            </div>
+        </div>
         <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
             <thead>
                 <tr>
-                    <th style="width: 100px">#</th>
+                    <th style="width: 150px">#</th>
                     <th>ID</th>
                     <th>Ad Soyad</th>
                     <th>T.C Kimlik Numarası</th>
@@ -38,7 +50,14 @@
             <tbody>
                 @foreach ($ogretmenler as $ogretmen)
                     <tr>
-                        <td style="width: 100px"> <img src="{{ asset('uploads/teacher_photos/'.$ogretmen->photo->photo_path) }}" width="100px" alt=""> </td>
+                        <td class="js-gallery" style="width: 150px">
+                            <a class="img-link img-link-zoom-in img-lightbox"
+                                href="{{ asset('uploads/teacher_photos/' . $ogretmen->photo->photo_path) }}">
+                                <img class="img-fluid" width="150px"
+                                    src="{{ asset('uploads/teacher_photos/' . $ogretmen->photo->photo_path) }}"
+                                    alt="">
+                            </a>
+                        </td>
                         <td>{{ $ogretmen->ozel_id }}</td>
                         <td>{{ $ogretmen->ad . ' ' . $ogretmen->soyad }}</td>
                         <td>{{ $ogretmen->tc_kimlik }}</td>
@@ -65,4 +84,10 @@
     <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/aktif-ogretmen-list.js') }}"></script>
+    <!-- Page JS Plugins -->
+    <script src="{{ asset('assets/js/plugins/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+    <!-- Page JS Helpers (Magnific Popup Plugin) -->
+    <script>
+        Dashmix.helpersOnLoad(['jq-magnific-popup']);
+    </script>
 @endsection

@@ -5,6 +5,7 @@
     <link rel="stylesheet"
         href="{{ asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/magnific-popup/magnific-popup.css') }}">
 @endsection
 @section('content')
     @include('admin.ogretmen.modals.bekleyen')
@@ -23,7 +24,7 @@
         <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
             <thead>
                 <tr>
-                    <th style="width: 100px">#</th>
+                    <th style="width: 150px">#</th>
                     <th>ID</th>
                     <th>Ad Soyad</th>
                     <th>T.C Kimlik Numarası</th>
@@ -33,7 +34,14 @@
             <tbody>
                 @foreach ($data as $x)
                     <tr>
-                        <td style="width: 100px"><img src="{{ asset('uploads/teacher_photos/'.$x->photo->photo_path) }}" width="100px" alt=""></td>
+                        <td class="js-gallery" style="width: 150px">
+                            <a class="img-link img-link-zoom-in img-lightbox"
+                                href="{{ asset('uploads/teacher_photos/' . $x->photo->photo_path) }}">
+                                <img class="img-fluid" width="150px"
+                                    src="{{ asset('uploads/teacher_photos/' . $x->photo->photo_path) }}"
+                                    alt="">
+                            </a>
+                        </td>
                         <td><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalHere"
                                 onclick="getData({{ $x->id }})">{{ $x->ozel_id }}</a> </td>
                         <td>
@@ -63,4 +71,10 @@
     <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/bekleyen_ogretmenler.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Page JS Plugins -->
+    <script src="{{ asset('assets/js/plugins/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+    <!-- Page JS Helpers (Magnific Popup Plugin) -->
+    <script>
+        Dashmix.helpersOnLoad(['jq-magnific-popup']);
+    </script>
 @endsection
