@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
 @section('content')
+    @include('kurum.siniflar.modals.ogrenciEkle')
     <!-- Hero -->
     <div class="bg-body-light">
         <div class="content content-full">
@@ -21,7 +22,7 @@
     <!-- Page Content -->
     <div class="content">
         <div class="row mb-4">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="block block-rounded text-center d-flex flex-column h-100 mb-0">
                     <div class="block-content block-content-full flex-grow-1">
                         <div class="item rounded-3 bg-body mx-auto my-3">
@@ -43,7 +44,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <a href="javascript:void(0)" class="block block-rounded  text-center d-flex flex-column h-100 mb-0"
+                data-bs-toggle="modal" data-bs-target="#ogrenci-ekle" >
+                    <div
+                        class="block-content  block-content-full flex-grow-1 d-flex justify-content-center align-items-center">
+                        <div>
+                            <i class="fa fa-school-flag fa-2x  text-success"></i>
+                            <div class="fw-semibold mt-3 text-uppercase">Okuldan öğrenci(ler) seç</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
                 <a class="block block-rounded  text-center d-flex flex-column h-100 mb-0"
                     href="{{ route('kurum_hesapOlustur_ogrenci',['sinif' => $sinif->id]) }}">
                     <div
