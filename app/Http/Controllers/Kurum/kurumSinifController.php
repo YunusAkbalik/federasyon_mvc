@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
 use App\Models\kurumLogModel;
+use App\Models\kurumModel;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
 use App\Models\LogModel;
@@ -109,9 +110,11 @@ class kurumSinifController extends Controller
             if ($sinif->kurum_id != $kurum->id)
                 throw new Exception("Sınıf Bulunamadı");
             $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->get();
+            $kurumOkullar = kurumOkulModel::where('kurum_id',get_current_kurum()->id)->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
             return view('kurum.siniflar.show')->with([
                 'sinif' => $sinif,
                 'ogrenciler' => $ogrenciler,
+                'kurumOkullar' => $kurumOkullar,
             ]);
         } catch (Exception $ex) {
             return redirect()->back()->withErrors($ex->getMessage());

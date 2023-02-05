@@ -21,8 +21,8 @@
 
     <!-- Page Content -->
     <div class="content">
-        <div class="row mb-4">
-            <div class="col-md-4">
+        <div class="row">
+            <div class="col-xl-4 col-md-6 mb-4">
                 <div class="block block-rounded text-center d-flex flex-column h-100 mb-0">
                     <div class="block-content block-content-full flex-grow-1">
                         <div class="item rounded-3 bg-body mx-auto my-3">
@@ -44,21 +44,33 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <a href="javascript:void(0)" class="block block-rounded  text-center d-flex flex-column h-100 mb-0"
-                data-bs-toggle="modal" data-bs-target="#ogrenci-ekle" >
-                    <div
-                        class="block-content  block-content-full flex-grow-1 d-flex justify-content-center align-items-center">
-                        <div>
-                            <i class="fa fa-school-flag fa-2x  text-success"></i>
-                            <div class="fw-semibold mt-3 text-uppercase">Okuldan öğrenci(ler) seç</div>
-                        </div>
+            <div class="col-xl-4 col-md-6 mb-4">
+                <!-- Your Block -->
+                <div class="block block-rounded">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">
+                            Okuldan Öğrenci(ler) Seç
+                        </h3>
                     </div>
-                </a>
+                    <div class="block-content text-center">
+                        <div class="mb-4">
+                            <select class="form-control" name="okulList" id="okulList">
+                                @foreach ($kurumOkullar as $okul)
+                                    <option value="{{ $okul->okul->id }}">{{ $okul->okul->ad }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <button data-bs-toggle="modal" data-bs-target="#ogrenci-ekle" class="btn btn-alt-primary">Öğrencileri Getir</button>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- END Your Block -->
             </div>
-            <div class="col-md-4">
+            <div class="col-xl-4 col-md-6 mb-4">
                 <a class="block block-rounded  text-center d-flex flex-column h-100 mb-0"
-                    href="{{ route('kurum_hesapOlustur_ogrenci',['sinif' => $sinif->id]) }}">
+                    href="{{ route('kurum_hesapOlustur_ogrenci', ['sinif' => $sinif->id]) }}">
                     <div
                         class="block-content  block-content-full flex-grow-1 d-flex justify-content-center align-items-center">
                         <div>

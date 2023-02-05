@@ -4,22 +4,60 @@
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="block block-rounded block-themed block-transparent mb-0">
-                <div class="block-header bg-primary-dark">
-                    <h3 class="block-title">Modal Title</h3>
-                    <div class="block-options">
-                        <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                            <i class="fa fa-fw fa-times"></i>
-                        </button>
-                    </div>
-                </div>
+             
                 <div class="block-content">
-                    <p>Potenti elit lectus augue eget iaculis vitae etiam, ullamcorper etiam bibendum ad feugiat magna
-                        accumsan dolor, nibh molestie cras hac ac ad massa, fusce ante convallis ante urna molestie
-                        vulputate bibendum tempus ante justo arcu erat accumsan adipiscing risus, libero condimentum
-                        venenatis sit nisl nisi ultricies sed, fames aliquet consectetur consequat nostra molestie neque
-                        nullam scelerisque neque commodo turpis quisque etiam egestas vulputate massa, curabitur tellus
-                        massa venenatis congue dolor enim integer luctus, nisi suscipit gravida fames quis vulputate
-                        nisi viverra luctus id leo dictum lorem, inceptos nibh orci.</p>
+                    <div id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="block block-rounded mb-1">
+                          <div class="block-header block-header-default" role="tab" id="accordion2_h1">
+                            <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2" href="#accordion2_q1" aria-expanded="true" aria-controls="accordion2_q1">2.1 Accordion Title</a>
+                          </div>
+                          <div id="accordion2_q1" class="collapse show" role="tabpanel" aria-labelledby="accordion2_h1">
+                            <div class="block-content">
+                              <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="block block-rounded mb-1">
+                          <div class="block-header block-header-default" role="tab" id="accordion2_h2">
+                            <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2" href="#accordion2_q2" aria-expanded="true" aria-controls="accordion2_q2">2.2 Accordion Title</a>
+                          </div>
+                          <div id="accordion2_q2" class="collapse" role="tabpanel" aria-labelledby="accordion2_h2">
+                            <div class="block-content">
+                              <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="block block-rounded mb-1">
+                          <div class="block-header block-header-default" role="tab" id="accordion2_h3">
+                            <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2" href="#accordion2_q3" aria-expanded="true" aria-controls="accordion2_q3">2.3 Accordion Title</a>
+                          </div>
+                          <div id="accordion2_q3" class="collapse" role="tabpanel" aria-labelledby="accordion2_h3">
+                            <div class="block-content">
+                              <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="block block-rounded mb-1">
+                          <div class="block-header block-header-default" role="tab" id="accordion2_h4">
+                            <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2" href="#accordion2_q4" aria-expanded="true" aria-controls="accordion2_q4">2.4 Accordion Title</a>
+                          </div>
+                          <div id="accordion2_q4" class="collapse" role="tabpanel" aria-labelledby="accordion2_h4">
+                            <div class="block-content">
+                              <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="block block-rounded mb-1">
+                          <div class="block-header block-header-default" role="tab" id="accordion2_h5">
+                            <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2" href="#accordion2_q5" aria-expanded="true" aria-controls="accordion2_q5">2.5 Accordion Title</a>
+                          </div>
+                          <div id="accordion2_q5" class="collapse" role="tabpanel" aria-labelledby="accordion2_h5">
+                            <div class="block-content">
+                              <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                 </div>
                 <div class="block-content block-content-full text-end bg-body">
                     <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-dismiss="modal">Close</button>
