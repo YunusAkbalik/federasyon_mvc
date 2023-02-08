@@ -10,6 +10,7 @@ use App\Models\kurumModel;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
 use App\Models\LogModel;
+use App\Models\OgrenciOkulModel;
 use App\Models\OkulModel;
 use Exception;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class kurumOkulController extends Controller
         $tumOkullar = OkulModel::orderBy('ad')->get();
         $kurum = get_current_kurum();
         $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('KurumOzelsiniflar')->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
-        
+
 
         $iller = IlModel::all();
         return view('kurum.okullar.index')->with([
@@ -83,6 +84,21 @@ class kurumOkulController extends Controller
                 "il" => $il->id,
             ];
             return response()->json(['data' => $data]);
+        } catch (Exception $ex) {
+            return response()->json(['message' => $ex->getMessage()], 404);
+        }
+    }
+
+    public function getOgrenciler(Request $request)
+    {
+        try {
+            if (!$request->id)
+                throw new Exception("Okul bilgisi alınamadı");
+            $okul = OkulModel::find($request->id);
+            if (!$okul)
+                throw new Exception("Okul bilgisi alınamadı");
+            $ogrenciler = OgrenciOkulModel::where('okul_id', $okul->id)->with('ogrenci')->get();
+            return response()->json(['data' => $ogrenciler]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
         }

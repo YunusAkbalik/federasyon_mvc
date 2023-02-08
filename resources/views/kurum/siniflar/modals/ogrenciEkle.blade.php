@@ -3,7 +3,6 @@
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="block block-rounded block-themed block-transparent mb-0">
-
                 <div class="block-content">
                     <div id="accordion2" role="tablist" aria-multiselectable="true">
                         <div class="block block-rounded mb-1">
@@ -25,29 +24,29 @@
                                             aria-labelledby="accordion2_h1">
                                             <div class="block-content">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="ogrenci_1" name="ogrenci_1"
+                                                    <input class="form-check-input" type="checkbox" value="1"
+                                                        id="ogrenci_1" name="ogrenci[]"
                                                         >
                                                     <label class="form-check-label"
                                                         for="ogrenci_1">Ali Yıldırım</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="ogrenci_2" name="ogrenci_2"
+                                                    <input class="form-check-input" type="checkbox" value="2"
+                                                        id="ogrenci_2" name="ogrenci[]"
                                                         >
                                                     <label class="form-check-label"
                                                         for="ogrenci_2">Veli Gün</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="ogrenci_3" name="ogrenci_3"
+                                                    <input class="form-check-input" type="checkbox" value="3"
+                                                        id="ogrenci_3" name="ogrenci[]"
                                                         >
                                                     <label class="form-check-label"
                                                         for="ogrenci_3">Ayşe Ak</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="ogrenci_5" name="ogrenci_5"
+                                                    <input class="form-check-input" type="checkbox" value="4"
+                                                        id="ogrenci_5" name="ogrenci[]"
                                                         >
                                                     <label class="form-check-label"
                                                         for="ogrenci_5">Fatma Kaya</label>

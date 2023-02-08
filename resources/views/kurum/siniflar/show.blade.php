@@ -61,7 +61,8 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <button data-bs-toggle="modal" data-bs-target="#ogrenci-ekle" class="btn btn-alt-primary">Öğrencileri Getir</button>
+                            <button onclick="ogrencileriGetir()" data-bs-toggle="modal" data-bs-target="#ogrenci-ekle"
+                                class="btn btn-alt-primary">Öğrencileri Getir</button>
                         </div>
 
                     </div>
@@ -157,6 +158,70 @@
                     })
                 }
             })
+        }
+
+        function ogrencileriGetir() {
+            var id = $('#okulList').val()
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('id', id);
+            $.ajax({
+                url: '{{ route('kurum_getData_ogrenci_from_school') }}',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    // console.log(res.data);
+                    var siniflar = []
+                    res.data.forEach(element => {
+                        if (!siniflar.includes(element.sinif))
+                            siniflar.push(element.sinif)
+                    });
+                    // console.log(siniflar);
+                    var sonuc = []
+                    siniflar.forEach(element => {
+                        var icArray = []
+                        res.data.forEach(x => {
+                            if (x.sinif == element) {
+                                var obj = {
+                                    sube: x.sube,
+                                    ogrenci: x.ogrenci_id
+                                }
+                                icArray.push(obj)
+                            }
+                        });
+                        var lastArray = {}
+                        lastArray[element] = icArray
+                        sonuc.push(lastArray)
+                    });
+                    console.log(sonuc);
+
+
+                },
+                error: function(res) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: res.responseJSON.message,
+                        confirmButtonText: "Tamam"
+                    }).then((result) => {
+                        location.reload();
+                    })
+                }
+            })
+        }
+
+        function sendData() {
+            var values = $("input[name='ogrenci[]']")
+                .map(function() {
+                    var obj = {
+                        "id": $(this).val(),
+                        "durum": $(this).is(':checked')
+                    }
+                    return obj;
+                }).get();
+            console.log(values);
         }
     </script>
 @endsection

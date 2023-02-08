@@ -20,5 +20,9 @@ class OgrenciOkulModel extends Model
     {
         return $this->hasOne(OkulModel::class, 'id', 'okul_id');
     }
+    public function ogrenci()
+    {
+        return $this->hasOne(User::class, 'id', 'ogrenci_id');
+    }
 
 }
