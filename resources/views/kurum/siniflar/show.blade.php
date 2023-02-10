@@ -174,10 +174,8 @@
                 processData: false,
                 contentType: false,
                 success: function(res) {
-                    console.log(res);
                     $('#accordion2').empty()
                     if (res.data.length != 0) {
-                        // console.log(res.data.length);
                         var siniflar = []
                         res.data.forEach(element => {
                             if (!siniflar.includes(element.sinif))
@@ -249,66 +247,6 @@
                             });
 
                         });
-                        // console.log(res.data);
-                        // var siniflar = []
-                        // res.data.forEach(element => {
-                        //     if (!siniflar.includes(element.sinif))
-                        //         siniflar.push(element.sinif)
-                        // });
-                        // var sonuc = []
-                        // siniflar.forEach(element => {
-                        //     var icArray = []
-                        //     res.data.forEach(x => {
-                        //         if (x.sinif == element) {
-                        //             var obj = {
-                        //                 sube: x.sube,
-                        //                 ogrenci: x.ogrenci_id
-                        //             }
-                        //             icArray.push(obj)
-                        //         }
-                        //     });
-                        //     var lastArray = {}
-                        //     lastArray[element] = icArray
-                        //     sonuc.push(lastArray)
-                        // });
-                        // var yazilanSiniflar = []
-                        // var yazilanSubeler = []
-                        // for (let index = 1; index < 13; index++) {
-                        //     sonuc.forEach(element => {
-                        //         if (element[index] != undefined) {
-                        //             console.log(index+ ". sınıf datası");
-                        //             console.log(element[index]);
-                        //             if(!yazilanSiniflar.includes(index)){
-                        //                 // Yazılacak
-
-                        //                 // Yeni sınıf açılacak
-                        //                 var yenisinif = ` <div  class="block block-rounded mb-1">
-                    //         <div class="block-header block-header-default" role="tab" id="accordion2_h1">
-                    //             <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2"
-                    //                 href="#accordion2_q1" aria-expanded="true" aria-controls="accordion2_q1">1.
-                    //                 Sınıf</a>
-                    //         </div>
-                    //         <div id="accordion2_q1" class="collapse" role="tabpanel" aria-labelledby="accordion2_h1">
-                    //             <div id="sinif_${index}" class="block-content">
-
-                    //             </div>
-                    //         </div>
-                    //     </div>`
-                        //                 yazilanSiniflar.push(index)
-                        //                 yazilanSubeler = []
-                        //                 var currentArray = element[index]
-                        //                 currentArray.forEach(ogrenciler => {
-                        //                     if(!yazilanSubeler.includes(ogrenciler.sube)){
-                        //                         yazilanSubeler.push(ogrenciler.sube)
-                        //                         // Yeni şube açılacak
-                        //                     }
-                        //                 });
-
-                        //             }
-                        //         } 
-                        //     });
-                        // }
-
                         $('#ogrenci-ekle').modal('show')
                     } else {
                         Dashmix.helpers('jq-notify', {
@@ -340,7 +278,6 @@
                     }
                     return obj;
                 }).get();
-            console.log(values);
             values = JSON.stringify(values)
             var fd = new FormData();
             fd.append('_token', $('input[name="_token"]').val());
