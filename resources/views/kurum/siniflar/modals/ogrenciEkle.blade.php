@@ -5,7 +5,7 @@
             <div class="block block-rounded block-themed block-transparent mb-0">
                 <div class="block-content">
                     <div id="accordion2" role="tablist" aria-multiselectable="true">
-                        <div class="block block-rounded mb-1">
+                        {{-- <div id="sinif_1" class="block block-rounded mb-1">
                             <div class="block-header block-header-default" role="tab" id="accordion2_h1">
                                 <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2"
                                     href="#accordion2_q1" aria-expanded="true" aria-controls="accordion2_q1">1.
@@ -191,13 +191,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
+                     
                     </div>
                 </div>
                 <div class="block-content block-content-full text-end bg-body">
-                    <button type="button" class="btn btn-sm btn-alt-secondary"
-                        data-bs-dismiss="modal">İptal</button>
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Öğrencileri
+                    <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="button" onclick="sendData()" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Öğrencileri
                         Ekle</button>
                 </div>
             </div>

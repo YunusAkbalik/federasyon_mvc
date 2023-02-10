@@ -110,7 +110,7 @@ class kurumSinifController extends Controller
             if ($sinif->kurum_id != $kurum->id)
                 throw new Exception("Sınıf Bulunamadı");
             $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->get();
-            $kurumOkullar = kurumOkulModel::where('kurum_id',get_current_kurum()->id)->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
+            $kurumOkullar = kurumOkulModel::where('kurum_id', get_current_kurum()->id)->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
             return view('kurum.siniflar.show')->with([
                 'sinif' => $sinif,
                 'ogrenciler' => $ogrenciler,
@@ -155,7 +155,7 @@ class kurumSinifController extends Controller
 
 
             $kurumlogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), Öğrenci $ogrenci->ad $ogrenci->soyad ($ogrenci->ozel_id) sınıfa ekledi; '$sinif->ad'";
-            kurumLogModel::create(['kategori_id' => 9, 'logText' => $kurumlogText , 'kurum_id' => get_current_kurum()->id]);
+            kurumLogModel::create(['kategori_id' => 9, 'logText' => $kurumlogText, 'kurum_id' => get_current_kurum()->id]);
             return response()->json(['message' => "Öğrenci $ogrenci->ad $ogrenci->soyad, sınıfa eklendi"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
@@ -183,6 +183,33 @@ class kurumSinifController extends Controller
                 'okul_id' => $okul->id,
             ])->get();
             return response()->json(['data' => $sinif]);
+        } catch (Exception $ex) {
+            return response()->json(['message' => $ex->getMessage()], 404);
+        }
+    }
+    public function ogrenciEkleToplu(Request $request)
+    {
+        try {
+            if (!$request->values)
+                throw new Exception("Veri Alınamadı");
+            $data = json_decode($request->values);
+            $sinif = sinifModel::find($request->sinif);
+            if (!$sinif)
+                throw new Exception("Sınıf verisi alınamadı");
+            if ($sinif->kurum_id != get_current_kurum()->id)
+                throw new Exception("Sınıf verisi alınamadı");
+            foreach ($data as $key) {
+                if ($key->durum) {
+                    $exist = ogrenciSinifModel::where('sinif_id', $sinif->id)->where('ogrenci_id', $key->id)->first();
+                    if (!$exist) {
+                        ogrenciSinifModel::create([
+                            'sinif_id' => $sinif->id,
+                            'ogrenci_id' => $key->id
+                        ]);
+                    }
+                }
+            }
+            return response()->json(['message' => "Öğrenciler sınıfa eklendi"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
         }

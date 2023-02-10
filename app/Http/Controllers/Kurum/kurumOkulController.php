@@ -11,7 +11,9 @@ use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
 use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
+use App\Models\ogrenciSinifModel;
 use App\Models\OkulModel;
+use App\Models\sinifModel;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -92,13 +94,19 @@ class kurumOkulController extends Controller
     public function getOgrenciler(Request $request)
     {
         try {
-            if (!$request->id)
+            if (!$request->id || !$request->sinif)
                 throw new Exception("Okul bilgisi alınamadı");
             $okul = OkulModel::find($request->id);
             if (!$okul)
                 throw new Exception("Okul bilgisi alınamadı");
-            $ogrenciler = OgrenciOkulModel::where('okul_id', $okul->id)->with('ogrenci')->get();
-            return response()->json(['data' => $ogrenciler]);
+            $sinif = sinifModel::find($request->sinif);
+            if (!$sinif)
+                throw new Exception("Sınıf bilgisi alınamadı");
+            if ($sinif->kurum_id != get_current_kurum()->id)
+                throw new Exception("Sınıf bilgisi alınamadı");
+            $siniftakiler = ogrenciSinifModel::where('sinif_id',$sinif->id)->get();
+            $ogrenciler = OgrenciOkulModel::where('okul_id', $okul->id)->with('ogrenci')->orderBy('sube')->get();
+            return response()->json(['data' => $ogrenciler , 'siniftakiler' => $siniftakiler]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
         }

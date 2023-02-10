@@ -61,8 +61,7 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <button onclick="ogrencileriGetir()" data-bs-toggle="modal" data-bs-target="#ogrenci-ekle"
-                                class="btn btn-alt-primary">Öğrencileri Getir</button>
+                            <button onclick="ogrencileriGetir()" class="btn btn-alt-primary">Öğrencileri Getir</button>
                         </div>
 
                     </div>
@@ -161,10 +160,13 @@
         }
 
         function ogrencileriGetir() {
+            Dashmix.layout('header_loader_on');
             var id = $('#okulList').val()
             var fd = new FormData();
             fd.append('_token', $('input[name="_token"]').val());
             fd.append('id', id);
+            fd.append('sinif', "{{ $sinif->id }}");
+
             $.ajax({
                 url: '{{ route('kurum_getData_ogrenci_from_school') }}',
                 method: 'post',
@@ -172,42 +174,159 @@
                 processData: false,
                 contentType: false,
                 success: function(res) {
-                    // console.log(res.data);
-                    var siniflar = []
-                    res.data.forEach(element => {
-                        if (!siniflar.includes(element.sinif))
-                            siniflar.push(element.sinif)
-                    });
-                    // console.log(siniflar);
-                    var sonuc = []
-                    siniflar.forEach(element => {
-                        var icArray = []
-                        res.data.forEach(x => {
-                            if (x.sinif == element) {
-                                var obj = {
-                                    sube: x.sube,
-                                    ogrenci: x.ogrenci_id
-                                }
-                                icArray.push(obj)
-                            }
+                    console.log(res);
+                    $('#accordion2').empty()
+                    if (res.data.length != 0) {
+                        // console.log(res.data.length);
+                        var siniflar = []
+                        res.data.forEach(element => {
+                            if (!siniflar.includes(element.sinif))
+                                siniflar.push(element.sinif)
                         });
-                        var lastArray = {}
-                        lastArray[element] = icArray
-                        sonuc.push(lastArray)
-                    });
-                    console.log(sonuc);
+                        siniflar.sort()
+                        // SINIFLARI YAZDIR
+                        siniflar.forEach(element => {
+                            var yenisinif = ` <div  class="block block-rounded mb-1">
+                           <div class="block-header block-header-default" role="tab" id="accordion2_h1">
+                               <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2"
+                                   href="#accordion2_q${element}" aria-expanded="true" aria-controls="accordion2_q${element}">${element}.
+                                   Sınıf</a>
+                           </div>
+                           <div id="accordion2_q${element}" class="collapse" role="tabpanel" aria-labelledby="accordion2_h1">
+                               <div id="sinif_${element}" class="block-content">
+                                 
+                               </div>
+                           </div>
+                       </div>`;
+                            $('#accordion2').append(yenisinif)
+                        });
+                        var subeler = []
+                        siniflar.forEach(element => {
+                            subeler = []
+                            res.data.forEach(x => {
+                                if (x.sinif == element) {
+                                    if (!subeler.includes(x.sube)) {
+                                        subeler.push(x.sube)
+                                    }
+                                }
+                            });
+                            subeler.forEach(x => {
+                                var sube = `     <div class="block block-rounded mb-1">
+                                        <div class="block-header block-header-default" role="tab"
+                                            id="accordion2_h1">
+                                            <a class="fw-semibold" data-bs-toggle="collapse"
+                                                data-bs-parent="#accordion2" href="#accordion2_q${element}_${x}"
+                                                aria-expanded="true" aria-controls="accordion2_q${element}_${x}">${x} Şubesi</a>
+                                        </div>
+                                        <div id="accordion2_q${element}_${x}" class="collapse" role="tabpanel"
+                                            aria-labelledby="accordion2_h1">
+                                            <div id="sinif_${element}_sube_${x}" class="block-content">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>`
+                                $(`#sinif_${element}`).append(sube)
+                                res.data.forEach(xx => {
+                                    var siniftaOgrenci = false;
+                                    res.siniftakiler.forEach(sinifta => {
+                                        if(xx.ogrenci_id == sinifta.ogrenci_id){
+                                            siniftaOgrenci = true
+                                        }
+                                    });
+                                    if (xx.sinif == element && xx.sube == x) {
+                                        var ogrenciInput = ` <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="${xx.ogrenci_id}"
+                                                        id="ogrenci_${xx.ogrenci_id}" ${siniftaOgrenci ? "checked":""} name="ogrenci[]"
+                                                        >
+                                                    <label class="form-check-label"
+                                                        for="ogrenci_${xx.ogrenci_id}">${xx.ogrenci.ad} ${xx.ogrenci.soyad}</label>
+                                                </div>`
+                                        $(`#sinif_${element}_sube_${x}`).append(
+                                            ogrenciInput)
 
+                                    }
+                                });
+                            });
+
+                        });
+                        // console.log(res.data);
+                        // var siniflar = []
+                        // res.data.forEach(element => {
+                        //     if (!siniflar.includes(element.sinif))
+                        //         siniflar.push(element.sinif)
+                        // });
+                        // var sonuc = []
+                        // siniflar.forEach(element => {
+                        //     var icArray = []
+                        //     res.data.forEach(x => {
+                        //         if (x.sinif == element) {
+                        //             var obj = {
+                        //                 sube: x.sube,
+                        //                 ogrenci: x.ogrenci_id
+                        //             }
+                        //             icArray.push(obj)
+                        //         }
+                        //     });
+                        //     var lastArray = {}
+                        //     lastArray[element] = icArray
+                        //     sonuc.push(lastArray)
+                        // });
+                        // var yazilanSiniflar = []
+                        // var yazilanSubeler = []
+                        // for (let index = 1; index < 13; index++) {
+                        //     sonuc.forEach(element => {
+                        //         if (element[index] != undefined) {
+                        //             console.log(index+ ". sınıf datası");
+                        //             console.log(element[index]);
+                        //             if(!yazilanSiniflar.includes(index)){
+                        //                 // Yazılacak
+
+                        //                 // Yeni sınıf açılacak
+                        //                 var yenisinif = ` <div  class="block block-rounded mb-1">
+                    //         <div class="block-header block-header-default" role="tab" id="accordion2_h1">
+                    //             <a class="fw-semibold" data-bs-toggle="collapse" data-bs-parent="#accordion2"
+                    //                 href="#accordion2_q1" aria-expanded="true" aria-controls="accordion2_q1">1.
+                    //                 Sınıf</a>
+                    //         </div>
+                    //         <div id="accordion2_q1" class="collapse" role="tabpanel" aria-labelledby="accordion2_h1">
+                    //             <div id="sinif_${index}" class="block-content">
+
+                    //             </div>
+                    //         </div>
+                    //     </div>`
+                        //                 yazilanSiniflar.push(index)
+                        //                 yazilanSubeler = []
+                        //                 var currentArray = element[index]
+                        //                 currentArray.forEach(ogrenciler => {
+                        //                     if(!yazilanSubeler.includes(ogrenciler.sube)){
+                        //                         yazilanSubeler.push(ogrenciler.sube)
+                        //                         // Yeni şube açılacak
+                        //                     }
+                        //                 });
+
+                        //             }
+                        //         } 
+                        //     });
+                        // }
+
+                        $('#ogrenci-ekle').modal('show')
+                    } else {
+                        Dashmix.helpers('jq-notify', {
+                            type: 'danger',
+                            icon: 'fa fa-times me-1',
+                            message: "Okulda öğrenci bulunmuyor."
+                        });
+                    }
+                    Dashmix.layout('header_loader_off');
 
                 },
                 error: function(res) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: res.responseJSON.message,
-                        confirmButtonText: "Tamam"
-                    }).then((result) => {
-                        location.reload();
-                    })
+                    Dashmix.helpers('jq-notify', {
+                        type: 'danger',
+                        icon: 'fa fa-times me-1',
+                        message: res.responseJSON.message
+                    });
+                    Dashmix.layout('header_loader_off');
                 }
             })
         }
@@ -222,6 +341,39 @@
                     return obj;
                 }).get();
             console.log(values);
+            values = JSON.stringify(values)
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('values', values);
+            fd.append('sinif', "{{ $sinif->id }}");
+
+            $.ajax({
+                url: '{{ route('kurum_sinif_toplu_ekle_ogrenci') }}',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı!',
+                        text: res.message,
+                        confirmButtonText: "Tamam"
+                    }).then((result) => {
+                        location.reload();
+                    })
+                },
+                error: function(res) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: res.responseJSON.message,
+                        confirmButtonText: "Tamam"
+                    }).then((result) => {
+                        location.reload();
+                    })
+                }
+            })
         }
     </script>
 @endsection
