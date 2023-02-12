@@ -144,6 +144,7 @@ Route::middleware('onePass')->group(function () {
         });
         Route::prefix('ders')->group(function () {
             Route::get('/', [kurumDersController::class, 'index'])->name('kurum_ders_index');
+            Route::post('ekle', [kurumDersController::class, 'add'])->name('kurum_ders_add');
         });
     });
 });
