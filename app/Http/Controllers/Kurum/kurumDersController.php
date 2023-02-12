@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
 use App\Models\kurumDersModel;
+use App\Models\kurumLogModel;
+use App\Models\LogModel;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -32,6 +34,12 @@ class kurumDersController extends Controller
                 'kurum_id' => get_current_kurum()->id,
                 'ad' => $ders
             ]);
+            $logUser = auth()->user();
+            $logText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$ders' adında ders oluşturdu";
+            kurumLogModel::create(['kategori_id' => 11, 'logText' => $logText,'kurum_id' => get_current_kurum()->id]);
+
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$ders' adında ders oluşturdu";
+            LogModel::create(['kategori_id' => 16, 'logText' => $logText]);
             return response()->json(['message' => "Ders Eklendi"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
