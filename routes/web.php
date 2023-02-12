@@ -4,6 +4,7 @@ use App\Http\Controllers\Kurum\OgretmenController as KurumOgretmenController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
+use App\Http\Controllers\Kurum\kurumDersController;
 use App\Http\Controllers\Kurum\kurumLogController;
 use App\Http\Controllers\Kurum\kurumOgrenciController;
 use App\Http\Controllers\Kurum\kurumOkulController;
@@ -140,6 +141,9 @@ Route::middleware('onePass')->group(function () {
             Route::post('getIlIlceFromOkul', [kurumOkulController::class, 'getIlIlceFromOkul'])->name('kurum_get_ililce_from_okul');
             Route::get('veli', [kurumVeliController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_veli');
             Route::post('veli', [kurumVeliController::class, 'hesapOlustur_post'])->name('kurum_hesapOlustur_veli_post');
+        });
+        Route::prefix('ders')->group(function () {
+            Route::get('/', [kurumDersController::class, 'index'])->name('kurum_ders_index');
         });
     });
 });
