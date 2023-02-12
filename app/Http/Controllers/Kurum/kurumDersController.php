@@ -37,4 +37,21 @@ class kurumDersController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+    public function show(Request $request)
+    {
+        try {
+            if (!$request->id)
+                throw new Exception("Ders Bulunamadı");
+            $ders = kurumDersModel::find($request->id);
+            if (!$ders)
+                throw new Exception("Ders Bulunamadı");
+            if ($ders->kurum_id != get_current_kurum()->id)
+                throw new Exception("Ders Bulunamadı");
+            return view('kurum.dersler.show')->with([
+                'ders' => $ders
+            ]);
+        } catch (Exception $ex) {
+            return redirect()->route('kurum_ders_index')->withErrors($ex->getMessage());
+        }
+    }
 }

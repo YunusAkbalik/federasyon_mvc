@@ -31,7 +31,7 @@
             </div>
             @foreach ($dersler as $ders)
                 <div class="col-xl-4 col-lg-6 col-md-6 ">
-                    <a class="block block-rounded block-link-shadow" href="javascript:void(0)">
+                    <a class="block block-rounded block-link-shadow" href="{{ route('kurum_ders_show',['id' => $ders->id]) }}">
                         <div class="block-content block-content-full d-flex align-items-center justify-content-between">
                             <div class="me-3">
                                 <p class="fs-lg fw-semibold mb-0">
