@@ -131,6 +131,7 @@ Route::middleware('onePass')->group(function () {
             Route::post('getOkulData', [kurumOkulController::class, 'getOgrenciler'])->name('kurum_getData_ogrenci_from_school');
             Route::post('ogrenciEkleTc', [kurumSinifController::class, 'ogrenciEkleTc'])->name('kurum_sinif_add_ogrenci_tc');
             Route::post('ekle', [kurumSinifController::class, 'add'])->name('kurum_sinif_add');
+            Route::post('cikar', [kurumSinifController::class, 'ogrenciCikar'])->name('kurum_sinif_remove');
             Route::post('get', [kurumSinifController::class, 'get'])->name('kurum_sinif_get');
             Route::post('topluEkle', [kurumSinifController::class, 'ogrenciEkleToplu'])->name('kurum_sinif_toplu_ekle_ogrenci');
         });

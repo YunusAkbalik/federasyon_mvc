@@ -117,7 +117,7 @@ class kurumSinifController extends Controller
                 'kurumOkullar' => $kurumOkullar,
             ]);
         } catch (Exception $ex) {
-            return redirect()->back()->withErrors($ex->getMessage());
+            return redirect()->route('kurum_sinif_index')->withErrors($ex->getMessage());
         }
     }
     public function ogrenciEkleTc(Request $request)
@@ -227,6 +227,35 @@ class kurumSinifController extends Controller
             kurumLogModel::create(['kategori_id' => 9, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
 
             return response()->json(['message' => "Öğrenciler sınıfa eklendi"]);
+        } catch (Exception $ex) {
+            return response()->json(['message' => $ex->getMessage()], 404);
+        }
+    }
+    public function ogrenciCikar(Request $request)
+    {
+        try {
+            if (!$request->id)
+                throw new Exception("Öğrenci bilgisi alınamadı");
+            if (!$request->sinif)
+                throw new Exception("Sınıf bilgisi alınamadı");
+            $exist = ogrenciSinifModel::where('ogrenci_id', $request->id)->where('sinif_id', $request->sinif)->first();
+            if (!$exist)
+                throw new Exception("Öğrenci sınıfınızda değil");
+            $sinif = sinifModel::find($request->sinif);
+            if (!$sinif)
+                throw new Exception("Sınıf bilgisi alınamadı");
+            if ($sinif->kurum_id != get_current_kurum()->id)
+                throw new Exception("Sınıf bilgisi alınamadı");
+            $user = User::find($request->id);
+            if (!$user)
+                throw new Exception("Öğrenci bilgisi alınamadı");
+            $exist->delete();
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$sinif->ad' adlı sınıftan '$user->ad $user->soyad' öğrenciyi çıkardı";
+            LogModel::create(['kategori_id' => 19, 'logText' => $logText]);
+            $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$sinif->ad' adlı sınıftan '$user->ad $user->soyad' öğrenciyi çıkardı";
+            kurumLogModel::create(['kategori_id' => 14, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
+            return response()->json(['message' => "Öğrenci '$user->ad $user->soyad' sınıftan kaldırıldı"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
         }

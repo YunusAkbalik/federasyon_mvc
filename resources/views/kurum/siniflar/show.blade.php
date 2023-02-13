@@ -96,6 +96,7 @@
                                     <th>Okul</th>
                                     <th>Sınıf</th>
                                     <th>Şube</th>
+                                    <th class="text-center">#</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,7 +106,17 @@
                                         <td>{{ $ogrenci->ogrenci->ad . ' ' . $ogrenci->ogrenci->soyad }}</td>
                                         <td>{{ $ogrenci->okul->okulDetails->ad }}</td>
                                         <td>{{ $ogrenci->okul->sinif . '. sınıf' }}</td>
-                                        <td class="{{ $ogrenci->okul->sube ? "":"text-danger" }}">{{ $ogrenci->okul->sube ? $ogrenci->okul->sube." şubesi":"YOK" }}</td>
+                                        <td class="{{ $ogrenci->okul->sube ? '' : 'text-danger' }}">
+                                            {{ $ogrenci->okul->sube ? $ogrenci->okul->sube . ' şubesi' : 'YOK' }}</td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button onclick="ogrenciCikar({{ $ogrenci->ogrenci->id }})" type="button"
+                                                    class="btn btn-sm btn-alt-danger js-bs-tooltip-enabled"
+                                                    data-bs-toggle="tooltip" aria-label="Delete">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -315,6 +326,53 @@
                         confirmButtonText: "Tamam"
                     }).then((result) => {
                         location.reload();
+                    })
+                }
+            })
+        }
+
+        function ogrenciCikar(id) {
+            Swal.fire({
+                title: 'Emin Misiniz?',
+                text: "Öğrenci sınıftan çıkarılacak!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, çıkar!',
+                cancelButtonText: 'İptal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var fd = new FormData();
+                    fd.append('_token', $('input[name="_token"]').val());
+                    fd.append('id', id);
+                    fd.append('sinif', {{ $sinif->id }});
+                    $.ajax({
+                        url: '{{ route('kurum_sinif_remove') }}',
+                        method: 'post',
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        success: function(res) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Öğrenci Çıkarıldı!',
+                                text: res.message,
+                                confirmButtonText: "Tamam"
+                            }).then((result) => {
+                                location.reload();
+                            })
+                        },
+                        error: function(res) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Hata!',
+                                text: res.responseJSON.message,
+                                confirmButtonText: "Tamam"
+                            }).then((result) => {
+                                location.reload();
+                            })
+                        }
                     })
                 }
             })
