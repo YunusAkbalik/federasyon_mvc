@@ -23,7 +23,7 @@ class kurumSinifController extends Controller
         $kurum = get_current_kurum();
         $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->with('okul')->get();
         if ($kurumOkullar->count() <= 0) {
-            return redirect()->back()->withErrors("Kurumunuza ait okul bulunmuyor.");
+            return redirect()->route('kurum_okul_index')->withErrors("Kurumunuza ait okul bulunmuyor.");
         }
         return view('kurum.siniflar.index')->with([
             'kurum' => $kurum,

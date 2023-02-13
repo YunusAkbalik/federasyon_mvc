@@ -1,3 +1,6 @@
 $logUser = auth()->user();
 $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' okuluna '$request->yeniSinifAd' adlı sınıfı açtı";
 LogModel::create(['kategori_id' => 13, 'logText' => $logText]);
+
+$kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$ders->ad' adlı derse öğretmen(ler) atadı: $logArray";
+kurumLogModel::create(['kategori_id' => 12, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);

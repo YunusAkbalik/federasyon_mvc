@@ -146,6 +146,17 @@ class OgretmenController extends Controller
                     'ozel_id' => $user->ozel_id
                 ]);
             }
+            $logArray = array();
+            foreach ($addedList as $key) {
+                $stringHere = $key['ad_soyad'] . "(" . $key['ozel_id'] . ")";
+                array_push($logArray, $stringHere);
+            }
+            $logArray = implode(", ", $logArray);
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$ders->ad' adlı derse öğretmen(ler) atadı: $logArray";
+            LogModel::create(['kategori_id' => 17, 'logText' => $logText]);
+            $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$ders->ad' adlı derse öğretmen(ler) atadı: $logArray";
+            kurumLogModel::create(['kategori_id' => 12, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
             return response()->json(['message' => "Öğretmen(ler) başarıyla derse atandı", 'list' => $addedList]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
@@ -172,6 +183,14 @@ class OgretmenController extends Controller
             if (!$atama)
                 throw new Exception("Öğretmen derse atanmamış, lütfen sayfayı yenileyin");
             $atama->delete();
+
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$ders->ad' dersinden '$user->ad $user->soyad' öğretmeni kaldırdı.";
+            LogModel::create(['kategori_id' => 18, 'logText' => $logText]);
+
+            $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$ders->ad' dersinden '$user->ad $user->soyad' öğretmeni kaldırdı.";
+            kurumLogModel::create(['kategori_id' => 13, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
+
             return response()->json(['message' => "Atama kaldırıldı"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
