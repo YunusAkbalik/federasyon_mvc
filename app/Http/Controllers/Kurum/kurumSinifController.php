@@ -109,7 +109,7 @@ class kurumSinifController extends Controller
             $kurum = get_current_kurum();
             if ($sinif->kurum_id != $kurum->id)
                 throw new Exception("Sınıf Bulunamadı");
-            $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->get();
+            $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->with('okul')->get();
             $kurumOkullar = kurumOkulModel::where('kurum_id', get_current_kurum()->id)->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
             return view('kurum.siniflar.show')->with([
                 'sinif' => $sinif,
@@ -198,17 +198,34 @@ class kurumSinifController extends Controller
                 throw new Exception("Sınıf verisi alınamadı");
             if ($sinif->kurum_id != get_current_kurum()->id)
                 throw new Exception("Sınıf verisi alınamadı");
+            $logArray = array();
             foreach ($data as $key) {
                 if ($key->durum) {
                     $exist = ogrenciSinifModel::where('sinif_id', $sinif->id)->where('ogrenci_id', $key->id)->first();
                     if (!$exist) {
-                        ogrenciSinifModel::create([
-                            'sinif_id' => $sinif->id,
-                            'ogrenci_id' => $key->id
-                        ]);
+                        $anlikOgrenci = User::find($key->id);
+                        if ($anlikOgrenci->hasRole('Öğrenci')) {
+                            ogrenciSinifModel::create([
+                                'sinif_id' => $sinif->id,
+                                'ogrenci_id' => $key->id
+                            ]);
+                            $stringHere = $anlikOgrenci->ad . " " . $anlikOgrenci->soyad . "(" . $anlikOgrenci->ozel_id . ")";
+                            array_push($logArray, $stringHere);
+                        }
                     }
                 }
             }
+
+            $logArray = implode(", ", $logArray);
+
+
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$sinif->ad' sınıfına öğrenciler ekledi : $logArray";
+            LogModel::create(['kategori_id' => 14, 'logText' => $logText]);
+
+            $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$sinif->ad' sınıfına öğrenciler ekledi : $logArray";
+            kurumLogModel::create(['kategori_id' => 9, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
+
             return response()->json(['message' => "Öğrenciler sınıfa eklendi"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);

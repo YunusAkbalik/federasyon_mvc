@@ -13,6 +13,7 @@ class OgrenciOkulModel extends Model
         'okul_id',
         'ogrenci_id',
         'sinif',
+        'sube',
         'brans',
     ];
 

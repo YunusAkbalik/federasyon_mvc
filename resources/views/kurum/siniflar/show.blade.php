@@ -93,6 +93,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Ad Soyad</th>
+                                    <th>Okul</th>
+                                    <th>Sınıf</th>
+                                    <th>Şube</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,6 +103,9 @@
                                     <tr>
                                         <td>{{ $ogrenci->ogrenci->ozel_id }}</td>
                                         <td>{{ $ogrenci->ogrenci->ad . ' ' . $ogrenci->ogrenci->soyad }}</td>
+                                        <td>{{ $ogrenci->okul->okulDetails->ad }}</td>
+                                        <td>{{ $ogrenci->okul->sinif . '. sınıf' }}</td>
+                                        <td class="{{ $ogrenci->okul->sube ? "":"text-danger" }}">{{ $ogrenci->okul->sube ? $ogrenci->okul->sube." şubesi":"YOK" }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -227,7 +233,8 @@
                                 res.data.forEach(xx => {
                                     var siniftaOgrenci = false;
                                     res.siniftakiler.forEach(sinifta => {
-                                        if(xx.ogrenci_id == sinifta.ogrenci_id){
+                                        if (xx.ogrenci_id == sinifta
+                                            .ogrenci_id) {
                                             siniftaOgrenci = true
                                         }
                                     });
