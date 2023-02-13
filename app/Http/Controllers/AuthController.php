@@ -388,7 +388,7 @@ class AuthController extends Controller
                 'okul_id' => $okul->id,
                 'ogrenci_id' => $user->id,
                 'sinif' => $request->sinif,
-                'sube' => $request->sube == "null" ? null : $request->sube,
+                'sube' => $request->sube == "null" ? NULL : $request->sube,
                 'brans' => $request->brans
             ]);
             $user->assignRole('Öğrenci');

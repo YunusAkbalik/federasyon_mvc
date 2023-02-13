@@ -220,7 +220,7 @@
                                             id="accordion2_h1">
                                             <a class="fw-semibold" data-bs-toggle="collapse"
                                                 data-bs-parent="#accordion2" href="#accordion2_q${element}_${x}"
-                                                aria-expanded="true" aria-controls="accordion2_q${element}_${x}">${x} Şubesi</a>
+                                                aria-expanded="true" aria-controls="accordion2_q${element}_${x}">${x != "null" ? x+" Şubesi":"Şube YOK"}</a>
                                         </div>
                                         <div id="accordion2_q${element}_${x}" class="collapse" role="tabpanel"
                                             aria-labelledby="accordion2_h1">
