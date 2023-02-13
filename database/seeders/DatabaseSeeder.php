@@ -154,10 +154,7 @@ class DatabaseSeeder extends Seeder
         User::find(1)->assignRole("Admin");
         User::find(2)->assignRole("Kurum Yetkilisi");
         User::find(3)->assignRole("Öğretmen");
-        User::find(4)->assignRole("Öğretmen");
-        User::find(5)->assignRole("Öğretmen");
-        User::find(6)->assignRole("Öğretmen");
-        User::find(7)->assignRole("Öğretmen");
+       
 
         // Random kullanıcılar
         for ($i = 1; $i <= 47; $i++) {
@@ -182,7 +179,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // Kullanıcılara random Permler
-        for ($i = 8; $i <= 54; $i++) {
+        for ($i = 4; $i <= 54; $i++) {
             User::find($i)->assignRole($faker->randomElement(['Öğrenci', 'Veli']));
         }
 
@@ -354,7 +351,6 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-            
         ]);
     }
 }

@@ -13,4 +13,8 @@ class ogretmenDersModel extends Model
         'ogretmen_id',
         'ders_id',
     ];
+    public function ogretmen()
+    {
+        return $this->hasOne(User::class, 'id', 'ogretmen_id');
+    }
 }

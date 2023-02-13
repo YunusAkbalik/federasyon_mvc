@@ -146,6 +146,9 @@ Route::middleware('onePass')->group(function () {
             Route::get('/', [kurumDersController::class, 'index'])->name('kurum_ders_index');
             Route::post('ekle', [kurumDersController::class, 'add'])->name('kurum_ders_add');
             Route::get('/{id}', [kurumDersController::class, 'show'])->name('kurum_ders_show');
+            Route::post('atamaYap', [KurumOgretmenController::class, 'derse_ata'])->name('kurum_ders_atamayap');
+            Route::post('atamaKaldir', [KurumOgretmenController::class, 'atamaKaldir'])->name('kurum_ders_atamakaldir');
+
         });
     });
 });

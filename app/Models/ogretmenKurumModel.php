@@ -17,4 +17,12 @@ class ogretmenKurumModel extends Model
     {
         return $this->hasOne(kurumModel::class, 'id', 'kurum_id');
     }
+    public function ders()
+    {
+        return $this->hasOne(ogretmenDersModel::class, 'ogretmen_id', 'ogretmen_id');
+    }
+    public function ogretmen()
+    {
+        return $this->hasOne(User::class, 'id', 'ogretmen_id');
+    }
 }

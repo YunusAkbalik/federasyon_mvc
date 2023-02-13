@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\kurumDersModel;
 use App\Models\kurumLogModel;
 use App\Models\LogModel;
+use App\Models\ogretmenDersModel;
+use App\Models\ogretmenKurumModel;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -55,8 +57,12 @@ class kurumDersController extends Controller
                 throw new Exception("Ders Bulunamadı");
             if ($ders->kurum_id != get_current_kurum()->id)
                 throw new Exception("Ders Bulunamadı");
+            $ogretmenler = ogretmenKurumModel::where('kurum_id',get_current_kurum()->id)->with('ders')->with('ogretmen')->get();
+            $atanmisOgretmenler = ogretmenDersModel::where('ders_id',$request->id)->get();
             return view('kurum.dersler.show')->with([
-                'ders' => $ders
+                'ders' => $ders,
+                'ogretmenler' => $ogretmenler,
+                'atanmisOgretmenler' => $atanmisOgretmenler,
             ]);
         } catch (Exception $ex) {
             return redirect()->route('kurum_ders_index')->withErrors($ex->getMessage());
