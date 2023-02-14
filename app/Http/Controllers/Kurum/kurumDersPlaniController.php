@@ -59,27 +59,29 @@ class kurumDersPlaniController extends Controller
                 'kurum_id' => get_current_kurum()->id,
                 'sinif' => $siniflar
             ], $r->input()));
-
-            foreach ($filesHere as $file) {
-                $extension = $file->getClientOriginalExtension();
-                $check = in_array($extension, $allowedfileExtension);
-                if ($check) {
-                    $fileName = Str::random() . "." . $extension;
-                    $nameExist = true;
-                    while ($nameExist) {
-                        $checkFileName = dersPlaniFilesModel::where('path', $fileName)->first();
-                        if (!$checkFileName)
-                            $nameExist = false;
-                        else
-                            $fileName = Str::random() . "." . $extension;
+            if ($filesHere != null) {
+                foreach ($filesHere as $file) {
+                    $extension = $file->getClientOriginalExtension();
+                    $check = in_array($extension, $allowedfileExtension);
+                    if ($check) {
+                        $fileName = Str::random() . "." . $extension;
+                        $nameExist = true;
+                        while ($nameExist) {
+                            $checkFileName = dersPlaniFilesModel::where('path', $fileName)->first();
+                            if (!$checkFileName)
+                                $nameExist = false;
+                            else
+                                $fileName = Str::random() . "." . $extension;
+                        }
+                        $file->move('uploads/ders_plani_dosyalari', $fileName);
+                        dersPlaniFilesModel::create([
+                            'ders_plani_id' => $ders_plani->id,
+                            'path' => $fileName
+                        ]);
                     }
-                    $file->move('uploads/ders_plani_dosyalari', $fileName);
-                    dersPlaniFilesModel::create([
-                        'ders_plani_id' => $ders_plani->id,
-                        'path' => $fileName
-                    ]);
                 }
             }
+
             $logUser = auth()->user();
             $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), ders planı ekledi. ID : $ders_plani->id";
             LogModel::create(['kategori_id' => 20, 'logText' => $logText]);

@@ -1,5 +1,8 @@
 @extends('layouts.backend')
-
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css') }}">
+@endsection
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -23,7 +26,7 @@
                 </h3>
             </div>
             <div class="block-content">
-                <table class="table">
+                <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -38,8 +41,8 @@
                                 $siniflar = '';
                                 $siniflarArray = explode(',', $dersPlani->sinif);
                                 foreach ($siniflarArray as $value) {
-                                  $lastString = $value. ". sınıf <br>";
-                                  $siniflar = $siniflar.$lastString;
+                                    $lastString = $value . '. sınıf <br>';
+                                    $siniflar = $siniflar . $lastString;
                                 }
                             @endphp
                             <tr>
@@ -56,4 +59,18 @@
         <!-- END Your Block -->
     </div>
     <!-- END Page Content -->
+@endsection
+@section('js')
+    <script src="{{ asset('assets/js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/dersPlaniIndex.js') }}"></script>
 @endsection
