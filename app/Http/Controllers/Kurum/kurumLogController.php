@@ -15,7 +15,7 @@ class kurumLogController extends Controller
             $logs = kurumLogModel::where('kategori_id', $request->cid)->where('kurum_id', get_current_kurum()->id)->orderBy('created_at', 'DESC')->paginate(10);
         else
             $logs = kurumLogModel::orderBy('created_at', 'DESC')->where('kurum_id',get_current_kurum()->id)->paginate(10);
-        $logCategories = kurumLogKategoriModel::all();
+        $logCategories = kurumLogKategoriModel::orderBy('ad')->get();
         return view('kurum.loglar.index')->with(['logs' => $logs, 'logCategories' => $logCategories, 'cid' => $request->cid]);
     }
 }

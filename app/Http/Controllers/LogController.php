@@ -15,7 +15,7 @@ class LogController extends Controller
             $logs = LogModel::where('kategori_id', $request->cid)->orderBy('created_at' , 'DESC')->paginate(10);
         else
             $logs = LogModel::orderBy('created_at' , 'DESC')->paginate(10);
-        $logCategories = LogKategoriModel::all();
+        $logCategories = LogKategoriModel::orderBy('ad')->get();
         return view('admin.loglar.index')->with(['logs' => $logs , 'logCategories' => $logCategories , 'cid' => $request->cid]);
     }
 }
