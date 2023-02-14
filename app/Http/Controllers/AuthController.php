@@ -249,6 +249,12 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
+            $photo = $request->file('photo');
+            $allowedfileExtension = ['jpg', 'png', 'jpeg'];
+            $extension = $photo->getClientOriginalExtension();
+            $check = in_array($extension, $allowedfileExtension);
+            if (!$check)
+                throw new Exception("Lütfen fotoğrafı ('jpg', 'png', 'jpeg') formatlarından biri ile yükleyin");
             $newUser = User::create(array_merge($request->all(), [
                 'onayli' => false,
                 'ret' => false,
@@ -257,7 +263,7 @@ class AuthController extends Controller
                 'ozel_id' => ozel_id_uret()
             ]));
             $newUser->assignRole('Öğretmen');
-            $photo = $request->file('photo');
+
             $photoName = Str::random() . "." . $photo->getClientOriginalExtension();
             $nameExist = true;
             while ($nameExist) {
@@ -266,6 +272,7 @@ class AuthController extends Controller
                 else
                     $photoName = Str::random() . "." . $photo->getClientOriginalExtension();
             }
+
             $photo->move('uploads/teacher_photos', $photoName);
             ogretmenPhotoModel::create([
                 'ogretmen_id' => $newUser->id,

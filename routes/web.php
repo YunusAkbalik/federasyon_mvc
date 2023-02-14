@@ -5,6 +5,7 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IlceController;
 use App\Http\Controllers\Kurum\kurumDersController;
+use App\Http\Controllers\Kurum\kurumDersPlaniController;
 use App\Http\Controllers\Kurum\kurumLogController;
 use App\Http\Controllers\Kurum\kurumOgrenciController;
 use App\Http\Controllers\Kurum\kurumOkulController;
@@ -150,6 +151,11 @@ Route::middleware('onePass')->group(function () {
             Route::post('atamaYap', [KurumOgretmenController::class, 'derse_ata'])->name('kurum_ders_atamayap');
             Route::post('atamaKaldir', [KurumOgretmenController::class, 'atamaKaldir'])->name('kurum_ders_atamakaldir');
 
+        });
+        Route::prefix('DersPlani')->group(function () {
+            Route::get('/', [kurumDersPlaniController::class, 'index'])->name('kurum_dersPlani_index');
+            Route::get('olustur', [kurumDersPlaniController::class, 'create'])->name('kurum_dersPlani_create');
+            Route::post('olustur', [kurumDersPlaniController::class, 'insert'])->name('kurum_dersPlani_insert');
         });
     });
 });

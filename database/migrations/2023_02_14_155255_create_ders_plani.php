@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('kurum_id');
             $table->integer('ders_id');
-            $table->integer('sinif');
+            $table->string('sinif');
             $table->integer('ogrenci_sayisi')->nullable();
             $table->integer('sure')->nullable();
             $table->string('konu');

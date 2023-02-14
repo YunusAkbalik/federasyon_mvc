@@ -102,7 +102,7 @@
                                     <div class="mb-4">
                                         <div class="input-group input-group-lg">
                                             <input type="email" class="form-control" id="email" name="email"
-                                                placeholder="E-posta adresi">
+                                                placeholder="E-posta adresi(*)">
                                             <span class="input-group-text">
                                                 <i class="fa fa-envelope"></i>
                                             </span>

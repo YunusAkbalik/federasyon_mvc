@@ -65,7 +65,7 @@
                         <tbody>
                             @foreach ($dersler as $ders)
                                 <tr>
-                                    <td>{{ $ders->ad }}</td>
+                                    <td><a href="{{ route('kurum_ders_show',['id' => $ders->id]) }}">{{ $ders->ad }}</a>  </td>
                                 </tr>
                             @endforeach
                         </tbody>
