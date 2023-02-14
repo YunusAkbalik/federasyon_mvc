@@ -83,7 +83,7 @@
                                 <div class="col-md-12 mb-4">
                                     <label for="dersin_islenisi" class="form-label">Dersin İşlenişi <span
                                             class="text-danger">(*)</span></label>
-                                    <textarea name="dersin_islenisi" id="dersin_islenisi" cols="30" rows="10"></textarea>
+                                    <textarea name="dersin_islenisi" id="dersin_islenisi" cols="30" rows="10">**Dersin İşlenişi**</textarea>
                                 </div>
                                 <div class="col-12 mb-4">
                                     <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Ders Planını Kaydet</button>
