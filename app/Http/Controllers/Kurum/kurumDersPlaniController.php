@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\dersPlaniFilesModel;
 use App\Models\dersPlaniModel;
 use App\Models\kurumDersModel;
+use App\Models\kurumLogModel;
+use App\Models\LogModel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +17,10 @@ class kurumDersPlaniController extends Controller
 {
     public function index()
     {
-        return view('kurum.dersPlani.index');
+        $dersPlanlari = dersPlaniModel::where('kurum_id', get_current_kurum()->id)->with('ders')->get();
+        return view('kurum.dersPlani.index')->with([
+            'dersPlanlari' => $dersPlanlari
+        ]);
     }
     public function create()
     {
@@ -54,7 +59,7 @@ class kurumDersPlaniController extends Controller
                 'kurum_id' => get_current_kurum()->id,
                 'sinif' => $siniflar
             ], $r->input()));
-            
+
             foreach ($filesHere as $file) {
                 $extension = $file->getClientOriginalExtension();
                 $check = in_array($extension, $allowedfileExtension);
@@ -75,6 +80,12 @@ class kurumDersPlaniController extends Controller
                     ]);
                 }
             }
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), ders planı ekledi. ID : $ders_plani->id";
+            LogModel::create(['kategori_id' => 20, 'logText' => $logText]);
+
+            $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), ders planı ekledi. ID : $ders_plani->id";
+            kurumLogModel::create(['kategori_id' => 15, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
             return redirect()->route('kurum_dersPlani_index')->with('success', "Ders Planı Başarıyla Oluşturuldu");
         } catch (Exception $e) {
             dd($e->getMessage());

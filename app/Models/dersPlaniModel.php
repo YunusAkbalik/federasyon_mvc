@@ -20,4 +20,8 @@ class dersPlaniModel extends Model
         'arac_gerec',
         'dersin_islenisi',
     ];
+    public function ders()
+    {
+        return $this->hasOne(kurumDersModel::class, 'id', 'ders_id');
+    }
 }

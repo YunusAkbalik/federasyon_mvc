@@ -194,6 +194,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Derse Öğretmen Atamaları", "icon" => "chalkboard-user"],
             ['ad' => "Dersten Öğretmeni Kaldırmaları", "icon" => "user-xmark"],
             ['ad' => "Sınıftan Öğrenci Çıkarmaları", "icon" => "user-xmark"],
+            ['ad' => "Ders Planı Eklemeleri", "icon" => "file-circle-plus"],
 
         ]);
         DB::table('kurum_log_kategori')->insert([
@@ -211,6 +212,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Derse Öğretmen Atamaları", "icon" => "chalkboard-user"],
             ['ad' => "Dersten Öğretmeni Kaldırmaları", "icon" => "user-xmark"],
             ['ad' => "Sınıftan Öğrenci Çıkarmaları", "icon" => "user-xmark"],
+            ['ad' => "Ders Planı Eklemeleri", "icon" => "file-circle-plus"],
         ]);
         DB::table('kurumlar')->insert([
             [
