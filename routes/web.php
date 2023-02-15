@@ -159,6 +159,8 @@ Route::middleware('onePass')->group(function () {
             Route::get('/{id}', [kurumDersPlaniController::class, 'show'])->name('kurum_dersPlani_show');
             Route::post('deleteFile', [kurumDersPlaniController::class, 'deleteFile'])->name('kurum_dersPlani_deleteFile');
             Route::post('insertFile', [kurumDersPlaniController::class, 'insertFile'])->name('kurum_dersPlani_insertFile');
+            Route::get('duzenle/{id}', [kurumDersPlaniController::class, 'edit'])->name('kurum_dersPlani_edit');
+            Route::post('guncelle', [kurumDersPlaniController::class, 'update'])->name('kurum_dersPlani_update');
         });
     });
 });

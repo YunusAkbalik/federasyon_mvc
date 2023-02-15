@@ -32,6 +32,9 @@
                     <button type="button" class="btn-block-option" onclick="planYazdir()">
                         <i class="si si-printer me-1"></i> Ders Planını Yazdır
                     </button>
+                    <a class="btn-block-option" href="{{ route('kurum_dersPlani_edit',['id' => $dersPlani->id]) }}">
+                        <i class="si si-pencil me-1"></i> Düzenle
+                    </a>
                 </div>
             </div>
             <div class="block-content">

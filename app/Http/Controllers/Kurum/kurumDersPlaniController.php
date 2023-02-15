@@ -92,7 +92,6 @@ class kurumDersPlaniController extends Controller
             kurumLogModel::create(['kategori_id' => 15, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
             return redirect()->route('kurum_dersPlani_index')->with('success', "Ders Planı Başarıyla Oluşturuldu");
         } catch (Exception $e) {
-            dd($e->getMessage());
             return redirect()->route('kurum_dersPlani_create')->withErrors($e->getMessage());
         }
     }
@@ -164,7 +163,7 @@ class kurumDersPlaniController extends Controller
                             $fileName = Str::random() . "." . $extension;
                     }
                     $file->move('uploads/ders_plani_dosyalari', $fileName);
-                   $dersPlaniNewFile = dersPlaniFilesModel::create([
+                    $dersPlaniNewFile = dersPlaniFilesModel::create([
                         'ders_plani_id' => $dersPlani->id,
                         'path' => $fileName,
                         'extension' => $extension
@@ -178,6 +177,95 @@ class kurumDersPlaniController extends Controller
                 }
             }
             return redirect()->route('kurum_dersPlani_show', ['id' => $dersPlani->id])->with('success', "Uygun dosyalar yüklendi");
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+    }
+    public function edit(Request $r)
+    {
+        try {
+            if (!$r->id)
+                throw new Exception("Ders Planı Bulunamadı");
+            $dersplani = dersPlaniModel::find($r->id);
+            if (!$dersplani)
+                throw new Exception("Ders Planı Bulunamadı");
+            if ($dersplani->kurum_id != get_current_kurum()->id)
+                throw new Exception("Ders Planı Bulunamadı");
+            $dersler = kurumDersModel::where('kurum_id', get_current_kurum()->id)->get();
+            if ($dersler->count() <= 0)
+                throw new Exception("Kurumunuza Ait Dersiniz Yok");
+            $siniflar = explode(',', $dersplani->sinif);
+            return view('kurum.dersPlani.edit')->with([
+                'dersplani' => $dersplani,
+                'dersler' => $dersler,
+                'siniflar' => $siniflar,
+            ]);
+        } catch (Exception $e) {
+            return redirect()->route('kurum_dersPlani_index')->withErrors($e->getMessage());
+        }
+    }
+    public function update(Request $r)
+    {
+        try {
+            $rules = array(
+                'ders_id' => array('required'),
+                'siniflar' => array('required'),
+                'konu' => array('required'),
+                'dersin_islenisi' => array('required'),
+                'dersplaniID' => array('required'),
+            );
+            $attributeNames = array(
+                'ders_id' => "Ders",
+                'siniflar' => "Sınıf",
+                'konu' => "Konu",
+                'dersin_islenisi' => "Dersin İşlenişi",
+                'dersplaniID' => "Ders Planı",
+            );
+            $messages = array(
+                'required' => ':attribute alanı zorunlu.',
+            );
+            $validator = Validator::make($r->all(), $rules, $messages, $attributeNames);
+            if ($validator->fails())
+                throw new Exception($validator->errors()->first());
+            $dersplani = dersPlaniModel::find($r->dersplaniID);
+            if ($dersplani->kurum_id != get_current_kurum()->id)
+                throw new Exception("Ders Planı bilgisi alınamadı");
+            $filesHere = $r->file('ders_dosyalari');
+            $allowedfileExtension = ['png', 'jfif', 'jpeg', 'jpg', 'mp4', 'wav', 'pdf'];
+            $siniflar = implode(",", $r->siniflar);
+            $dersplani->update(array_merge([
+                'sinif' => $siniflar
+            ], $r->input()));
+            if ($filesHere != null) {
+                foreach ($filesHere as $file) {
+                    $extension = $file->getClientOriginalExtension();
+                    $check = in_array($extension, $allowedfileExtension);
+                    if ($check) {
+                        $fileName = Str::random() . "." . $extension;
+                        $nameExist = true;
+                        while ($nameExist) {
+                            $checkFileName = dersPlaniFilesModel::where('path', $fileName)->first();
+                            if (!$checkFileName)
+                                $nameExist = false;
+                            else
+                                $fileName = Str::random() . "." . $extension;
+                        }
+                        $file->move('uploads/ders_plani_dosyalari', $fileName);
+                        dersPlaniFilesModel::create([
+                            'ders_plani_id' => $dersplani->id,
+                            'path' => $fileName,
+                            'extension' => $extension
+                        ]);
+                    }
+                }
+            }
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), ders planını güncelledi. Ders planı id : $dersplani->id";
+            LogModel::create(['kategori_id' => 23, 'logText' => $logText]);
+
+            $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), ders planını güncelledi. Ders planı id : $dersplani->id";
+            kurumLogModel::create(['kategori_id' => 18, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
+            return redirect()->route('kurum_dersPlani_show',['id' => $dersplani->id])->with('success', "Ders Planı Başarıyla Güncellendi");
         } catch (Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
