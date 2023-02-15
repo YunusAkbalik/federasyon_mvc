@@ -101,6 +101,8 @@ class kurumDersPlaniController extends Controller
             if (!$r->id)
                 throw new Exception("Ders Planı Bulunamadı");
             $dersPlani = dersPlaniModel::where('id', $r->id)->with('ders')->first();
+            if (!$dersPlani)
+                throw new Exception("Ders Planı Bulunamadı");
             if ($dersPlani->kurum_id != get_current_kurum()->id)
                 throw new Exception("Ders Planı Bulunamadı");
             $kurum = get_current_kurum();
@@ -265,7 +267,7 @@ class kurumDersPlaniController extends Controller
 
             $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), ders planını güncelledi. Ders planı id : $dersplani->id";
             kurumLogModel::create(['kategori_id' => 18, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
-            return redirect()->route('kurum_dersPlani_show',['id' => $dersplani->id])->with('success', "Ders Planı Başarıyla Güncellendi");
+            return redirect()->route('kurum_dersPlani_show', ['id' => $dersplani->id])->with('success', "Ders Planı Başarıyla Güncellendi");
         } catch (Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
