@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('ders_plani_id');
             $table->longText('path');
+            $table->string('extension');
             $table->timestamps();
         });
     }

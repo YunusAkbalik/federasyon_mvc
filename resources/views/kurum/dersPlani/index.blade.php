@@ -46,8 +46,10 @@
                                 }
                             @endphp
                             <tr>
-                                <td>{{ $dersPlani->id }}</td>
-                                <td>{{ $dersPlani->ders->ad }}</td>
+                                <td><a
+                                        href="{{ route('kurum_dersPlani_show', ['id' => $dersPlani->id]) }}">{{ $dersPlani->id }}</a>
+                                </td>
+                                <td><a href="{{ route('kurum_dersPlani_show', ['id' => $dersPlani->id]) }}">{{ $dersPlani->ders->ad }}</a> </td>
                                 <td>{{ $dersPlani->konu }}</td>
                                 <td>{!! $siniflar !!}</td>
                             </tr>

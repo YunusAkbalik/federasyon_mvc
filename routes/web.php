@@ -156,6 +156,9 @@ Route::middleware('onePass')->group(function () {
             Route::get('/', [kurumDersPlaniController::class, 'index'])->name('kurum_dersPlani_index');
             Route::get('olustur', [kurumDersPlaniController::class, 'create'])->name('kurum_dersPlani_create');
             Route::post('olustur', [kurumDersPlaniController::class, 'insert'])->name('kurum_dersPlani_insert');
+            Route::get('/{id}', [kurumDersPlaniController::class, 'show'])->name('kurum_dersPlani_show');
+            Route::post('deleteFile', [kurumDersPlaniController::class, 'deleteFile'])->name('kurum_dersPlani_deleteFile');
+            Route::post('insertFile', [kurumDersPlaniController::class, 'insertFile'])->name('kurum_dersPlani_insertFile');
         });
     });
 });

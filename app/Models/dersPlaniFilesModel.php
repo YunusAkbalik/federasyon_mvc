@@ -12,5 +12,10 @@ class dersPlaniFilesModel extends Model
     protected $fillable = [
         'ders_plani_id',
         'path',
+        'extension',
     ];
+    public function dersPlani()
+    {
+        return $this->hasOne(dersPlaniModel::class, 'id', 'ders_plani_id');
+    }
 }
