@@ -3,17 +3,23 @@
 namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
+use App\Models\dersProgramiModel;
+use App\Models\gunlerModel;
+use App\Models\kurumDersModel;
 use App\Models\kurumLogModel;
 use App\Models\kurumModel;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
 use App\Models\LogModel;
 use App\Models\ogrenciSinifModel;
+use App\Models\ogretmenKurumModel;
 use App\Models\OkulModel;
 use App\Models\sinifModel;
 use App\Models\User;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class kurumSinifController extends Controller
@@ -109,12 +115,32 @@ class kurumSinifController extends Controller
             $kurum = get_current_kurum();
             if ($sinif->kurum_id != $kurum->id)
                 throw new Exception("Sınıf Bulunamadı");
+            $dersler = kurumDersModel::where('kurum_id', get_current_kurum()->id)->get();
+            $gunler = gunlerModel::all();
+            $dersProgrami = dersProgramiModel::where('sinif_id', $sinif->id)
+                ->with('ders')
+                ->with('ogretmen')
+                ->orderBy('baslangic')
+                ->get();
+            $saatler = [];
+            foreach ($dersProgrami as $key) {
+                $string = $key->baslangic."-".$key->bitis;
+                if(!in_array($string,$saatler))
+                    array_push($saatler,$string);
+            }
+            
+            $ogretmenler = ogretmenKurumModel::where('kurum_id', get_current_kurum()->id)->with('ogretmen')->get()->sortBy('ogretmen.ad');
             $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->with('okul')->get();
             $kurumOkullar = kurumOkulModel::where('kurum_id', get_current_kurum()->id)->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
             return view('kurum.siniflar.show')->with([
                 'sinif' => $sinif,
                 'ogrenciler' => $ogrenciler,
                 'kurumOkullar' => $kurumOkullar,
+                'dersler' => $dersler,
+                'gunler' => $gunler,
+                'ogretmenler' => $ogretmenler,
+                'dersProgrami' => $dersProgrami,
+                'saatler' => $saatler,
             ]);
         } catch (Exception $ex) {
             return redirect()->route('kurum_sinif_index')->withErrors($ex->getMessage());
@@ -258,6 +284,90 @@ class kurumSinifController extends Controller
             return response()->json(['message' => "Öğrenci '$user->ad $user->soyad' sınıftan kaldırıldı"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
+        }
+    }
+    public function dersProgramiCreate(Request $r)
+    {
+        try {
+            $rules = array(
+                'ders_id' => array('required', 'integer'),
+                'gun_id' => array('required', 'integer', 'between:1,7'),
+                'baslangic' => array('required'),
+                'bitis' => array('required'),
+                'ogretmen_id' => array('required', 'integer'),
+                'sinif_id' => array('required', 'integer'),
+            );
+            $attributeNames = array(
+                'ders_id' => "Ders",
+                'gun_id' => "Gün",
+                'baslangic' => "Başlangıç",
+                'bitis' => "Bitiş",
+                'ogretmen_id' => "Öğretmen",
+                'sinif_id' => "Sınıf",
+            );
+            $messages = array(
+                'required' => ':attribute alanı zorunlu.',
+                'integer' => ':attribute alanı numerik olmalıdır.',
+                'between' => ':attribute alanı 1 ile 7 arasında olmalıdır',
+            );
+            $validator = Validator::make($r->all(), $rules, $messages, $attributeNames);
+            if ($validator->fails())
+                throw new Exception($validator->errors()->first());
+            $sinif = sinifModel::find($r->sinif_id);
+            if (!$sinif)
+                throw new Exception("Sınıf bilgisi alınamadı, Lütfen sayfayı yenileyin");
+            if ($sinif->kurum_id != get_current_kurum()->id)
+                throw new Exception("Sınıf bilgisi alınamadı, Lütfen sayfayı yenileyin");
+            $ders = kurumDersModel::find($r->ders_id);
+            if (!$ders)
+                throw new Exception("Ders bilgisi alınamadı, Lütfen sayfayı yenileyin");
+            if ($ders->kurum_id != get_current_kurum()->id)
+                throw new Exception("Ders bilgisi alınamadı, Lütfen sayfayı yenileyin");
+            $ogretmen = User::find($r->ogretmen_id);
+            if (!$ogretmen)
+                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin");
+            if (!$ogretmen->hasRole('Öğretmen'))
+                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin");
+            $ogretmen_kurum_exist = ogretmenKurumModel::where('ogretmen_id', $ogretmen->id)->where('kurum_id', get_current_kurum()->id)->first();
+            if (!$ogretmen_kurum_exist)
+                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin");
+
+            $doluSaatler = [];
+            $gununProgrami = dersProgramiModel::where([
+                'sinif_id' => $sinif->id,
+                'gun_id' => $r->gun_id
+            ])->get();
+            foreach ($gununProgrami as $key) {
+                array_push($doluSaatler, $key->baslangic . "-" . $key->bitis);
+            }
+            foreach ($doluSaatler as $key) {
+                $baslangic = explode("-", $key)[0];
+                $bitis = explode("-", $key)[1];
+                $baslangicFormat = DateTime::createFromFormat('H:i', $baslangic);
+                $bitisFormat = DateTime::createFromFormat('H:i', $bitis);
+                $currentBaslangicFormat = DateTime::createFromFormat('H:i', $r->baslangic);
+                $currentBitisFormat = DateTime::createFromFormat('H:i', $r->bitis);
+                if ($currentBaslangicFormat >= $currentBitisFormat)
+                    throw new Exception("Başlangıç saati bitiş saatinden büyük veya eşit olamaz");
+                if ($currentBaslangicFormat >= $baslangicFormat && $currentBaslangicFormat < $bitisFormat)
+                    throw new Exception("Başlangıç Saati Çakışıyor");
+                if ($currentBitisFormat > $baslangicFormat && $currentBitisFormat <= $bitisFormat)
+                    throw new Exception("Bitiş Saati Çakışıyor");
+            }
+
+            $dersprogrami = dersProgramiModel::create(array_merge($r->input(), [
+                'kurum_id' => get_current_kurum()->id,
+                'sinif_id' => $sinif->id
+            ]));
+            $logUser = auth()->user();
+            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$sinif->ad ($sinif->id)' sınıfında ders programı oluşturdu. Ders Programı ID: $dersprogrami->id";
+            LogModel::create(['kategori_id' => 24, 'logText' => $logText]);
+            $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$sinif->ad ($sinif->id)' sınıfında ders programı oluşturdu. Ders Programı ID: $dersprogrami->id";
+            kurumLogModel::create(['kategori_id' => 19, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
+
+            return response()->json(['message' => "Ders Programı Oluşturuldu"]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 404);
         }
     }
 }

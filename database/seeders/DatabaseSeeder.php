@@ -198,6 +198,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Ders Planına Dosya Eklemeleri", "icon" => "file-circle-plus"],
             ['ad' => "Dersten Dosya Silme İşlemleri", "icon" => "file-circle-xmark"],
             ['ad' => "Ders Planı Güncelleme İşlemleri", "icon" => "file-pen"],
+            ['ad' => "Ders Programı Oluşturma İşlemleri", "icon" => "calendar-plus"],
 
         ]);
         DB::table('kurum_log_kategori')->insert([
@@ -219,6 +220,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Ders Planına Dosya Eklemeleri", "icon" => "file-circle-plus"],
             ['ad' => "Ders Planından Dosya Silme İşlemleri", "icon" => "file-circle-xmark"],
             ['ad' => "Ders Planı Güncelleme İşlemleri", "icon" => "file-pen"],
+            ['ad' => "Ders Programı Oluşturma İşlemleri", "icon" => "calendar-plus"],
         ]);
         DB::table('kurumlar')->insert([
             [
@@ -346,6 +348,15 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
+        ]);
+        DB::table("gunler")->insert([
+            ['ad' => "Pazartesi"],
+            ['ad' => "Salı"],
+            ['ad' => "Çarşamba"],
+            ['ad' => "Perşembe"],
+            ['ad' => "Cuma"],
+            ['ad' => "Cumartesi"],
+            ['ad' => "Pazar"],
         ]);
         DB::table("ogretmen_photo")->insert([
             [

@@ -63,66 +63,167 @@
                         <div class="mb-4">
                             <button onclick="ogrencileriGetir()" class="btn btn-alt-primary">Öğrencileri Getir</button>
                         </div>
+                        <div class="mb-4">
+                            <a class="btn btn-alt-success"
+                                href="{{ route('kurum_hesapOlustur_ogrenci', ['sinif' => $sinif->id]) }}"><i
+                                    class="fa fa-user-plus"></i> Öğrenci Oluştur</a>
+
+                        </div>
 
                     </div>
                 </div>
                 <!-- END Your Block -->
             </div>
             <div class="col-xl-4 col-md-6 mb-4">
-                <a class="block block-rounded  text-center d-flex flex-column h-100 mb-0"
-                    href="{{ route('kurum_hesapOlustur_ogrenci', ['sinif' => $sinif->id]) }}">
-                    <div
-                        class="block-content  block-content-full flex-grow-1 d-flex justify-content-center align-items-center">
-                        <div>
-                            <i class="fa fa-clipboard-list fa-2x  text-success"></i>
-                            <div class="fw-semibold mt-3 text-uppercase">Öğrenci Kayıt Et</div>
+                <div class="block block-rounded">
+                    <div class="block-content">
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <label for="dersSelect" class="form-label">Ders</label>
+                                <select name="dersSelect" class="form-control" id="dersSelect">
+                                    @foreach ($dersler as $ders)
+                                        <option value="{{ $ders->id }}">{{ $ders->ad }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 mb-4">
+                                <label for="gunSelect" class="form-label">Gün</label>
+                                <select name="gunSelect" class="form-control" id="gunSelect">
+                                    @foreach ($gunler as $gun)
+                                        <option value="{{ $gun->id }}">{{ $gun->ad }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" for="dersBaslangic">Başlangıç</label>
+                                <input type="text" class="js-masked-time form-control" id="dersBaslangic"
+                                    name="dersBaslangic" placeholder="00:00">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label" for="dersBitis">Bitiş</label>
+                                <input type="text" class="js-masked-time form-control" id="dersBitis" name="dersBitis"
+                                    placeholder="00:00">
+                            </div>
+                            <div class="col-12 mb-4">
+                                <label for="ogretmenSelect" class="form-label">Öğretmen</label>
+                                <select name="ogretmenSelect" class="form-control" id="ogretmenSelect">
+                                    @foreach ($ogretmenler as $ogretmen)
+                                        <option value="{{ $ogretmen->ogretmen->id }}">
+                                            {{ $ogretmen->ogretmen->ad . ' ' . $ogretmen->ogretmen->soyad }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 mb-4 d-grid">
+                                <button onclick="dersProgramiEkle()" class="btn btn-alt-success">Oluştur</button>
+                            </div>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="block">
-                    <div class="block-header">
-                        <h3 class="block-title">Öğrenci <small>Listesi</small></h3>
-                    </div>
-                    <div class="block-content">
-                        <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Ad Soyad</th>
-                                    <th>Okul</th>
-                                    <th>Sınıf</th>
-                                    <th>Şube</th>
-                                    <th class="text-center">#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($ogrenciler as $ogrenci)
+                <!-- Block Tabs Animated Slide Up -->
+                <div class="block block-rounded">
+                    <ul class="nav nav-tabs nav-tabs-block" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="btabs-animated-slideup-home-tab" data-bs-toggle="tab"
+                                data-bs-target="#btabs-animated-slideup-home" role="tab"
+                                aria-controls="btabs-animated-slideup-home" aria-selected="true">Ders Programı</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="btabs-animated-slideup-profile-tab" data-bs-toggle="tab"
+                                data-bs-target="#btabs-animated-slideup-profile" role="tab"
+                                aria-controls="btabs-animated-slideup-profile" aria-selected="false">Öğrenci
+                                Listesi</button>
+                        </li>
+
+                    </ul>
+                    <div class="block-content tab-content overflow-hidden">
+                        <div class="tab-pane fade fade-up show active" id="btabs-animated-slideup-home" role="tabpanel"
+                            aria-labelledby="btabs-animated-slideup-home-tab" tabindex="0">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>{{ $ogrenci->ogrenci->ozel_id }}</td>
-                                        <td>{{ $ogrenci->ogrenci->ad . ' ' . $ogrenci->ogrenci->soyad }}</td>
-                                        <td>{{ $ogrenci->okul->okulDetails->ad }}</td>
-                                        <td>{{ $ogrenci->okul->sinif . '. sınıf' }}</td>
-                                        <td class="{{ $ogrenci->okul->sube ? '' : 'text-danger' }}">
-                                            {{ $ogrenci->okul->sube ? $ogrenci->okul->sube . ' şubesi' : 'YOK' }}</td>
-                                        <td class="text-center">
-                                            <div class="btn-group">
-                                                <button onclick="ogrenciCikar({{ $ogrenci->ogrenci->id }})" type="button"
-                                                    class="btn btn-sm btn-alt-danger js-bs-tooltip-enabled"
-                                                    data-bs-toggle="tooltip" aria-label="Delete">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </td>
+                                        <th>Saat</th>
+                                        @foreach ($gunler as $gun)
+                                            <th class="text-center">{{ $gun->ad }}</th>
+                                        @endforeach
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($saatler as $saat)
+                                        <tr>
+                                            <td style="vertical-align: middle">{{ $saat }}</td>
+                                            @for ($i = 1; $i <= 7; $i++)
+                                                @php
+                                                    $currentDers = $dersProgrami
+                                                        ->where('baslangic', explode('-', $saat)[0])
+                                                        ->where('gun_id', $i)
+                                                        ->first();
+                                                @endphp
+                                                <td class="text-center">{{ $currentDers ? $currentDers->ders->ad : '' }}
+                                                    @if ($currentDers)
+                                                        <br>
+                                                        <span
+                                                            class="text-muted">{{ $currentDers->ogretmen->ad . ' ' . $currentDers->ogretmen->soyad }}</span>
+                                                    @endif
+                                                </td>
+                                            @endfor
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade fade-up" id="btabs-animated-slideup-profile" role="tabpanel"
+                            aria-labelledby="btabs-animated-slideup-profile-tab" tabindex="0">
+                            <div class="block">
+                                <div class="block-header">
+                                    <h3 class="block-title">Öğrenci <small>Listesi</small></h3>
+                                </div>
+                                <div class="block-content">
+                                    <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Ad Soyad</th>
+                                                <th>Okul</th>
+                                                <th>Sınıf</th>
+                                                <th>Şube</th>
+                                                <th class="text-center">#</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($ogrenciler as $ogrenci)
+                                                <tr>
+                                                    <td>{{ $ogrenci->ogrenci->ozel_id }}</td>
+                                                    <td>{{ $ogrenci->ogrenci->ad . ' ' . $ogrenci->ogrenci->soyad }}</td>
+                                                    <td>{{ $ogrenci->okul->okulDetails->ad }}</td>
+                                                    <td>{{ $ogrenci->okul->sinif . '. sınıf' }}</td>
+                                                    <td class="{{ $ogrenci->okul->sube ? '' : 'text-danger' }}">
+                                                        {{ $ogrenci->okul->sube ? $ogrenci->okul->sube . ' şubesi' : 'YOK' }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group">
+                                                            <button onclick="ogrenciCikar({{ $ogrenci->ogrenci->id }})"
+                                                                type="button"
+                                                                class="btn btn-sm btn-alt-danger js-bs-tooltip-enabled"
+                                                                data-bs-toggle="tooltip" aria-label="Delete">
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <!-- END Block Tabs Animated Slide Up -->
             </div>
         </div>
     </div>
@@ -141,7 +242,11 @@
     <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/jquery.maskedinput/jquery.maskedinput.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/sinifOgrenciList.js') }}"></script>
+    <script>
+        Dashmix.helpersOnLoad(['jq-masked-inputs']);
+    </script>
     <script>
         function ogrenciEkleTc(sinif_id) {
             var tc = $('#tc').val();
@@ -373,6 +478,42 @@
                                 location.reload();
                             })
                         }
+                    })
+                }
+            })
+        }
+
+        function dersProgramiEkle() {
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('ders_id', $('#dersSelect').val());
+            fd.append('gun_id', $('#gunSelect').val());
+            fd.append('baslangic', $('#dersBaslangic').val());
+            fd.append('bitis', $('#dersBitis').val());
+            fd.append('ogretmen_id', $('#ogretmenSelect').val());
+            fd.append('sinif_id', {{ $sinif->id }});
+            $.ajax({
+                url: '{{ route('kurum_sinif_dersProgrami_create') }}',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı!',
+                        text: res.message,
+                        confirmButtonText: "Tamam"
+                    }).then((result) => {
+                        location.reload();
+                    })
+                },
+                error: function(res) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: res.responseJSON.message,
+                        confirmButtonText: "Tamam"
                     })
                 }
             })
