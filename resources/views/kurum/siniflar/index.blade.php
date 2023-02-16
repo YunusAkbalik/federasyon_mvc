@@ -1,6 +1,8 @@
 @extends('layouts.backend')
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css') }}">
 @endsection
 @section('content')
     <!-- Hero -->
@@ -9,9 +11,10 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
                 <h1 class="flex-grow-1 fs-3 fw-semibold my-2 my-sm-3">Sınıflar</h1>
                 <nav class="flex-shrink-0 my-2 my-sm-0 ms-sm-3" aria-label="breadcrumb">
-                    <select onchange="getSinif()" class="form-control" name="okullar" id="okullar">
-                        @foreach ($kurumOkullar as $okul)
-                            <option value="{{ $okul->id }}">{{ $okul->ad }}</option>
+                    <select onchange="yonlendir(this.value)" class="form-control" name="okullar" id="okullar">
+                        @foreach ($kurumOkullar as $kurumOkul)
+                            <option {{ $okulExist ? ($okul->id == $kurumOkul->id ? 'selected' : '') : '' }}
+                                value="{{ $kurumOkul->id }}">{{ $kurumOkul->ad }}</option>
                         @endforeach
                     </select>
                 </nav>
@@ -36,30 +39,42 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-6 col-md-6 ">
-                <a class="block block-rounded block-link-shadow" href="javascript:void(0)">
-                    <div class="block-content block-content-full d-flex align-items-center justify-content-between">
-                        <div class="me-3">
-                            <p class="fs-lg fw-semibold mb-0">
-                                Çilekler Sınıfı
-                            </p>
-                            <p class="text-muted mb-0">
-                                17 Öğrenci
-                            </p>
-                        </div>
-                        <div class="item item-circle bg-body-light">
-                            <i class="fa fa-users-rectangle text-body-color"></i>
-                        </div>
-                    </div>
-                </a>
-            </div>
+        </div>
+        <div class="row">
+            <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
+                <thead>
+                    <tr>
+                        <th>Sınıf Adı</th>
+                        <th>Öğrenci Sayısı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($siniflar as $sinif)
+                        <tr>
+                            <td><a href="{{ route('kurum_sinif_show', ['id' => $sinif->id]) }}">{{ $sinif->ad }}</a></td>
+                            <td>{{ $sinif->ogrenciler->count() }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
     <!-- END Page Content -->
 @endsection
 @section('js')
     <script src="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-
+    <script src="{{ asset('assets/js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/sinifIndex.js') }}"></script>
     <script>
         function sinifEkle() {
             var yeniSinifAd = $('#yeniSinifAd').val()
@@ -94,115 +109,9 @@
                 }
             })
         }
-        window.addEventListener('DOMContentLoaded', (event) => {
-            var okulsec = getCookie('okulsec')
-            console.log(okulsec);
-            if (okulsec != null && okulsec != "null") {
-                if (okulsec != $('#okullar').val()) {
-                    $('#okullar').val(okulsec)
-                    getSinif()
-                } else {
-                    getSinif()
-                }
-            } else {
-                getSinif()
-            }
-        });
 
-        function getCookie(cname) {
-            let name = cname + "=";
-            let decodedCookie = decodeURIComponent(document.cookie);
-            let ca = decodedCookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return null;
-        }
-
-        function getSinif() {
-            Dashmix.layout('header_loader_on');
-            $('#content').empty()
-            var okul_id = $('#okullar').val()
-            document.cookie = "okulsec=" + okul_id;
-            $('#okullar').attr('disabled', 'disabled')
-            var fd = new FormData();
-            fd.append('_token', $('input[name="_token"]').val());
-            fd.append('okul_id', okul_id);
-            $.ajax({
-                url: '{{ route('kurum_sinif_get') }}',
-                method: 'post',
-                data: fd,
-                processData: false,
-                contentType: false,
-                success: function(res) {
-                    console.log(res);
-                    var addContent = `<div class="col-xl-4 col-lg-6 col-md-6 ">
-                        <div class="block block-rounded block-link-shadow">
-                            <div class="block-content block-content-full d-flex align-items-center justify-content-between">
-                                <div class="me-3">
-                                    <input type="text" name="yeniSinifAd" id="yeniSinifAd" placeholder="Sınıf Adı"
-                                        class="form-control">
-                                </div>
-                                <div onclick="sinifEkle()" class="item item-circle bg-body-light">
-                                    <i class="fa fa-plus text-success"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                    $('#content').append(addContent)
-                    res.data.forEach(element => {
-                        var content = `<div class="col-xl-4 col-lg-6 col-md-6 ">
-                            <a class="block block-rounded block-link-shadow" href="sinif/${element.id}">
-                                <div class="block-content block-content-full d-flex align-items-center justify-content-between">
-                                    <div class="me-3">
-                                        <p name="sinifadi" class="fs-lg fw-semibold mb-0">
-                                            ${element.ad}
-                                        </p>
-                                        <p class="text-muted mb-0">
-                                            ${element.ogrenciler.length} Öğrenci
-                                        </p>
-                                    </div>
-                                    <div class="item item-circle bg-body-light">
-                                        <i class="fa fa-users-rectangle text-body-color"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>`;
-                        $('#content').append(content)
-                    });
-                    Dashmix.layout('header_loader_off');
-                    $('#okullar').removeAttr('disabled', 'disabled')
-
-
-                },
-                error: function(res) {
-                    Dashmix.layout('header_loader_off');
-                    if (res.responseJSON.message == "Okul bilgisi alınamadı") {
-                        document.cookie = "okulsec=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                        location.reload();
-
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Hata!',
-                            text: res.responseJSON.message,
-                            confirmButtonText: "Tamam"
-                        }).then((result) => {
-                            location.reload();
-                        })
-                    }
-
-
-                }
-
-            })
-
+        function yonlendir(id) {
+            location.href = "{{ route('kurum_sinif_index') }}/?okul=" + id
         }
     </script>
 @endsection

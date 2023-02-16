@@ -56,8 +56,8 @@
         <div class="row">
             @foreach ($kurumOkullar as $okul)
                 <div class="col-xxl-3 col-xl-4 col-md-6">
-                    <a class="block block-rounded text-center" onclick="okul({{ $okul->okul->id }})"
-                        href="javascript:void(0)">
+                    <a class="block block-rounded text-center"
+                        href="{{ route('kurum_sinif_index', ['okul' => $okul->okul->id]) }}">
                         <div
                             class="block-content block-content-full block-content-sm bg-primary border-bottom border-white-op">
                             <p class="fw-semibold text-white mb-0">{{ $okul->okul->ad }}</p>
@@ -215,12 +215,6 @@
                     }
                 }
             })
-        }
-
-        function okul(id) {
-            document.cookie = "okulsec=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            document.cookie = "okulsec=" + id;
-            location.href = "{{ route('kurum_sinif_index') }}";
         }
     </script>
 @endsection

@@ -24,16 +24,51 @@ use Illuminate\Support\Facades\Validator;
 
 class kurumSinifController extends Controller
 {
-    public function index()
+    public function index(Request $r)
     {
+        $okulExist = false;
+        $okul = null;
+        if ($r->okul) {
+            $okul = OkulModel::find($r->okul);
+            if ($okul) {
+                $kurumOkulExist = kurumOkulModel::where([
+                    'kurum_id' => get_current_kurum()->id,
+                    'okul_id' => $okul->id
+                ])->first();
+                if ($kurumOkulExist) {
+                    $okulExist = true;
+                    $siniflar = sinifModel::where([
+                        'kurum_id' => get_current_kurum()->id,
+                        'okul_id' => $okul->id
+                    ])
+                        ->with('ogrenciler')
+                        ->get();
+                }
+            }
+        }
         $kurum = get_current_kurum();
         $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->with('okul')->get();
         if ($kurumOkullar->count() <= 0) {
             return redirect()->route('kurum_okul_index')->withErrors("Kurumunuza ait okul bulunmuyor.");
         }
+        if (!$okulExist) {
+            $kurumOkul = kurumOkulModel::where('kurum_id', get_current_kurum()->id)->first();
+            $okul = OkulModel::find($kurumOkul->okul_id);
+            if (!$okul)
+                return redirect()->route('kurum_okul_index')->withErrors("Okul Bulunamadı.");
+            $siniflar = sinifModel::where([
+                'kurum_id' => get_current_kurum()->id,
+                'okul_id' => $okul->id
+            ])
+                ->with('ogrenciler')
+                ->get();
+        }
         return view('kurum.siniflar.index')->with([
             'kurum' => $kurum,
             'kurumOkullar' => $kurumOkullar,
+            'okulExist' => $okulExist,
+            'okul' => $okul,
+            'siniflar' => $siniflar,
         ]);
     }
     public function add(Request $request)
@@ -124,11 +159,11 @@ class kurumSinifController extends Controller
                 ->get();
             $saatler = [];
             foreach ($dersProgrami as $key) {
-                $string = $key->baslangic."-".$key->bitis;
-                if(!in_array($string,$saatler))
-                    array_push($saatler,$string);
+                $string = $key->baslangic . "-" . $key->bitis;
+                if (!in_array($string, $saatler))
+                    array_push($saatler, $string);
             }
-            
+
             $ogretmenler = ogretmenKurumModel::where('kurum_id', get_current_kurum()->id)->with('ogretmen')->get()->sortBy('ogretmen.ad');
             $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->with('okul')->get();
             $kurumOkullar = kurumOkulModel::where('kurum_id', get_current_kurum()->id)->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
@@ -290,11 +325,11 @@ class kurumSinifController extends Controller
     {
         try {
             $rules = array(
-                'ders_id' => array('required', 'integer'),
+                'ders_id' => array('required'),
                 'gun_id' => array('required', 'integer', 'between:1,7'),
                 'baslangic' => array('required'),
                 'bitis' => array('required'),
-                'ogretmen_id' => array('required', 'integer'),
+                'ogretmen_id' => array('required'),
                 'sinif_id' => array('required', 'integer'),
             );
             $attributeNames = array(
