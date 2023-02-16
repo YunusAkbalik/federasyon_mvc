@@ -54,7 +54,6 @@
                 </a>
             </div>
         </div>
-       
     </div>
     <!-- END Page Content -->
 @endsection
@@ -162,7 +161,7 @@
                             <a class="block block-rounded block-link-shadow" href="sinif/${element.id}">
                                 <div class="block-content block-content-full d-flex align-items-center justify-content-between">
                                     <div class="me-3">
-                                        <p class="fs-lg fw-semibold mb-0">
+                                        <p name="sinifadi" class="fs-lg fw-semibold mb-0">
                                             ${element.ad}
                                         </p>
                                         <p class="text-muted mb-0">
