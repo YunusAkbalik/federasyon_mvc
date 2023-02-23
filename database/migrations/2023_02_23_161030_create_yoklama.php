@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('ders_programi_id');
             $table->integer('ogrenci_id');
-            $table->integer('durum_id');
+            $table->boolean('geldi');
             $table->date('tarih');
             $table->timestamps();
         });

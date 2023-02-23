@@ -127,7 +127,8 @@
                 <div class="block block-rounded">
                     <ul class="nav nav-tabs nav-tabs-block" role="tablist">
                         <li class="nav-item">
-                            <button class="nav-link active" id="btabs-animated-slideup-home-tab" data-bs-toggle="tab"
+                            <button class="nav-link {{ $yoklamaShow ? '' : 'active' }}"
+                                id="btabs-animated-slideup-home-tab" data-bs-toggle="tab"
                                 data-bs-target="#btabs-animated-slideup-home" role="tab"
                                 aria-controls="btabs-animated-slideup-home" aria-selected="true">Ders Programı</button>
                         </li>
@@ -137,14 +138,19 @@
                                 aria-controls="btabs-animated-slideup-profile" aria-selected="false">Öğrenci
                                 Listesi</button>
                         </li>
-                        <li class="nav-item">
-                            <button class="nav-link" id="yoklama-tab" data-bs-toggle="tab" data-bs-target="#yoklama"
-                                role="tab" aria-controls="yoklama" aria-selected="false">Yoklama</button>
-                        </li>
+                        @if ($dersler->count() >= 1)
+                            <li class="nav-item ">
+                                <button class="nav-link {{ $yoklamaShow ? 'active' : '' }}" id="yoklama-tab"
+                                    data-bs-toggle="tab" data-bs-target="#yoklama" role="tab"
+                                    aria-controls="yoklama" aria-selected="false">Yoklama</button>
+                            </li>
+                        @endif
+
 
                     </ul>
                     <div class="block-content tab-content overflow-hidden">
-                        <div class="tab-pane fade fade-up show active" id="btabs-animated-slideup-home" role="tabpanel"
+                        <div class="tab-pane fade fade-up {{ $yoklamaShow ? '' : 'show active' }}"
+                            id="btabs-animated-slideup-home" role="tabpanel"
                             aria-labelledby="btabs-animated-slideup-home-tab" tabindex="0">
                             <table class="table">
                                 <thead>
@@ -225,604 +231,152 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade fade-up" id="yoklama" role="tabpanel" aria-labelledby="yoklama-tab"
-                            tabindex="0">
-                            <div class="block">
-                                <div class="block-header">
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-4 mb-4">
-                                                <label for="yoklama-tarih" class="visually-hidden">Tarih:</label>
-                                                <input type="date" name="yoklama-tarih" value="{{ now()->format('Y-m-d') }}" class="form-control"
-                                                    id="yoklama-tarih">
+                        @if ($dersler->count() >= 1)
+                            <div class="tab-pane fade fade-up {{ $yoklamaShow ? 'show active' : '' }}" id="yoklama"
+                                role="tabpanel" aria-labelledby="yoklama-tab" tabindex="0">
+                                <div class="block">
+                                    <div class="block-header">
+                                        <div class="col-md-6">
+                                            <form action="{{ route('kurum_sinif_show', ['id' => $sinif->id]) }}"
+                                                method="GET">
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-4">
+                                                        <label for="yoklama_tarih" class="visually-hidden">Tarih:</label>
+                                                        <input type="date" name="yoklama_tarih"
+                                                            value="{{ app('request')->input('yoklama_tarih') ? app('request')->input('yoklama_tarih') : now()->format('Y-m-d') }}"
+                                                            class="form-control" id="yoklama_tarih">
+                                                    </div>
+                                                    <div class="col-md-4 mb-4">
+                                                        <label for="yoklama_ders" class="visually-hidden">Ders:</label>
+                                                        <select name="yoklama_ders" class="form-control"
+                                                            id="yoklama_ders">
+                                                            @foreach ($dersler as $ders)
+                                                                <option
+                                                                    {{ app('request')->input('yoklama_ders') ? (app('request')->input('yoklama_ders') == $ders->id ? 'selected' : '') : '' }}
+                                                                    value="{{ $ders->id }}">{{ $ders->ad }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-4 mb-4">
+                                                        <button type="submit" class="btn btn-primary">Filtrele</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="row">
+                                                <div class="col-md-4 mb-4">
+                                                    {{ date('d/m/Y', strtotime($first_day_of_week)) }} - Pazartesi
+                                                </div>
+                                                <div class="col-md-4 mb-4">
+                                                    {{ date('d/m/Y', strtotime($last_day_of_week)) }} - Pazar
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 mb-4">
-                                                <label for="yoklama-ders" class="visually-hidden">Ders:</label>
-                                                <select name="yoklama-ders" class="form-control" id="yoklama-ders">
-                                                    <option value="1">Test Ders 1</option>
-                                                    <option value="2">Test Ders 2</option>
-                                                    <option value="2">Test Ders 3</option>
-                                                    <option value="2">Test Ders 4</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 mb-4">
-                                                <button class="btn btn-primary">Filtrele</button>
-                                                <button class="btn btn-success">Kaydet</button>
-                                            </div>
+
+
                                         </div>
-
                                     </div>
-                                </div>
-                                <div class="block-content">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-hover table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Öğrenci</th>
-                                                    <th class="text-center">Pazartesi 
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>2</td>
-                                                                <td>3</td>
-                                                            </tr>
-                                                        </table>
-                                                    </th>
-                                                    <th class="text-center">Salı
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>2</td>
-                                                                <td>3</td>
-                                                            </tr>
-                                                        </table>
-                                                    </th>
-                                                    <th class="text-center">Çarşamba
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>2</td>
-                                                                <td>3</td>
-                                                            </tr>
-                                                        </table>
-                                                    </th>
-                                                    <th class="text-center">Perşembe
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>2</td>
-                                                                <td>3</td>
-                                                            </tr>
-                                                        </table>
-                                                    </th>
-                                                    <th class="text-center">Cuma
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>2</td>
-                                                                <td>3</td>
-                                                            </tr>
-                                                        </table>
-                                                    </th>
-                                                    <th class="text-center">Cumartesi
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>2</td>
-                                                                <td>3</td>
-                                                            </tr>
-                                                        </table>
-                                                    </th>
-                                                    <th class="text-center">Pazar
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>2</td>
-                                                                <td>3</td>
-                                                            </tr>
-                                                        </table>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @for ($i = 0; $i < 20; $i++)
+                                    <div class="block-content">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover table-bordered">
+                                                <thead>
                                                     <tr>
-                                                        <td>Ali</td>
-                                                        <td class="text-center">
-                                                            <table class="table table-bordered ">
-                                                                <tr>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-success dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-check"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-danger dropdown-toggle"
-                                                                                id="dropdown-default-alt-success"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-xmark"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-secondary dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-question"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <table class="table table-bordered">
-                                                                <tr>
-                                                                   <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-success dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-check"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-danger dropdown-toggle"
-                                                                                id="dropdown-default-alt-success"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-xmark"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-secondary dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-question"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <table class="table table-bordered">
-                                                                <tr>
-                                                                   <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-success dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-check"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-danger dropdown-toggle"
-                                                                                id="dropdown-default-alt-success"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-xmark"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-secondary dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-question"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <table class="table table-bordered">
-                                                                <tr>
-                                                                   <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-success dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-check"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-danger dropdown-toggle"
-                                                                                id="dropdown-default-alt-success"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-xmark"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-secondary dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-question"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <table class="table table-bordered">
-                                                                <tr>
-                                                                   <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-success dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-check"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-danger dropdown-toggle"
-                                                                                id="dropdown-default-alt-success"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-xmark"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-secondary dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-question"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <table class="table table-bordered">
-                                                                <tr>
-                                                                   <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-success dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-check"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-danger dropdown-toggle"
-                                                                                id="dropdown-default-alt-success"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-xmark"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-secondary dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-question"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <table class="table table-bordered">
-                                                                <tr>
-                                                                   <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-success dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-check"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-danger dropdown-toggle"
-                                                                                id="dropdown-default-alt-success"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-xmark"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button"
-                                                                                class="btn btn-alt-secondary dropdown-toggle"
-                                                                                id="dropdown-default-alt-primary"
-                                                                                data-bs-toggle="dropdown"
-                                                                                aria-haspopup="true"
-                                                                                aria-expanded="false">
-                                                                                <i class="fa-solid fa-circle-question"></i>
-                                                                            </button>
-                                                                           <div class="dropdown-menu"
-                                                                                aria-labelledby="dropdown-default-alt-primary">
-                                                                                <a class="dropdown-item text-success"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-check"></i> Geldi</a>
-                                                                                <a class="dropdown-item text-danger"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-xmark"></i> Gelmedi</a>
-                                                                                <a class="dropdown-item text-secondary"
-                                                                                    href="javascript:void(0)"><i class="fa-solid fa-circle-question"></i> Bilinmiyor</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-
-
+                                                        <th style="vertical-align: middle">Öğrenci</th>
+                                                        @foreach ($dersGunleri as $gun)
+                                                            <th class="text-center">{{ $gunler->find($gun)->ad }}
+                                                                <table class="table table-bordered">
+                                                                    <tr>
+                                                                        @for ($i = 1;
+        $i <=
+        $dersProgrami->where('gun_id', $gun)->where('ders_id', app('request')->input('yoklama_ders') ? app('request')->input('yoklama_ders') : $defaultDersID)->count();
+        $i++)
+                                                                            <td>{{ $i }}</td>
+                                                                        @endfor
+                                                                    </tr>
+                                                                </table>
+                                                            </th>
+                                                        @endforeach
                                                     </tr>
-                                                @endfor
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($ogrenciler as $ogrenci)
+                                                        <tr>
+                                                            <td>{{ $ogrenci->ogrenci->ad . ' ' . $ogrenci->ogrenci->soyad }}
+                                                            </td>
+                                                            @foreach ($dersGunleri as $gun)
+                                                                <td class="text-center">
+                                                                    <table class="table">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                @foreach ($dersProgrami->where('gun_id', $gun)->where('ders_id', app('request')->input('yoklama_ders') ? app('request')->input('yoklama_ders') : $defaultDersID) as $durum)
+                                                                                    @php
+                                                                                        $durumHere = $yoklama
+                                                                                            ->where('ders_programi_id', $durum->id)
+                                                                                            ->where('ogrenci_id', $ogrenci->ogrenci->id)
+                                                                                            ->where('tarih', '>=', $first_day_of_week)
+                                                                                            ->where('tarih', '<=', $last_day_of_week)
+                                                                                            ->first();
+                                                                                        if ($durumHere) {
+                                                                                            if ($durumHere->geldi == true) {
+                                                                                                $class = 'check';
+                                                                                                $backClass = 'success';
+                                                                                            } else {
+                                                                                                $class = 'xmark';
+                                                                                                $backClass = 'danger';
+                                                                                            }
+                                                                                        } else {
+                                                                                            $class = 'question';
+                                                                                            $backClass = 'secondary';
+                                                                                        }
+                                                                                        
+                                                                                    @endphp
+                                                                                    <td>
+                                                                                        <div class="dropdown">
+                                                                                            <button type="button"
+                                                                                                class="btn btn-alt-{{ $backClass }} dropdown-toggle"
+                                                                                                id="dropdown-default-alt-primary"
+                                                                                                data-bs-toggle="dropdown"
+                                                                                                aria-haspopup="true"
+                                                                                                aria-expanded="false">
+                                                                                                <i
+                                                                                                    class="fa-solid fa-circle-{{ $class }}"></i>
+                                                                                            </button>
+                                                                                            <div class="dropdown-menu"
+                                                                                                aria-labelledby="dropdown-default-alt-primary">
+                                                                                                <button
+                                                                                                    class="dropdown-item text-success"
+                                                                                                    onclick="yoklamaAl({{ $durum->id }},{{ $ogrenci->ogrenci->id }},1,{{ $gun }},this)"><i
+                                                                                                        class="fa-solid fa-circle-check"></i>
+                                                                                                    Geldi</button>
+                                                                                                <button
+                                                                                                    class="dropdown-item text-danger"
+                                                                                                    onclick="yoklamaAl({{ $durum->id }},{{ $ogrenci->ogrenci->id }},0,{{ $gun }},this)"><i
+                                                                                                        class="fa-solid fa-circle-xmark"></i>
+                                                                                                    Gelmedi</button>
+                                                                                                <button
+                                                                                                    class="dropdown-item text-secondary"
+                                                                                                    onclick="yoklamaAl({{ $durum->id }},{{ $ogrenci->ogrenci->id }},-1,{{ $gun }},this)"><i
+                                                                                                        class="fa-solid fa-circle-question"></i>
+                                                                                                    Bilinmiyor</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                @endforeach
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
 
-                                            </tbody>
-                                        </table>
+                                                                </td>
+                                                            @endforeach
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
-                        </div>
+                        @endif
+
                     </div>
                 </div>
                 <!-- END Block Tabs Animated Slide Up -->
@@ -1117,6 +671,53 @@
                         text: res.responseJSON.message,
                         confirmButtonText: "Tamam"
                     })
+                }
+            })
+        }
+
+        function yoklamaAl(ders_programi_id, ogrenci_id, durum, tarih, element) {
+            console.log(ders_programi_id, ogrenci_id, durum, tarih);
+            var fd = new FormData();
+            fd.append('_token', $('input[name="_token"]').val());
+            fd.append('ders_programi_id', ders_programi_id);
+            fd.append('ogrenci_id', ogrenci_id);
+            fd.append('durum', durum);
+            fd.append('tarih', tarih);
+            fd.append('first_day_of_week', "{{ $first_day_of_week }}");
+            fd.append('last_day_of_week', "{{ $last_day_of_week }}");
+            $.ajax({
+                url: '{{ route('kurum_sinif_yoklamaAl') }}',
+                method: 'post',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    var buttonElement = $(element).parent().prev()
+                    buttonElement.html("")
+                    buttonElement.removeClass('btn-alt-secondary')
+                    buttonElement.removeClass('btn-alt-danger')
+                    buttonElement.removeClass('btn-alt-success')
+                    if (durum == -1) {
+                        var icon = `<i class="fa-solid fa-circle-question"></i> `
+                        buttonElement.html(icon)
+                        buttonElement.addClass('btn-alt-secondary')
+                    } else if (durum == 0) {
+                        var icon = `<i class="fa-solid fa-circle-xmark"></i> `
+                        buttonElement.html(icon)
+                        buttonElement.addClass('btn-alt-danger')
+                    } else if (durum == 1) {
+                        var icon = `<i class="fa-solid fa-circle-check"></i> `
+                        buttonElement.html(icon)
+                        buttonElement.addClass('btn-alt-success')
+
+                    }
+                },
+                error: function(res) {
+                    Dashmix.helpers('jq-notify', {
+                        type: 'danger',
+                        icon: 'fa fa-times me-1',
+                        message: res.responseJSON.message
+                    });
                 }
             })
         }

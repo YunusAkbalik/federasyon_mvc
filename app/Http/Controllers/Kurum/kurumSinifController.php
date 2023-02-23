@@ -16,11 +16,13 @@ use App\Models\ogretmenKurumModel;
 use App\Models\OkulModel;
 use App\Models\sinifModel;
 use App\Models\User;
+use App\Models\yoklamaModel;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
 
 class kurumSinifController extends Controller
 {
@@ -150,6 +152,22 @@ class kurumSinifController extends Controller
             $kurum = get_current_kurum();
             if ($sinif->kurum_id != $kurum->id)
                 throw new Exception("Sınıf Bulunamadı");
+            $yoklamaShow = false;
+            if ($request->yoklama_tarih) {
+                $time_input = strtotime($request->yoklama_tarih);
+                $today = date("Y-m-d", $time_input);
+                $yoklamaShow = true;
+            } else
+                $today = date("Y-m-d");
+
+            $mon = new DateTime($today);
+            $sun = new DateTime($today);
+            $mon->modify('this week');
+            $sun->modify('this week +6 day');
+            $first_day_of_week = $mon->format("Y-m-d");
+            $last_day_of_week = $sun->format("Y-m-d");
+
+
             $dersler = kurumDersModel::where('kurum_id', get_current_kurum()->id)->get();
             $gunler = gunlerModel::all();
             $dersProgrami = dersProgramiModel::where('sinif_id', $sinif->id)
@@ -158,14 +176,42 @@ class kurumSinifController extends Controller
                 ->orderBy('baslangic')
                 ->get();
             $saatler = [];
+            $dersGunleri = [];
             foreach ($dersProgrami as $key) {
                 $string = $key->baslangic . "-" . $key->bitis;
                 if (!in_array($string, $saatler))
                     array_push($saatler, $string);
             }
 
-            $ogretmenler = ogretmenKurumModel::where('kurum_id', get_current_kurum()->id)->with('ogretmen')->get()->sortBy('ogretmen.ad');
+            $forYoklamaDersProgrami = dersProgramiModel::where('sinif_id', $sinif->id)
+                ->where('ders_id', $request->yoklama_ders ? $request->yoklama_ders : $dersler->first()->id)
+                ->get();
+            foreach ($forYoklamaDersProgrami as $key) {
+                if (!in_array($key->gun_id, $dersGunleri))
+                    array_push($dersGunleri, $key->gun_id);
+            }
+
+            sort($dersGunleri);
+            if ($request->yoklama_ders) {
+                $yoklama = yoklamaModel::with('ders_programi')
+                    ->whereHas('ders_programi', function ($q) use ($request) {
+                        return $q->where([
+                            'kurum_id' => get_current_kurum()->id,
+                            'ders_id' => $request->yoklama_ders
+                        ]);
+                    })
+                    ->get();
+            } else {
+                $yoklama = yoklamaModel::with('ders_programi')
+                    ->whereHas('ders_programi', function ($q) {
+                        return $q->where('kurum_id', get_current_kurum()->id);
+                    })->get();
+            }
+
+
+
             $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->with('okul')->get();
+            $ogretmenler = ogretmenKurumModel::where('kurum_id', get_current_kurum()->id)->with('ogretmen')->get()->sortBy('ogretmen.ad');
             $kurumOkullar = kurumOkulModel::where('kurum_id', get_current_kurum()->id)->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
             return view('kurum.siniflar.show')->with([
                 'sinif' => $sinif,
@@ -175,7 +221,14 @@ class kurumSinifController extends Controller
                 'gunler' => $gunler,
                 'ogretmenler' => $ogretmenler,
                 'dersProgrami' => $dersProgrami,
+                'dersGunleri' => $dersGunleri,
                 'saatler' => $saatler,
+                'yoklama' => $yoklama,
+                'first_day_of_week' => $first_day_of_week,
+                'last_day_of_week' => $last_day_of_week,
+                'yoklamaShow' => $yoklamaShow,
+                'defaultDersID' => $dersler->first()->id,
+
             ]);
         } catch (Exception $ex) {
             return redirect()->route('kurum_sinif_index')->withErrors($ex->getMessage());
@@ -355,9 +408,9 @@ class kurumSinifController extends Controller
                 throw new Exception("Sınıf bilgisi alınamadı, Lütfen sayfayı yenileyin");
             $ders = kurumDersModel::find($r->ders_id);
             if (!$ders)
-                throw new Exception("Ders bilgisi alınamadı, Lütfen sayfayı yenileyin");
+                throw new Exception("Ders bilgisi alınamadı, Lütfen sayfayı yenileyin veya ders ekleyin");
             if ($ders->kurum_id != get_current_kurum()->id)
-                throw new Exception("Ders bilgisi alınamadı, Lütfen sayfayı yenileyin");
+                throw new Exception("Ders bilgisi alınamadı, Lütfen sayfayı yenileyin veya ders ekleyin");
             $ogretmen = User::find($r->ogretmen_id);
             if (!$ogretmen)
                 throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin");
@@ -401,6 +454,78 @@ class kurumSinifController extends Controller
             kurumLogModel::create(['kategori_id' => 19, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
 
             return response()->json(['message' => "Ders Programı Oluşturuldu"]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 404);
+        }
+    }
+    public function yoklamaAl(Request $r)
+    {
+        try {
+            $rules = array(
+                'ders_programi_id' => array('required'),
+                'ogrenci_id' => array('required'),
+                'durum' => array('required'),
+                'tarih' => array('required'),
+                'first_day_of_week' => array('required'),
+                'last_day_of_week' => array('required'),
+            );
+            $messages = array(
+                'required' => 'Bazı bilgiler alınamadı lütfen sayfayı yenileyin',
+            );
+            $validator = Validator::make($r->all(), $rules, $messages);
+            if ($validator->fails())
+                throw new Exception($validator->errors()->first());
+            $dersProgrami = dersProgramiModel::find($r->ders_programi_id);
+            if (!$dersProgrami)
+                throw new Exception("Ders Programı Bulunamadı");
+            if ($dersProgrami->kurum_id != get_current_kurum()->id)
+                throw new Exception("Kurum ile ders programı uyuşmuyor");
+            $ogrenci = User::find($r->ogrenci_id);
+            if (!$ogrenci)
+                throw new Exception("Öğrenci Bulunamadı");
+            if (!ogrenciSinifModel::where('ogrenci_id', $ogrenci->id)->where('sinif_id', $dersProgrami->sinif_id)->first())
+                throw new Exception("Öğrenci kurumunuza ait görünmüyor");
+            $yoklamaExist = yoklamaModel::where([
+                'ders_programi_id' => $dersProgrami->id,
+                'ogrenci_id' => $ogrenci->id,
+            ])->first();
+
+            $tarihNumber = $r->tarih - 1;
+            $tarihString = "+" . $tarihNumber . " day";
+            $first_day_of_week = strtotime($r->first_day_of_week);
+            $first_day_of_week = date("Y-m-d", $first_day_of_week);
+            $tarih = new DateTime($first_day_of_week);
+            $tarih->modify($tarihString);
+            $tarih = $tarih->format("Y-m-d");
+
+            if ($yoklamaExist) {
+                if ($r->durum == -1)
+                    $yoklamaExist->delete();
+                else if ($r->durum == 0) {
+                    $yoklamaExist->geldi = false;
+                    $yoklamaExist->save();
+                } else {
+                    $yoklamaExist->geldi = true;
+                    $yoklamaExist->save();
+                }
+            } else {
+                if ($r->durum == 0) {
+                    yoklamaModel::create([
+                        'ders_programi_id' => $dersProgrami->id,
+                        'ogrenci_id' => $ogrenci->id,
+                        'geldi' => false,
+                        'tarih' => "$tarih"
+                    ]);
+                } else if ($r->durum == 1) {
+                    yoklamaModel::create([
+                        'ders_programi_id' => $dersProgrami->id,
+                        'ogrenci_id' => $ogrenci->id,
+                        'geldi' => true,
+                        'tarih' => "$tarih"
+                    ]);
+                }
+            }
+            return response()->json(['message' => "Yoklama Alındı"]);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }

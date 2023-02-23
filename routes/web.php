@@ -136,6 +136,8 @@ Route::middleware('onePass')->group(function () {
             Route::post('get', [kurumSinifController::class, 'get'])->name('kurum_sinif_get');
             Route::post('topluEkle', [kurumSinifController::class, 'ogrenciEkleToplu'])->name('kurum_sinif_toplu_ekle_ogrenci');
             Route::post('dersProgramiEkle', [kurumSinifController::class, 'dersProgramiCreate'])->name('kurum_sinif_dersProgrami_create');
+            Route::post('yoklamaAl', [kurumSinifController::class, 'yoklamaAl'])->name('kurum_sinif_yoklamaAl');
+
 
         });
         Route::prefix('hesap-olustur')->group(function () {

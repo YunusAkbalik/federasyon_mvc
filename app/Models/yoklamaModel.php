@@ -12,7 +12,11 @@ class yoklamaModel extends Model
     protected $fillable = [
         'ders_programi_id',
         'ogrenci_id',
-        'durum_id',
+        'geldi',
         'tarih',
     ];
+    public function ders_programi()
+    {
+        return $this->hasOne(dersProgramiModel::class, 'id', 'ders_programi_id');
+    }
 }
