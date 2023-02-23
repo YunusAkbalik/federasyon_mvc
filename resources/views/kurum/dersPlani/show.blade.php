@@ -163,7 +163,7 @@
                                             @endif
                                         </p>
                                         <p class="fw-semibold text-break mb-0">
-                                            {{ $file->path }}
+                                            Dosya Numarası : {{ $file->id }}
                                         </p>
                                         <p class="fs-sm text-muted">
                                             @if ($file->extension == 'png' || $file->extension == 'jfif' || $file->extension == 'jpeg' || $file->extension == 'jpg')

@@ -251,6 +251,11 @@ class DatabaseSeeder extends Seeder
             ['ogretmen_id' => 3, "kurum_id" => 1, 'created_at' => now(), 'updated_at' => now()],
             ['ogretmen_id' => 4, "kurum_id" => 1, 'created_at' => now(), 'updated_at' => now()],
         ]);
+        DB::table("yoklama_durum")->insert([
+            ['durum' => "Geldi"],
+            ['durum' => "Gelmedi"],
+            ['durum' => "Bilinmiyor"],
+        ]);
 
         // Öğretmen CV Seeds
         DB::table("ogretmen_cv")->insert([
