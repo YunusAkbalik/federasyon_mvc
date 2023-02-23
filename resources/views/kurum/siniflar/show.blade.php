@@ -237,18 +237,18 @@
                                 <div class="block">
                                     <div class="block-header">
                                         <div class="col-md-6">
-                                            <form action="{{ route('kurum_sinif_show', ['id' => $sinif->id]) }}"
+                                            <form action="{{ route('kurum_sinif_show', ['id' => $sinif->id]) }}" class="js-validation"
                                                 method="GET">
                                                 <div class="row">
                                                     <div class="col-md-4 mb-4">
                                                         <label for="yoklama_tarih" class="visually-hidden">Tarih:</label>
-                                                        <input type="date" name="yoklama_tarih"
+                                                        <input type="date" name="yoklama_tarih"  
                                                             value="{{ app('request')->input('yoklama_tarih') ? app('request')->input('yoklama_tarih') : now()->format('Y-m-d') }}"
                                                             class="form-control" id="yoklama_tarih">
                                                     </div>
                                                     <div class="col-md-4 mb-4">
                                                         <label for="yoklama_ders" class="visually-hidden">Ders:</label>
-                                                        <select name="yoklama_ders" class="form-control"
+                                                        <select name="yoklama_ders" class="form-control" required
                                                             id="yoklama_ders">
                                                             @foreach ($dersler as $ders)
                                                                 <option
@@ -399,6 +399,9 @@
     <script src="{{ asset('assets/js/plugins/datatables-buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/jquery.maskedinput/jquery.maskedinput.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/jquery-validation/additional-methods.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/yoklamaValidate.js') }}"></script>
     <script src="{{ asset('assets/js/pages/sinifOgrenciList.js') }}"></script>
     <script>
         Dashmix.helpersOnLoad(['jq-masked-inputs']);
