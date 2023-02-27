@@ -12,6 +12,7 @@ use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
 use App\Models\LogModel;
 use App\Models\ogrenciSinifModel;
+use App\Models\ogretmenDersModel;
 use App\Models\ogretmenKurumModel;
 use App\Models\OkulModel;
 use App\Models\sinifModel;
@@ -159,14 +160,12 @@ class kurumSinifController extends Controller
                 $yoklamaShow = true;
             } else
                 $today = date("Y-m-d");
-
             $mon = new DateTime($today);
             $sun = new DateTime($today);
             $mon->modify('this week');
             $sun->modify('this week +6 day');
             $first_day_of_week = $mon->format("Y-m-d");
             $last_day_of_week = $sun->format("Y-m-d");
-
             $dersler = kurumDersModel::where('kurum_id', get_current_kurum()->id)->get();
             $gunler = gunlerModel::all();
             $dersProgrami = dersProgramiModel::where('sinif_id', $sinif->id)
@@ -193,8 +192,6 @@ class kurumSinifController extends Controller
                 sort($dersGunleri);
                 $defaultDersID = $dersler->first()->id;
             }
-
-
             if ($request->yoklama_ders) {
                 $yoklama = yoklamaModel::with('ders_programi')
                     ->whereHas('ders_programi', function ($q) use ($request) {
@@ -210,7 +207,6 @@ class kurumSinifController extends Controller
                         return $q->where('kurum_id', get_current_kurum()->id);
                     })->get();
             }
-
 
 
             $ogrenciler = ogrenciSinifModel::where('sinif_id', $sinif->id)->with('ogrenci')->with('okul')->get();
@@ -416,9 +412,9 @@ class kurumSinifController extends Controller
                 throw new Exception("Ders bilgisi alınamadı, Lütfen sayfayı yenileyin veya ders ekleyin");
             $ogretmen = User::find($r->ogretmen_id);
             if (!$ogretmen)
-                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin veya kurumunuza öğretmen ekleyin");
+                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin veya dersinize öğretmen atayın");
             if (!$ogretmen->hasRole('Öğretmen'))
-                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin veya kurumunuza öğretmen ekleyin");
+                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin veya dersinize öğretmen atayın");
             $ogretmen_kurum_exist = ogretmenKurumModel::where('ogretmen_id', $ogretmen->id)->where('kurum_id', get_current_kurum()->id)->first();
             if (!$ogretmen_kurum_exist)
                 throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin");
@@ -529,6 +525,22 @@ class kurumSinifController extends Controller
                 }
             }
             return response()->json(['message' => "Yoklama Alındı"]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 404);
+        }
+    }
+    public function getDersOgretmenleri(Request $r)
+    {
+        try {
+            if (!$r->dersid)
+                throw new Exception("Ders Bilgisi Alınamadı");
+            $dersExist = kurumDersModel::find($r->dersid);
+            if (!$dersExist)
+                throw new Exception("Ders Bilgisi Alınamadı");
+            if ($dersExist->kurum_id != get_current_kurum()->id)
+                throw new Exception("Ders Bilgisi Alınamadı");
+            $ogretmenDers = ogretmenDersModel::where('ders_id', $dersExist->id)->with('ogretmen')->get();
+            return response()->json(['data' => $ogretmenDers]);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 404);
         }

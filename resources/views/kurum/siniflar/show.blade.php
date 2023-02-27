@@ -75,12 +75,13 @@
                 <!-- END Your Block -->
             </div>
             <div class="col-xl-4 col-md-6 mb-4">
-                <div class="block block-rounded">
+                <div class="block block-rounded" id="dersProgramiEkleBlock">
                     <div class="block-content">
                         <div class="row">
                             <div class="col-12 mb-4">
                                 <label for="dersSelect" class="form-label">Ders</label>
-                                <select name="dersSelect" class="form-control" id="dersSelect">
+                                <select onchange="ogretmenlerRefresh()" name="dersSelect" class="form-control"
+                                    id="dersSelect">
                                     @foreach ($dersler as $ders)
                                         <option value="{{ $ders->id }}">{{ $ders->ad }}</option>
                                     @endforeach
@@ -107,10 +108,6 @@
                             <div class="col-12 mb-4">
                                 <label for="ogretmenSelect" class="form-label">Öğretmen</label>
                                 <select name="ogretmenSelect" class="form-control" id="ogretmenSelect">
-                                    @foreach ($ogretmenler as $ogretmen)
-                                        <option value="{{ $ogretmen->ogretmen->id }}">
-                                            {{ $ogretmen->ogretmen->ad . ' ' . $ogretmen->ogretmen->soyad }}</option>
-                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-12 mb-4 d-grid">
@@ -237,12 +234,12 @@
                                 <div class="block">
                                     <div class="block-header">
                                         <div class="col-md-6">
-                                            <form action="{{ route('kurum_sinif_show', ['id' => $sinif->id]) }}" class="js-validation"
-                                                method="GET">
+                                            <form action="{{ route('kurum_sinif_show', ['id' => $sinif->id]) }}"
+                                                class="js-validation" method="GET">
                                                 <div class="row">
                                                     <div class="col-md-4 mb-4">
                                                         <label for="yoklama_tarih" class="visually-hidden">Tarih:</label>
-                                                        <input type="date" name="yoklama_tarih"  
+                                                        <input type="date" name="yoklama_tarih"
                                                             value="{{ app('request')->input('yoklama_tarih') ? app('request')->input('yoklama_tarih') : now()->format('Y-m-d') }}"
                                                             class="form-control" id="yoklama_tarih">
                                                     </div>
@@ -407,6 +404,43 @@
         Dashmix.helpersOnLoad(['jq-masked-inputs']);
     </script>
     <script>
+        $(document).ready(function() {
+            ogretmenlerRefresh()
+        })
+
+        function ogretmenlerRefresh() {
+            var dersid = $('#dersSelect').val()
+            $('#ogretmenSelect').empty()
+
+            if (dersid != null) {
+                Dashmix.block('state_loading', '#dersProgramiEkleBlock');
+                var fd = new FormData();
+                fd.append('_token', $('input[name="_token"]').val());
+                fd.append('dersid', dersid);
+                $.ajax({
+                    url: '{{ route('kurum_sinif_show_ogretmenleriGetir') }}',
+                    method: 'post',
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        Dashmix.block('state_normal', '#dersProgramiEkleBlock');
+                        if (res.data.length > 0) {
+                            res.data.forEach(element => {
+                                var option =
+                                    `<option value="${element.ogretmen.id}">${element.ogretmen.ad} ${element.ogretmen.soyad}</option>`
+                                $('#ogretmenSelect').append(option)
+                            });
+                        }
+                    },
+                    error: function(res) {
+                        Dashmix.block('state_normal', '#dersProgramiEkleBlock');
+                        console.log(res.responseJSON.message);
+                    }
+                })
+            }
+        }
+
         function ogrenciEkleTc(sinif_id) {
             var tc = $('#tc').val();
             var fd = new FormData();
@@ -668,12 +702,11 @@
                     })
                 },
                 error: function(res) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: res.responseJSON.message,
-                        confirmButtonText: "Tamam"
-                    })
+                    Dashmix.helpers('jq-notify', {
+                        type: 'danger',
+                        icon: 'fa fa-times me-1',
+                        message: res.responseJSON.message
+                    });
                 }
             })
         }

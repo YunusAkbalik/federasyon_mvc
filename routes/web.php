@@ -143,6 +143,7 @@ Route::middleware('onePass')->group(function () {
             Route::post('topluEkle', [kurumSinifController::class, 'ogrenciEkleToplu'])->name('kurum_sinif_toplu_ekle_ogrenci');
             Route::post('dersProgramiEkle', [kurumSinifController::class, 'dersProgramiCreate'])->name('kurum_sinif_dersProgrami_create');
             Route::post('yoklamaAl', [kurumSinifController::class, 'yoklamaAl'])->name('kurum_sinif_yoklamaAl');
+            Route::post('ogretmenleriGetir', [kurumSinifController::class, 'getDersOgretmenleri'])->name('kurum_sinif_show_ogretmenleriGetir');
         });
         Route::prefix('hesap-olustur')->group(function () {
             Route::get('ogrenci', [kurumOgrenciController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_ogrenci');
