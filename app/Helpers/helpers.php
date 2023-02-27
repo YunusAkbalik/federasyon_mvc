@@ -2,6 +2,7 @@
 
 use App\Models\kurumModel;
 use App\Models\kurumUserModel;
+use App\Models\ogretmenKurumModel;
 use App\Models\User;
 use Faker\Factory;
 
@@ -38,6 +39,14 @@ if (!function_exists('get_current_kurum')) {
     {
        $kurumUser = kurumUserModel::where('user_id',auth()->user()->id)->first();
        $kurum = kurumModel::find($kurumUser->kurum_id);
+       return $kurum;
+    }
+}
+if (!function_exists('get_ogretmen_current_kurum')) {
+    function get_ogretmen_current_kurum()
+    {
+       $kurumOgretmen = ogretmenKurumModel::where('ogretmen_id',auth()->user()->id)->first();
+       $kurum = kurumModel::find($kurumOgretmen->kurum_id);
        return $kurum;
     }
 }

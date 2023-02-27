@@ -485,7 +485,13 @@
                                 </a>
                             </li>
                             @if ($ogretmen_kurum_exist)
-                                
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::currentRouteName() == 'ogretmen_sinif_list' ? 'active' : '' }}"
+                                        href="{{ route('ogretmen_sinif_list') }}">
+                                        <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                        <span class="nav-main-link-name">Sınıflar</span>
+                                    </a>
+                                </li>
                             @endif
                         @endrole
                     </ul>

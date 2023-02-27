@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\OnePass;
+use App\Http\Middleware\kurumOgretmenExist;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,6 +66,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-        'onePass' => OnePass::class
+        'onePass' => OnePass::class,
+        'kurumOgretmenExist' => kurumOgretmenExist::class,
     ];
 }

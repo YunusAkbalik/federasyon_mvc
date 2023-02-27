@@ -14,6 +14,7 @@ use App\Http\Controllers\Kurum\kurumVeliController;
 use App\Http\Controllers\kurumController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
+use App\Http\Controllers\Ogretmen\ogretmenSinifController;
 use App\Http\Controllers\Ogretmen\talepController;
 use App\Http\Controllers\ogretmenController;
 use App\Http\Controllers\OkulController;
@@ -113,6 +114,11 @@ Route::middleware('onePass')->group(function () {
         Route::get('/', [ogretmenController::class, 'dashboard'])->name('ogretmen_dash');
         Route::get('talepler', [talepController::class, 'list'])->name('ogretmen_talep_list');
         Route::post('talepSonuclandir', [talepController::class, 'sonuclandir'])->name('ogretmen_talep_sonuclandir');
+        Route::middleware('kurumOgretmenExist')->group(function () {
+            Route::prefix('siniflar')->group(function () {
+                Route::get('/', [ogretmenSinifController::class, 'list'])->name('ogretmen_sinif_list');
+            });
+        });
     });
     Route::prefix('kurum')->middleware('role:Kurum Yetkilisi')->group(function () {
         Route::get('/', [kurumController::class, 'dashboard'])->name('kurum_dash');
@@ -137,8 +143,6 @@ Route::middleware('onePass')->group(function () {
             Route::post('topluEkle', [kurumSinifController::class, 'ogrenciEkleToplu'])->name('kurum_sinif_toplu_ekle_ogrenci');
             Route::post('dersProgramiEkle', [kurumSinifController::class, 'dersProgramiCreate'])->name('kurum_sinif_dersProgrami_create');
             Route::post('yoklamaAl', [kurumSinifController::class, 'yoklamaAl'])->name('kurum_sinif_yoklamaAl');
-
-
         });
         Route::prefix('hesap-olustur')->group(function () {
             Route::get('ogrenci', [kurumOgrenciController::class, 'hesapOlustur'])->name('kurum_hesapOlustur_ogrenci');
@@ -154,7 +158,6 @@ Route::middleware('onePass')->group(function () {
             Route::get('/{id}', [kurumDersController::class, 'show'])->name('kurum_ders_show');
             Route::post('atamaYap', [KurumOgretmenController::class, 'derse_ata'])->name('kurum_ders_atamayap');
             Route::post('atamaKaldir', [KurumOgretmenController::class, 'atamaKaldir'])->name('kurum_ders_atamakaldir');
-
         });
         Route::prefix('DersPlani')->group(function () {
             Route::get('/', [kurumDersPlaniController::class, 'index'])->name('kurum_dersPlani_index');
