@@ -19,6 +19,6 @@ class ogretmenDersModel extends Model
     }
     public function dersProgrami()
     {
-        return $this->hasMany(dersProgramiModel::class, 'ders_id', 'ders_id');
+        return $this->hasMany(dersProgramiModel::class, 'ders_id', 'ders_id')->with('sinif');
     }
 }

@@ -16,8 +16,21 @@
         <!-- Your Block -->
         <div class="block block-rounded">
             <div class="block-content">
-                <p>Your content..</p>
-                <p>{{ $ogretmenDers }}</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sınıf</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($siniflar as $sinif)
+                            <tr>
+                                <td>{{ $sinif[1] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>    
+                </table>
+               
             </div>
         </div>
         <!-- END Your Block -->

@@ -10,9 +10,19 @@ class ogretmenSinifController extends Controller
 {
     public function list()
     {
-        $ogretmenDers = ogretmenDersModel::where('ogretmen_id',auth()->user()->id)->with('dersProgrami')->get();
+        $siniflar = [];
+        $ogretmenDers = ogretmenDersModel::where('ogretmen_id', auth()->user()->id)->with('dersProgrami')->get();
+        foreach ($ogretmenDers as $sinif) {
+            if ($sinif->dersProgrami->count() > 0) {
+                foreach ($sinif->dersProgrami as $dersProgrami) {
+                    $current_array = [$dersProgrami->sinif->id, $dersProgrami->sinif->ad];
+                    if (!in_array($current_array, $siniflar))
+                        array_push($siniflar, $current_array);
+                }
+            }
+        }
         return view('ogretmen.sinif.list')->with([
-            'ogretmenDers' => $ogretmenDers
+            'siniflar' => $siniflar
         ]);
     }
 }

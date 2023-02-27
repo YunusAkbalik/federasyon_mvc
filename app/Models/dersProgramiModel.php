@@ -26,4 +26,8 @@ class dersProgramiModel extends Model
     {
         return $this->hasOne(User::class, 'id', 'ogretmen_id');
     }
+    public function sinif()
+    {
+        return $this->hasOne(sinifModel::class, 'id', 'sinif_id');
+    }
 }
