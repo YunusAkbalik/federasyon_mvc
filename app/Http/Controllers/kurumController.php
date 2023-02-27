@@ -31,15 +31,20 @@ class kurumController extends Controller
     public function create_post(Request $request)
     {
         try {
+            $removeThis = ['(', ')', ' ', '-'];
+            $gsm_no = str_replace($removeThis, "", $request->gsm_no_input);
+            $telefon = str_replace($removeThis, "", $request->telefon_input);
+            $yetkili_telefon = str_replace($removeThis, "", $request->yetkili_telefon_input);
+            $wp_hatti = str_replace($removeThis, "", $request->wp_hatti_input);
             $hizmetler =  explode(",", $request->kurum_hizmetler);
             $rules = array(
                 'unvan' => array('required'),
-                'telefon' => array('digits:10', 'required'),
+                'telefon_input' => array('required'),
                 'adres' => array('required'),
                 'vergi_dairesi' => array('required'),
                 'vergi_no' => array('required', 'numeric'),
                 'yetkili_kisi' => array('required'),
-                'yetkili_telefon' => array('digits:10', 'required'),
+                'yetkili_telefon_input' => array('required'),
                 'tc_kimlik' => array('digits:11', 'required'),
                 'ad' => array('required'),
                 'soyad' => array('required'),
@@ -49,12 +54,12 @@ class kurumController extends Controller
                 'ad' => "İsim",
                 'soyad' => "Soyisim",
                 'unvan' => "Ünvan",
-                'telefon' => "Telefon",
+                'telefon_input' => "Telefon",
                 'adres' => "Adres",
                 'vergi_dairesi' => "Vergi Dairesi",
                 'vergi_no' => "Vergi No",
                 'yetkili_kisi' => "Yetkili Kişi",
-                'yetkili_telefon' => "Yetkili Telefon",
+                'yetkili_telefon_input' => "Yetkili Telefon",
             );
             $messages = array(
                 'required' => ':attribute alanı zorunlu.',
@@ -71,19 +76,24 @@ class kurumController extends Controller
                 if ($userExist)
                     throw new Exception("Bu E-posta adresine ait bir kullanıcı var");
             }
-            if ($request->gsm_no) {
-                $userExist = User::where('gsm_no', $request->gsm_no)->first();
+            if ($request->gsm_no_input) {
+                $userExist = User::where('gsm_no', $gsm_no)->first();
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-            $kurum = kurumModel::create($request->all());
+            $kurum = kurumModel::create(array_merge([
+                'telefon' => $telefon,
+                'yetkili_telefon' => $yetkili_telefon,
+                'wp_hatti' => $wp_hatti,
+            ], $request->all()));
             $one_pass = rand(100000, 999999);
             $user = User::create(array_merge($request->all(), [
                 'ozel_id' => ozel_id_uret(),
                 'onayli' => true,
                 'ret' => false,
                 'ret_nedeni' => null,
-                'password' => bcrypt($one_pass)
+                'password' => bcrypt($one_pass),
+                'gsm_no' => $gsm_no
             ]));
             $user->assignRole('Kurum Yetkilisi');
             onePassesModel::create(['user_id' => $user->id, 'onePass' => $one_pass]);

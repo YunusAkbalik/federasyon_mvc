@@ -22,10 +22,8 @@ Dashmix.onLoad((() => class {
                     "unvan": {
                         required: !0,
                     },
-                    "telefon": {
+                    "telefon_input": {
                         required: !0,
-                        minlength: 10,
-                        maxlength: 10,
                     },
                     "adres": {
                         required: !0,
@@ -39,28 +37,22 @@ Dashmix.onLoad((() => class {
                     "yetkili_kisi": {
                         required: !0,
                     },
-                    "yetkili_telefon": {
+                    "yetkili_telefon_input": {
                         required: !0,
-                        minlength: 10,
-                        maxlength: 10,
                     },
-                    "wp_hatti": {
-                        minlength: 10,
-                        maxlength: 10,
-                    },
+
                 },
                 messages: {
                     "ad": "Lütfen isim girin",
                     "soyad": "Lütfen soyisim girin",
                     "tc_kimlik": "Lütfen 11 haneli T.C Kimlik numarası girin",
                     "unvan": "Lütfen ünvan girin",
-                    "telefon": "Lütfen 10 haneli telefon numarası girin",
+                    "telefon_input": "Lütfen 10 haneli telefon numarası girin",
                     "adres": "Lütfen adres girin",
                     "vergi_dairesi": "Lütfen vergi dairesi girin",
                     "vergi_no": "Lütfen vergi no girin",
                     "yetkili_kisi": "Lütfen yetkili kişi girin",
-                    "yetkili_telefon": "Lütfen 10 haneli telefon numarası girin",
-                    "wp_hatti": "Lütfen 10 haneli telefon numarası girin",
+                    "yetkili_telefon_input": "Lütfen 10 haneli telefon numarası girin",
                 }
             })
     }

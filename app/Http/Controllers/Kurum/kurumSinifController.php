@@ -167,7 +167,6 @@ class kurumSinifController extends Controller
             $first_day_of_week = $mon->format("Y-m-d");
             $last_day_of_week = $sun->format("Y-m-d");
 
-
             $dersler = kurumDersModel::where('kurum_id', get_current_kurum()->id)->get();
             $gunler = gunlerModel::all();
             $dersProgrami = dersProgramiModel::where('sinif_id', $sinif->id)
@@ -182,16 +181,20 @@ class kurumSinifController extends Controller
                 if (!in_array($string, $saatler))
                     array_push($saatler, $string);
             }
-
-            $forYoklamaDersProgrami = dersProgramiModel::where('sinif_id', $sinif->id)
-                ->where('ders_id', $request->yoklama_ders ? $request->yoklama_ders : $dersler->first()->id)
-                ->get();
-            foreach ($forYoklamaDersProgrami as $key) {
-                if (!in_array($key->gun_id, $dersGunleri))
-                    array_push($dersGunleri, $key->gun_id);
+            $defaultDersID = 0;
+            if ($dersler->count() > 0) {
+                $forYoklamaDersProgrami = dersProgramiModel::where('sinif_id', $sinif->id)
+                    ->where('ders_id', $request->yoklama_ders ? $request->yoklama_ders : $dersler->first()->id)
+                    ->get();
+                foreach ($forYoklamaDersProgrami as $key) {
+                    if (!in_array($key->gun_id, $dersGunleri))
+                        array_push($dersGunleri, $key->gun_id);
+                }
+                sort($dersGunleri);
+                $defaultDersID = $dersler->first()->id;
             }
 
-            sort($dersGunleri);
+
             if ($request->yoklama_ders) {
                 $yoklama = yoklamaModel::with('ders_programi')
                     ->whereHas('ders_programi', function ($q) use ($request) {
@@ -227,7 +230,7 @@ class kurumSinifController extends Controller
                 'first_day_of_week' => $first_day_of_week,
                 'last_day_of_week' => $last_day_of_week,
                 'yoklamaShow' => $yoklamaShow,
-                'defaultDersID' => $dersler->first()->id,
+                'defaultDersID' => $defaultDersID,
 
             ]);
         } catch (Exception $ex) {
@@ -413,9 +416,9 @@ class kurumSinifController extends Controller
                 throw new Exception("Ders bilgisi alınamadı, Lütfen sayfayı yenileyin veya ders ekleyin");
             $ogretmen = User::find($r->ogretmen_id);
             if (!$ogretmen)
-                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin");
+                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin veya kurumunuza öğretmen ekleyin");
             if (!$ogretmen->hasRole('Öğretmen'))
-                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin");
+                throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin veya kurumunuza öğretmen ekleyin");
             $ogretmen_kurum_exist = ogretmenKurumModel::where('ogretmen_id', $ogretmen->id)->where('kurum_id', get_current_kurum()->id)->first();
             if (!$ogretmen_kurum_exist)
                 throw new Exception("Öğretmen bilgisi alınamadı, Lütfen sayfayı yenileyin");
