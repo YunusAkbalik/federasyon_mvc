@@ -17,4 +17,8 @@ class ogretmenDersModel extends Model
     {
         return $this->hasOne(User::class, 'id', 'ogretmen_id');
     }
+    public function dersProgrami()
+    {
+        return $this->hasMany(dersProgramiModel::class, 'ders_id', 'ders_id');
+    }
 }

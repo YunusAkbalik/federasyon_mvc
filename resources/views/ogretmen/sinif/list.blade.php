@@ -17,6 +17,7 @@
         <div class="block block-rounded">
             <div class="block-content">
                 <p>Your content..</p>
+                <p>{{ $ogretmenDers }}</p>
             </div>
         </div>
         <!-- END Your Block -->
