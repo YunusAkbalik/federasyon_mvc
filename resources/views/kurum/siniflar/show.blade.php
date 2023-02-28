@@ -149,39 +149,43 @@
                         <div class="tab-pane fade fade-up {{ $yoklamaShow ? '' : 'show active' }}"
                             id="btabs-animated-slideup-home" role="tabpanel"
                             aria-labelledby="btabs-animated-slideup-home-tab" tabindex="0">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Saat</th>
-                                        @foreach ($gunler as $gun)
-                                            <th class="text-center">{{ $gun->ad }}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($saatler as $saat)
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-vcenter">
+                                    <thead>
                                         <tr>
-                                            <td style="vertical-align: middle">{{ $saat }}</td>
-                                            @for ($i = 1; $i <= 7; $i++)
-                                                @php
-                                                    $currentDers = $dersProgrami
-                                                        ->where('baslangic', explode('-', $saat)[0])
-                                                        ->where('gun_id', $i)
-                                                        ->first();
-                                                @endphp
-                                                <td class="text-center">{{ $currentDers ? $currentDers->ders->ad : '' }}
-                                                    @if ($currentDers)
-                                                        <br>
-                                                        <span
-                                                            class="text-muted">{{ $currentDers->ogretmen->ad . ' ' . $currentDers->ogretmen->soyad }}</span>
-                                                    @endif
-                                                </td>
-                                            @endfor
-
+                                            <th>Saat</th>
+                                            @foreach ($gunler as $gun)
+                                                <th class="text-center">{{ $gun->ad }}</th>
+                                            @endforeach
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($saatler as $saat)
+                                            <tr>
+                                                <td style="vertical-align: middle">{{ $saat }}</td>
+                                                @for ($i = 1; $i <= 7; $i++)
+                                                    @php
+                                                        $currentDers = $dersProgrami
+                                                            ->where('baslangic', explode('-', $saat)[0])
+                                                            ->where('bitis', explode('-', $saat)[1])
+                                                            ->where('gun_id', $i)
+                                                            ->first();
+                                                    @endphp
+                                                    <td class="text-center">{{ $currentDers ? $currentDers->ders->ad : '' }}
+                                                        @if ($currentDers)
+                                                            <br>
+                                                            <span
+                                                                class="text-muted">{{ $currentDers->ogretmen->ad . ' ' . $currentDers->ogretmen->soyad }}</span>
+                                                        @endif
+                                                    </td>
+                                                @endfor
+    
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        
                         </div>
                         <div class="tab-pane fade fade-up" id="btabs-animated-slideup-profile" role="tabpanel"
                             aria-labelledby="btabs-animated-slideup-profile-tab" tabindex="0">
