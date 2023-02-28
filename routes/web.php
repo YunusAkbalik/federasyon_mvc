@@ -124,12 +124,12 @@ Route::middleware('onePass')->group(function () {
                 Route::post('topluEkle', [ogretmenSinifController::class, 'ogrenciEkleToplu'])->name('ogretmen_sinif_toplu_ekle_ogrenci');
                 Route::post('ogrenciEkleTc', [ogretmenSinifController::class, 'ogrenciEkleTc'])->name('ogretmen_sinif_add_ogrenci_tc');
                 Route::post('cikar', [ogretmenSinifController::class, 'ogrenciCikar'])->name('ogretmen_sinif_remove');
-                Route::prefix('hesap-olustur')->group(function () {
-                    Route::get('ogrenci', [ogretmenOgrenciController::class, 'hesapOlustur'])->name('ogretmen_hesapOlustur_ogrenci');
-                    Route::post('ogrenci', [ogretmenOgrenciController::class, 'hesapOlustur_post'])->name('ogretmen_hesapOlustur_ogrenci_post');
-                    Route::post('getSinifFromOkul', [ogretmenSinifController::class, 'getSiniflar'])->name('ogretmen_get_sinif_from_okul');
-                    Route::post('getIlIlceFromOkul', [ogretmenOkulController::class, 'getIlIlceFromOkul'])->name('ogretmen_get_ililce_from_okul');
-                });
+            });
+            Route::prefix('hesap-olustur')->middleware('can:Öğrenci Hesabı Oluştur')->group(function () {
+                Route::get('ogrenci', [ogretmenOgrenciController::class, 'hesapOlustur'])->name('ogretmen_hesapOlustur_ogrenci');
+                Route::post('ogrenci', [ogretmenOgrenciController::class, 'hesapOlustur_post'])->name('ogretmen_hesapOlustur_ogrenci_post');
+                Route::post('getSinifFromOkul', [ogretmenSinifController::class, 'getSiniflar'])->name('ogretmen_get_sinif_from_okul');
+                Route::post('getIlIlceFromOkul', [ogretmenOkulController::class, 'getIlIlceFromOkul'])->name('ogretmen_get_ililce_from_okul');
             });
         });
     });

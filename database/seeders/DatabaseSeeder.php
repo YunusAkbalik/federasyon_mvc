@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Contracts\Permission;
+use Spatie\Permission\Models\Permission as ModelsPermission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -27,6 +29,7 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => "Admin"]);
         Role::create(['name' => "Öğretmen"]);
         Role::create(['name' => "Kurum Yetkilisi"]);
+        $perm_ogrenci_create =  ModelsPermission::create(['name' => "Öğrenci Hesabı Oluştur"]);
         $faker = Factory::create("tr_TR");
         // Main acc
         DB::table('users')->insert([
@@ -105,6 +108,7 @@ class DatabaseSeeder extends Seeder
         User::find(1)->assignRole("Admin");
         User::find(2)->assignRole("Kurum Yetkilisi");
         User::find(3)->assignRole("Öğretmen");
+        User::find(3)->givePermissionTo($perm_ogrenci_create);
         User::find(4)->assignRole("Öğretmen");
 
 
@@ -251,7 +255,7 @@ class DatabaseSeeder extends Seeder
             ['ogretmen_id' => 3, "kurum_id" => 1, 'created_at' => now(), 'updated_at' => now()],
             ['ogretmen_id' => 4, "kurum_id" => 1, 'created_at' => now(), 'updated_at' => now()],
         ]);
-      
+
 
         // Öğretmen CV Seeds
         DB::table("ogretmen_cv")->insert([
