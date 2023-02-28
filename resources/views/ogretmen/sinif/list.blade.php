@@ -27,7 +27,8 @@
                     <tbody>
                         @foreach ($siniflar as $sinif)
                             <tr>
-                                <td>{{ $sinif[1] }}</td>
+                                <td><a href="{{ route('ogretmen_sinif_show', ['id' => $sinif[0]]) }}">{{ $sinif[1] }}</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

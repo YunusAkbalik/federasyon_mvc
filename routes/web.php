@@ -14,6 +14,8 @@ use App\Http\Controllers\Kurum\kurumVeliController;
 use App\Http\Controllers\kurumController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
+use App\Http\Controllers\Ogretmen\ogretmenOgrenciController;
+use App\Http\Controllers\Ogretmen\ogretmenOkulController;
 use App\Http\Controllers\Ogretmen\ogretmenSinifController;
 use App\Http\Controllers\Ogretmen\talepController;
 use App\Http\Controllers\ogretmenController;
@@ -117,6 +119,17 @@ Route::middleware('onePass')->group(function () {
         Route::middleware('kurumOgretmenExist')->group(function () {
             Route::prefix('siniflar')->group(function () {
                 Route::get('/', [ogretmenSinifController::class, 'list'])->name('ogretmen_sinif_list');
+                Route::get('/{id}', [ogretmenSinifController::class, 'show'])->name('ogretmen_sinif_show');
+                Route::post('getOkulData', [ogretmenSinifController::class, 'getOgrenciler'])->name('ogretmen_getData_ogrenci_from_school');
+                Route::post('topluEkle', [ogretmenSinifController::class, 'ogrenciEkleToplu'])->name('ogretmen_sinif_toplu_ekle_ogrenci');
+                Route::post('ogrenciEkleTc', [ogretmenSinifController::class, 'ogrenciEkleTc'])->name('ogretmen_sinif_add_ogrenci_tc');
+                Route::post('cikar', [ogretmenSinifController::class, 'ogrenciCikar'])->name('ogretmen_sinif_remove');
+                Route::prefix('hesap-olustur')->group(function () {
+                    Route::get('ogrenci', [ogretmenOgrenciController::class, 'hesapOlustur'])->name('ogretmen_hesapOlustur_ogrenci');
+                    Route::post('ogrenci', [ogretmenOgrenciController::class, 'hesapOlustur_post'])->name('ogretmen_hesapOlustur_ogrenci_post');
+                    Route::post('getSinifFromOkul', [ogretmenSinifController::class, 'getSiniflar'])->name('ogretmen_get_sinif_from_okul');
+                    Route::post('getIlIlceFromOkul', [ogretmenOkulController::class, 'getIlIlceFromOkul'])->name('ogretmen_get_ililce_from_okul');
+                });
             });
         });
     });

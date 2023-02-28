@@ -492,7 +492,15 @@
                                         <span class="nav-main-link-name">Sınıflar</span>
                                     </a>
                                 </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::currentRouteName() == 'ogretmen_hesapOlustur_ogrenci' ? 'active' : '' }}"
+                                        href="{{ route('ogretmen_hesapOlustur_ogrenci') }}">
+                                        <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                        <span class="nav-main-link-name">Öğrenci hesabı oluştur</span>
+                                    </a>
+                                </li>
                             @endif
+
                         @endrole
                     </ul>
                 </div>
