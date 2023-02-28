@@ -442,6 +442,23 @@ class kurumSinifController extends Controller
                     throw new Exception("Bitiş Saati Çakışıyor");
             }
 
+            $ogretmenDersProgrami = dersProgramiModel::where([
+                'ogretmen_id' => $r->ogretmen_id,
+                'gun_id' => $r->gun_id,
+            ])->get();
+
+            foreach ($ogretmenDersProgrami as $key) {
+                $input_baslangic = DateTime::createFromFormat("H:i",$r->baslangic);
+                $input_bitis = DateTime::createFromFormat("H:i",$r->bitis);
+                $db_baslangic = DateTime::createFromFormat("H:i",$key->baslangic);
+                $db_bitis = DateTime::createFromFormat("H:i",$key->bitis);
+                if($input_baslangic >= $db_baslangic && $input_baslangic < $db_bitis){
+                    $programliSinif = $key->sinif->ad;
+                    $error_text = "Bu öğretmenin bu saatler arasında başka bir programı var. Programı olduğu sınıf : $programliSinif";
+                    throw new Exception($error_text);
+                }
+            }
+
             $dersprogrami = dersProgramiModel::create(array_merge($r->input(), [
                 'kurum_id' => get_current_kurum()->id,
                 'sinif_id' => $sinif->id

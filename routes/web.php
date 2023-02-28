@@ -14,6 +14,7 @@ use App\Http\Controllers\Kurum\kurumVeliController;
 use App\Http\Controllers\kurumController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\OgrenciController;
+use App\Http\Controllers\Ogretmen\ogretmenDersController;
 use App\Http\Controllers\Ogretmen\ogretmenOgrenciController;
 use App\Http\Controllers\Ogretmen\ogretmenOkulController;
 use App\Http\Controllers\Ogretmen\ogretmenSinifController;
@@ -130,6 +131,11 @@ Route::middleware('onePass')->group(function () {
                 Route::post('ogrenci', [ogretmenOgrenciController::class, 'hesapOlustur_post'])->name('ogretmen_hesapOlustur_ogrenci_post');
                 Route::post('getSinifFromOkul', [ogretmenSinifController::class, 'getSiniflar'])->name('ogretmen_get_sinif_from_okul');
                 Route::post('getIlIlceFromOkul', [ogretmenOkulController::class, 'getIlIlceFromOkul'])->name('ogretmen_get_ililce_from_okul');
+            });
+            Route::prefix('ders-programi')->group(function ()
+            {
+                Route::get('/', [ogretmenDersController::class, 'programList'])->name('ogretmen_dersprogrami_list');
+               
             });
         });
     });
