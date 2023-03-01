@@ -135,7 +135,11 @@ Route::middleware('onePass')->group(function () {
             Route::prefix('ders-programi')->group(function ()
             {
                 Route::get('/', [ogretmenDersController::class, 'programList'])->name('ogretmen_dersprogrami_list');
-               
+            });
+            Route::prefix('ders-plani')->group(function ()
+            {
+                Route::get('/', [ogretmenDersController::class, 'planList'])->name('ogretmen_dersplani_list');
+                Route::get('/{id}', [ogretmenDersController::class, 'planShow'])->name('ogretmen_dersplani_show');
             });
         });
     });

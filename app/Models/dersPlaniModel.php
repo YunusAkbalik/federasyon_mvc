@@ -24,4 +24,8 @@ class dersPlaniModel extends Model
     {
         return $this->hasOne(kurumDersModel::class, 'id', 'ders_id');
     }
+    public function ogretmen()
+    {
+        return $this->hasOne(ogretmenDersModel::class, 'ders_id', 'ders_id');
+    }
 }
