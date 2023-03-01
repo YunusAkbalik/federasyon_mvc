@@ -28,6 +28,14 @@ class dersProgramiModel extends Model
     }
     public function sinif()
     {
-        return $this->hasOne(sinifModel::class, 'id', 'sinif_id');
+        return $this->hasOne(sinifModel::class, 'id', 'sinif_id')->with('ogrenciler');
+    }
+    public function gun()
+    {
+        return $this->hasOne(gunlerModel::class, 'id', 'gun_id');
+    }
+    public function yoklama()
+    {
+        return $this->hasMany(yoklamaModel::class, 'ders_programi_id', 'id');
     }
 }

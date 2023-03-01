@@ -18,6 +18,7 @@ use App\Http\Controllers\Ogretmen\ogretmenDersController;
 use App\Http\Controllers\Ogretmen\ogretmenOgrenciController;
 use App\Http\Controllers\Ogretmen\ogretmenOkulController;
 use App\Http\Controllers\Ogretmen\ogretmenSinifController;
+use App\Http\Controllers\Ogretmen\ogretmenYoklamaController;
 use App\Http\Controllers\Ogretmen\talepController;
 use App\Http\Controllers\ogretmenController;
 use App\Http\Controllers\OkulController;
@@ -140,6 +141,12 @@ Route::middleware('onePass')->group(function () {
             {
                 Route::get('/', [ogretmenDersController::class, 'planList'])->name('ogretmen_dersplani_list');
                 Route::get('/{id}', [ogretmenDersController::class, 'planShow'])->name('ogretmen_dersplani_show');
+            });
+            Route::prefix('yoklama')->group(function ()
+            {
+                Route::get('/', [ogretmenYoklamaController::class, 'dersList'])->name('ogretmen_yoklama_list');
+                Route::get('/{id}', [ogretmenYoklamaController::class, 'show'])->name('ogretmen_yoklama_show');
+                Route::post('al', [ogretmenYoklamaController::class, 'yoklamaAl'])->name('ogretmen_yoklama_al');
             });
         });
     });

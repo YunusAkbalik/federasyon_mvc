@@ -21,4 +21,8 @@ class ogrenciSinifModel extends Model
     {
         return $this->hasOne(OgrenciOkulModel::class, 'ogrenci_id', 'ogrenci_id');
     }
+    public function sinif()
+    {
+        return $this->hasOne(sinifModel::class, 'id', 'sinif_id');
+    }
 }

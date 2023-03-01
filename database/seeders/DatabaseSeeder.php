@@ -203,6 +203,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Dersten Dosya Silme İşlemleri", "icon" => "file-circle-xmark"],
             ['ad' => "Ders Planı Güncelleme İşlemleri", "icon" => "file-pen"],
             ['ad' => "Ders Programı Oluşturma İşlemleri", "icon" => "calendar-plus"],
+            ['ad' => "Yoklama Alımları", "icon" => "book"],
 
         ]);
         DB::table('kurum_log_kategori')->insert([
@@ -225,6 +226,7 @@ class DatabaseSeeder extends Seeder
             ['ad' => "Ders Planından Dosya Silme İşlemleri", "icon" => "file-circle-xmark"],
             ['ad' => "Ders Planı Güncelleme İşlemleri", "icon" => "file-pen"],
             ['ad' => "Ders Programı Oluşturma İşlemleri", "icon" => "calendar-plus"],
+            ['ad' => "Yoklama Alımları", "icon" => "book"],
         ]);
         DB::table('kurumlar')->insert([
             [

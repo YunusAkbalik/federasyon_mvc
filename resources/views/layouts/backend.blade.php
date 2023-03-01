@@ -513,6 +513,13 @@
                                         <span class="nav-main-link-name">Ders Planı</span>
                                     </a>
                                 </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::currentRouteName() == 'ogretmen_yoklama_list' ? 'active' : '' }}"
+                                        href="{{ route('ogretmen_yoklama_list') }}">
+                                        <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                        <span class="nav-main-link-name">Yoklama</span>
+                                    </a>
+                                </li>
                             @endif
 
                         @endrole

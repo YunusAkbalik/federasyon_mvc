@@ -16,7 +16,7 @@ class sinifModel extends Model
     ];
     public function ogrenciler()
     {
-        return $this->hasMany(ogrenciSinifModel::class, 'sinif_id', 'id');
+        return $this->hasMany(ogrenciSinifModel::class, 'sinif_id', 'id')->with('ogrenci');
     }
   
 }
