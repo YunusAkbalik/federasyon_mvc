@@ -9,8 +9,6 @@
         <div class="content content-full">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
                 <h1 class="flex-grow-1 fs-3 fw-semibold my-2 my-sm-3">Ders Planı</h1>
-                <a href="{{ route('kurum_dersPlani_create') }}" class="btn btn-success"><i class="fa fa-plus"></i> Ders Planı
-                    Oluştur</a>
             </div>
         </div>
     </div>
