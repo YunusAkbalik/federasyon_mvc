@@ -379,5 +379,539 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
         ]);
+        DB::table("kurum_ders")->insert([
+            [
+                'kurum_id' => 1,
+                'ad' => "Robotik Kodlama",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'ad' => "Yazılım",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'ad' => "İngilizce",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
+        DB::table("ogretmen_ders")->insert([
+            [
+                'ogretmen_id' => 3,
+                'ders_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'ogretmen_id' => 3,
+                'ders_id' => 2,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'ogretmen_id' => 4,
+                'ders_id' => 2,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'ogretmen_id' => 4,
+                'ders_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+          
+        ]);
+        DB::table("kurum_okul")->insert([
+            [
+                'kurum_id' => 1,
+                'okul_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'okul_id' => 2,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
+        DB::table("sinif")->insert([
+            [
+                'kurum_id' => 1,
+                'okul_id' => 1,
+                'ad' => "Kelebekler",
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
+        DB::table("ders_programi")->insert([
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 1,
+                'baslangic' => "09:00",
+                'bitis' => "09:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 2,
+                'baslangic' => "09:00",
+                'bitis' => "09:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 3,
+                'baslangic' => "09:00",
+                'bitis' => "09:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 4,
+                'baslangic' => "09:00",
+                'bitis' => "09:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 5,
+                'baslangic' => "09:00",
+                'bitis' => "09:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 6,
+                'baslangic' => "09:00",
+                'bitis' => "09:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 7,
+                'baslangic' => "09:00",
+                'bitis' => "09:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 1,
+                'baslangic' => "09:30",
+                'bitis' => "10:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 2,
+                'baslangic' => "09:30",
+                'bitis' => "10:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 3,
+                'baslangic' => "09:30",
+                'bitis' => "10:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 4,
+                'baslangic' => "09:30",
+                'bitis' => "10:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 5,
+                'baslangic' => "09:30",
+                'bitis' => "10:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 6,
+                'baslangic' => "09:30",
+                'bitis' => "10:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 7,
+                'baslangic' => "09:30",
+                'bitis' => "10:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 1,
+                'baslangic' => "10:15",
+                'bitis' => "11:00",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 2,
+                'baslangic' => "10:15",
+                'bitis' => "11:00",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 3,
+                'baslangic' => "10:15",
+                'bitis' => "11:00",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 4,
+                'baslangic' => "10:15",
+                'bitis' => "11:00",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 5,
+                'baslangic' => "10:15",
+                'bitis' => "11:00",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 6,
+                'baslangic' => "10:15",
+                'bitis' => "11:00",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 7,
+                'baslangic' => "10:15",
+                'bitis' => "11:00",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 1,
+                'baslangic' => "11:00",
+                'bitis' => "11:45",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 2,
+                'baslangic' => "11:00",
+                'bitis' => "11:45",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 3,
+                'baslangic' => "11:00",
+                'bitis' => "11:45",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 4,
+                'baslangic' => "11:00",
+                'bitis' => "11:45",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 5,
+                'baslangic' => "11:00",
+                'bitis' => "11:45",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 6,
+                'baslangic' => "11:00",
+                'bitis' => "11:45",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 7,
+                'baslangic' => "11:00",
+                'bitis' => "11:45",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 1,
+                'baslangic' => "11:45",
+                'bitis' => "12:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 2,
+                'baslangic' => "11:45",
+                'bitis' => "12:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 3,
+                'baslangic' => "11:45",
+                'bitis' => "12:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 4,
+                'baslangic' => "11:45",
+                'bitis' => "12:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 5,
+                'baslangic' => "11:45",
+                'bitis' => "12:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 6,
+                'baslangic' => "11:45",
+                'bitis' => "12:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 7,
+                'baslangic' => "11:45",
+                'bitis' => "12:30",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 1,
+                'baslangic' => "12:30",
+                'bitis' => "13:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 2,
+                'baslangic' => "12:30",
+                'bitis' => "13:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 3,
+                'baslangic' => "12:30",
+                'bitis' => "13:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 4,
+                'baslangic' => "12:30",
+                'bitis' => "13:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 5,
+                'baslangic' => "12:30",
+                'bitis' => "13:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 6,
+                'baslangic' => "12:30",
+                'bitis' => "13:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'kurum_id' => 1,
+                'sinif_id' => 1,
+                'ders_id' => 1,
+                'gun_id' => 7,
+                'baslangic' => "12:30",
+                'bitis' => "13:15",
+                'ogretmen_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
     }
 }
