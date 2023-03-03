@@ -56,6 +56,7 @@ class ogretmenYoklamaController extends Controller
                 throw new Exception("Yoklama alma süresi gecikti");
             $dersprogrami = dersProgramiModel::where('ders_id', $dersprogramiSelect->ders_id)
                 ->where('gun_id', $dersprogramiSelect->gun_id)
+                ->where('sinif_id', $dersprogramiSelect->sinif_id)
                 ->with('ders')
                 ->with('gun')
                 ->with('sinif')
