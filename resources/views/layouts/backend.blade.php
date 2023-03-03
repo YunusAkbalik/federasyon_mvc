@@ -99,8 +99,8 @@
 
                         <!-- User Info -->
                         <div class="ms-2">
-                            <a class="text-white fw-semibold" href="javascript:void(0)">George Taylor</a>
-                            <div class="text-white-75 fs-sm">Full Stack Developer</div>
+                            <a class="text-white fw-semibold" href="javascript:void(0)">{{ auth()->user()->ad." ".auth()->user()->soyad }}</a>
+                            <div class="text-white-75 fs-sm">{{ auth()->user()->getRoleNames()[0] }}</div>
                         </div>
                         <!-- END User Info -->
 
@@ -119,8 +119,10 @@
             <!-- Side Content -->
             <div class="content-side">
                 <div class="block pull-x mb-0">
+                    <p>Bu kısma kullanıcı ayarları gelecek</p>
                     <!-- Sidebar -->
-                    <div class="block-content block-content-sm block-content-full bg-body">
+
+                    {{-- <div class="block-content block-content-sm block-content-full bg-body">
                         <span class="text-uppercase fs-sm fw-bold">Sidebar</span>
                     </div>
                     <div class="block-content block-content-full">
@@ -134,11 +136,13 @@
                                     data-action="sidebar_style_light" href="javascript:void(0)">Light</a>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+
                     <!-- END Sidebar -->
 
                     <!-- Header -->
-                    <div class="block-content block-content-sm block-content-full bg-body">
+
+                    {{-- <div class="block-content block-content-sm block-content-full bg-body">
                         <span class="text-uppercase fs-sm fw-bold">Header</span>
                     </div>
                     <div class="block-content block-content-full">
@@ -160,11 +164,13 @@
                                     data-action="header_mode_static" href="javascript:void(0)">Static</a>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+
                     <!-- END Header -->
 
                     <!-- Content -->
-                    <div class="block-content block-content-sm block-content-full bg-body">
+
+                    {{-- <div class="block-content block-content-sm block-content-full bg-body">
                         <span class="text-uppercase fs-sm fw-bold">Content</span>
                     </div>
                     <div class="block-content block-content-full">
@@ -182,19 +188,22 @@
                                     data-action="content_layout_full_width" href="javascript:void(0)">Full Width</a>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+
                     <!-- END Content -->
                 </div>
                 <div class="block pull-x mb-0">
                     <!-- Content -->
-                    <div class="block-content block-content-sm block-content-full bg-body">
+
+                    {{-- <div class="block-content block-content-sm block-content-full bg-body">
                         <span class="text-uppercase fs-sm fw-bold">Heading</span>
                     </div>
                     <div class="block-content">
                         <p>
                             Content..
                         </p>
-                    </div>
+                    </div> --}}
+
                     <!-- END Content -->
                 </div>
             </div>
@@ -287,13 +296,7 @@
                                     @endif
                                 </a>
                             </li>
-                            <li class="nav-main-item">
-                                <a class="nav-main-link{{ request()->is('/') ? ' active' : '' }}" href="/">
-                                    <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                    <span class="nav-main-link-name">Dashboard</span>
-                                    <span class="nav-main-link-badge badge rounded-pill bg-primary">5</span>
-                                </a>
-                            </li>
+                          
                             <li class="nav-main-item{{ request()->is('admin/hesap-olustur/*') ? ' open' : '' }}">
                                 <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
                                     aria-expanded="true" href="#">
@@ -379,41 +382,6 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="nav-main-heading">Various</li>
-                            <li class="nav-main-item{{ request()->is('pages/*') ? ' open' : '' }}">
-                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                                    aria-expanded="true" href="#">
-                                    <i class="nav-main-link-icon fa fa-lightbulb"></i>
-                                    <span class="nav-main-link-name">Examples</span>
-                                </a>
-                                <ul class="nav-main-submenu">
-                                    <li class="nav-main-item">
-                                        <a class="nav-main-link{{ request()->is('pages/datatables') ? ' active' : '' }}"
-                                            href="/pages/datatables">
-                                            <span class="nav-main-link-name">DataTables</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-main-item">
-                                        <a class="nav-main-link{{ request()->is('pages/slick') ? ' active' : '' }}"
-                                            href="/pages/slick">
-                                            <span class="nav-main-link-name">Slick Slider</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-main-item">
-                                        <a class="nav-main-link{{ request()->is('pages/blank') ? ' active' : '' }}"
-                                            href="/pages/blank">
-                                            <span class="nav-main-link-name">Blank</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-main-heading">More</li>
-                            <li class="nav-main-item">
-                                <a class="nav-main-link" href="/">
-                                    <i class="nav-main-link-icon fa fa-globe"></i>
-                                    <span class="nav-main-link-name">Landing</span>
-                                </a>
                             </li>
                         @endrole
 
@@ -547,11 +515,13 @@
 
                     <!-- Open Search Section -->
                     <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
-                    <button type="button" class="btn btn-alt-secondary" data-toggle="layout"
+
+                    {{-- <button type="button" class="btn btn-alt-secondary" data-toggle="layout"
                         data-action="header_search_on">
                         <i class="fa fa-fw opacity-50 fa-search"></i> <span
                             class="ms-1 d-none d-sm-inline-block">Search</span>
-                    </button>
+                    </button> --}}
+
                     <!-- END Open Search Section -->
                 </div>
                 <!-- END Left Section -->
@@ -571,18 +541,18 @@
                                 {{ auth()->user()->soyad }}
                             </div>
                             <div class="p-2">
-                                <a class="dropdown-item" href="javascript:void(0)">
+                                {{-- <a class="dropdown-item" href="javascript:void(0)">
                                     <i class="far fa-fw fa-user me-1"></i> Profile
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                </a> --}}
+                                {{-- <a class="dropdown-item d-flex align-items-center justify-content-between"
                                     href="javascript:void(0)">
                                     <span><i class="far fa-fw fa-envelope me-1"></i> Inbox</span>
                                     <span class="badge bg-primary rounded-pill">3</span>
-                                </a>
-                                <a class="dropdown-item" href="javascript:void(0)">
+                                </a> --}}
+                                {{-- <a class="dropdown-item" href="javascript:void(0)">
                                     <i class="far fa-fw fa-file-alt me-1"></i> Invoices
-                                </a>
-                                <div role="separator" class="dropdown-divider"></div>
+                                </a> --}}
+                                {{-- <div role="separator" class="dropdown-divider"></div> --}}
 
                                 <!-- Toggle Side Overlay -->
                                 <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
@@ -610,7 +580,7 @@
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                             aria-labelledby="page-header-notifications-dropdown">
                             <div class="bg-primary-dark rounded-top fw-semibold text-white text-center p-3">
-                                Notifications
+                                Bildirimler
                             </div>
                             <ul class="nav-items my-2">
                                 <li>
@@ -619,8 +589,8 @@
                                             <i class="fa fa-fw fa-check-circle text-success"></i>
                                         </div>
                                         <div class="flex-grow-1 fs-sm pe-2">
-                                            <div class="fw-semibold">App was updated to v5.6!</div>
-                                            <div class="text-muted">3 min ago</div>
+                                            <div class="fw-semibold">Demo Test Bildirim</div>
+                                            <div class="text-muted">3 dakika önce</div>
                                         </div>
                                     </a>
                                 </li>
@@ -630,9 +600,9 @@
                                             <i class="fa fa-fw fa-user-plus text-info"></i>
                                         </div>
                                         <div class="flex-grow-1 fs-sm pe-2">
-                                            <div class="fw-semibold">New Subscriber was added! You now have 2580!
+                                            <div class="fw-semibold">Demo Test Bildirim
                                             </div>
-                                            <div class="text-muted">10 min ago</div>
+                                            <div class="text-muted">10 dakika önce</div>
                                         </div>
                                     </a>
                                 </li>
@@ -642,8 +612,8 @@
                                             <i class="fa fa-fw fa-times-circle text-danger"></i>
                                         </div>
                                         <div class="flex-grow-1 fs-sm pe-2">
-                                            <div class="fw-semibold">Server backup failed to complete!</div>
-                                            <div class="text-muted">30 min ago</div>
+                                            <div class="fw-semibold">Demo Test Bildirim</div>
+                                            <div class="text-muted">30 dakika önce</div>
                                         </div>
                                     </a>
                                 </li>
@@ -653,9 +623,8 @@
                                             <i class="fa fa-fw fa-exclamation-circle text-warning"></i>
                                         </div>
                                         <div class="flex-grow-1 fs-sm pe-2">
-                                            <div class="fw-semibold">You are running out of space. Please consider
-                                                upgrading your plan.</div>
-                                            <div class="text-muted">1 hour ago</div>
+                                            <div class="fw-semibold">Demo Test Bildirim</div>
+                                            <div class="text-muted">1 saat önce</div>
                                         </div>
                                     </a>
                                 </li>
@@ -665,15 +634,15 @@
                                             <i class="fa fa-fw fa-plus-circle text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 fs-sm pe-2">
-                                            <div class="fw-semibold">New Sale! + $30</div>
-                                            <div class="text-muted">2 hours ago</div>
+                                            <div class="fw-semibold">Demo Test Bildirim</div>
+                                            <div class="text-muted">2 saat önce</div>
                                         </div>
                                     </a>
                                 </li>
                             </ul>
                             <div class="p-2 border-top">
                                 <a class="btn btn-alt-primary w-100 text-center" href="javascript:void(0)">
-                                    <i class="fa fa-fw fa-eye opacity-50 me-1"></i> View All
+                                    <i class="fa fa-fw fa-eye opacity-50 me-1"></i> Tümünü Gör
                                 </a>
                             </div>
                         </div>
@@ -693,7 +662,8 @@
             <!-- END Header Content -->
 
             <!-- Header Search -->
-            <div id="page-header-search" class="overlay-header bg-header-dark">
+
+            {{-- <div id="page-header-search" class="overlay-header bg-header-dark">
                 <div class="content-header">
                     <form class="w-100" action="/dashboard" method="POST">
                         @csrf
@@ -708,7 +678,8 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> --}}
+
             <!-- END Header Search -->
 
             <!-- Header Loader -->
