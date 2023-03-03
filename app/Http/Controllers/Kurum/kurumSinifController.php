@@ -448,11 +448,11 @@ class kurumSinifController extends Controller
             ])->get();
 
             foreach ($ogretmenDersProgrami as $key) {
-                $input_baslangic = DateTime::createFromFormat("H:i",$r->baslangic);
-                $input_bitis = DateTime::createFromFormat("H:i",$r->bitis);
-                $db_baslangic = DateTime::createFromFormat("H:i",$key->baslangic);
-                $db_bitis = DateTime::createFromFormat("H:i",$key->bitis);
-                if($input_baslangic >= $db_baslangic && $input_baslangic < $db_bitis){
+                $input_baslangic = DateTime::createFromFormat("H:i", $r->baslangic);
+                $input_bitis = DateTime::createFromFormat("H:i", $r->bitis);
+                $db_baslangic = DateTime::createFromFormat("H:i", $key->baslangic);
+                $db_bitis = DateTime::createFromFormat("H:i", $key->bitis);
+                if ($input_baslangic >= $db_baslangic && $input_baslangic < $db_bitis) {
                     $programliSinif = $key->sinif->ad;
                     $error_text = "Bu öğretmenin bu saatler arasında başka bir programı var. Programı olduğu sınıf : $programliSinif";
                     throw new Exception($error_text);
@@ -491,7 +491,10 @@ class kurumSinifController extends Controller
             $validator = Validator::make($r->all(), $rules, $messages);
             if ($validator->fails())
                 throw new Exception($validator->errors()->first());
-            $dersProgrami = dersProgramiModel::find($r->ders_programi_id);
+            $dersProgrami = dersProgramiModel::where('id', $r->ders_programi_id)
+                ->with('sinif')
+                ->with('ders')
+                ->first();
             if (!$dersProgrami)
                 throw new Exception("Ders Programı Bulunamadı");
             if ($dersProgrami->kurum_id != get_current_kurum()->id)
@@ -515,14 +518,45 @@ class kurumSinifController extends Controller
             $tarih = $tarih->format("Y-m-d");
 
             if ($yoklamaExist) {
-                if ($r->durum == -1)
+                if ($r->durum == -1) {
                     $yoklamaExist->delete();
-                else if ($r->durum == 0) {
+
+
+                    $sinif_ad_log = $dersProgrami->sinif->ad;
+                    $ders_ad_log = $dersProgrami->ders->ad;
+                    $ogrenci_ad_soyad_log = $ogrenci->ad . " " . $ogrenci->soyad;
+                    $logUser = auth()->user();
+                    $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama güncelledi. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Bilinmiyor";
+                    LogModel::create(['kategori_id' => 25, 'logText' => $logText]);
+
+                    $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama güncelledi. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Bilinmiyor";
+                    kurumLogModel::create(['kategori_id' => 20, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
+                } else if ($r->durum == 0) {
                     $yoklamaExist->geldi = false;
                     $yoklamaExist->save();
+
+                    $sinif_ad_log = $dersProgrami->sinif->ad;
+                    $ders_ad_log = $dersProgrami->ders->ad;
+                    $ogrenci_ad_soyad_log = $ogrenci->ad . " " . $ogrenci->soyad;
+                    $logUser = auth()->user();
+                    $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama güncelledi. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Gelmedi";
+                    LogModel::create(['kategori_id' => 25, 'logText' => $logText]);
+
+                    $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama güncelledi. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Gelmedi";
+                    kurumLogModel::create(['kategori_id' => 20, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
                 } else {
                     $yoklamaExist->geldi = true;
                     $yoklamaExist->save();
+
+                    $sinif_ad_log = $dersProgrami->sinif->ad;
+                    $ders_ad_log = $dersProgrami->ders->ad;
+                    $ogrenci_ad_soyad_log = $ogrenci->ad . " " . $ogrenci->soyad;
+                    $logUser = auth()->user();
+                    $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama güncelledi. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Geldi";
+                    LogModel::create(['kategori_id' => 25, 'logText' => $logText]);
+
+                    $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama güncelledi. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Geldi";
+                    kurumLogModel::create(['kategori_id' => 20, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
                 }
             } else {
                 if ($r->durum == 0) {
@@ -532,6 +566,16 @@ class kurumSinifController extends Controller
                         'geldi' => false,
                         'tarih' => "$tarih"
                     ]);
+
+                    $sinif_ad_log = $dersProgrami->sinif->ad;
+                    $ders_ad_log = $dersProgrami->ders->ad;
+                    $ogrenci_ad_soyad_log = $ogrenci->ad . " " . $ogrenci->soyad;
+                    $logUser = auth()->user();
+                    $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama aldı. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Gelmedi";
+                    LogModel::create(['kategori_id' => 25, 'logText' => $logText]);
+
+                    $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama aldı. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Gelmedi";
+                    kurumLogModel::create(['kategori_id' => 20, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
                 } else if ($r->durum == 1) {
                     yoklamaModel::create([
                         'ders_programi_id' => $dersProgrami->id,
@@ -539,6 +583,16 @@ class kurumSinifController extends Controller
                         'geldi' => true,
                         'tarih' => "$tarih"
                     ]);
+
+                    $sinif_ad_log = $dersProgrami->sinif->ad;
+                    $ders_ad_log = $dersProgrami->ders->ad;
+                    $ogrenci_ad_soyad_log = $ogrenci->ad . " " . $ogrenci->soyad;
+                    $logUser = auth()->user();
+                    $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama aldı. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Geldi";
+                    LogModel::create(['kategori_id' => 25, 'logText' => $logText]);
+
+                    $kurumLogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), yoklama aldı. Sınıf : $sinif_ad_log | Ders : $ders_ad_log | Öğrenci : $ogrenci_ad_soyad_log | Durum : Geldi";
+                    kurumLogModel::create(['kategori_id' => 20, 'logText' => $kurumLogText, 'kurum_id' => get_current_kurum()->id]);
                 }
             }
             return response()->json(['message' => "Yoklama Alındı"]);
