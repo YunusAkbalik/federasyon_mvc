@@ -32,6 +32,7 @@
 </head>
 
 <body>
+    @csrf
     <!-- Page Container -->
     <!--
     Available classes for #page-container:
