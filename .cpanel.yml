@@ -2,6 +2,7 @@
 ---
 deployment:
   tasks:
+    - composer install
     - export DEPLOYPATH=/home/u9613614/klup.mngdemo.com/
     - /bin/cp -R .vscode $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
