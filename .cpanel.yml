@@ -1,6 +1,6 @@
-##### THIS ALLOWS US TO DEPLOY THE SITE FROM A GIT REPO ######
 ---
 deployment:
-  tasks:
-    - export DEPLOYPATH=/home/u9613614/klup.mngdemo.com/
-    - /bin/cp -r * $DEPLOYPATH
+      tasks:
+        - export DEPLOYPATH=/home/u9613614/klup.mngdemo.com  # Add /<app_folder> if required
+        - /bin cp * $DEPLOYPATH                           #copy all from root 
+        - /bin/cp -r * $DEPLOYPATH                        #copy all recursively to $DEPLOYPATH
