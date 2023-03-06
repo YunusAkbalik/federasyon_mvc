@@ -3,4 +3,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/u9613614/klup.mngdemo.com/
-    - /bin/cp -R /home/u9613614/klup.mngdemo.com/ $DEPLOYPATH
+    - /bin/cp -R * $DEPLOYPATH
