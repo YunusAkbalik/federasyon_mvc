@@ -284,7 +284,7 @@
                                 <a class="nav-main-link {{ Route::currentRouteName() == 'admin_loglar' ? 'active' : '' }}"
                                     href="{{ route('admin_loglar') }}">
                                     <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                    <span class="nav-main-link-name">Loglarr</span>
+                                    <span class="nav-main-link-name">Loglar</span>
                                 </a>
                             </li>
                             <li class="nav-main-item">
