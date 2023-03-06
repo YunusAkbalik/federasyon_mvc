@@ -100,7 +100,8 @@
 
                         <!-- User Info -->
                         <div class="ms-2">
-                            <a class="text-white fw-semibold" href="javascript:void(0)">{{ auth()->user()->ad." ".auth()->user()->soyad }}</a>
+                            <a class="text-white fw-semibold"
+                                href="javascript:void(0)">{{ auth()->user()->ad . ' ' . auth()->user()->soyad }}</a>
                             <div class="text-white-75 fs-sm">{{ auth()->user()->getRoleNames()[0] }}</div>
                         </div>
                         <!-- END User Info -->
@@ -297,7 +298,7 @@
                                     @endif
                                 </a>
                             </li>
-                          
+
                             <li class="nav-main-item{{ request()->is('admin/hesap-olustur/*') ? ' open' : '' }}">
                                 <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
                                     aria-expanded="true" href="#">
@@ -461,13 +462,15 @@
                                         <span class="nav-main-link-name">Sınıflar</span>
                                     </a>
                                 </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link {{ Route::currentRouteName() == 'ogretmen_hesapOlustur_ogrenci' ? 'active' : '' }}"
-                                        href="{{ route('ogretmen_hesapOlustur_ogrenci') }}">
-                                        <i class="nav-main-link-icon fa fa-location-arrow"></i>
-                                        <span class="nav-main-link-name">Öğrenci hesabı oluştur</span>
-                                    </a>
-                                </li>
+                                @can('Öğrenci Hesabı Oluştur')
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link {{ Route::currentRouteName() == 'ogretmen_hesapOlustur_ogrenci' ? 'active' : '' }}"
+                                            href="{{ route('ogretmen_hesapOlustur_ogrenci') }}">
+                                            <i class="nav-main-link-icon fa fa-location-arrow"></i>
+                                            <span class="nav-main-link-name">Öğrenci hesabı oluştur</span>
+                                        </a>
+                                    </li>
+                                @endcan
                                 <li class="nav-main-item">
                                     <a class="nav-main-link {{ Route::currentRouteName() == 'ogretmen_dersprogrami_list' ? 'active' : '' }}"
                                         href="{{ route('ogretmen_dersprogrami_list') }}">

@@ -133,17 +133,14 @@ Route::middleware('onePass')->group(function () {
                 Route::post('getSinifFromOkul', [ogretmenSinifController::class, 'getSiniflar'])->name('ogretmen_get_sinif_from_okul');
                 Route::post('getIlIlceFromOkul', [ogretmenOkulController::class, 'getIlIlceFromOkul'])->name('ogretmen_get_ililce_from_okul');
             });
-            Route::prefix('ders-programi')->group(function ()
-            {
+            Route::prefix('ders-programi')->group(function () {
                 Route::get('/', [ogretmenDersController::class, 'programList'])->name('ogretmen_dersprogrami_list');
             });
-            Route::prefix('ders-plani')->group(function ()
-            {
+            Route::prefix('ders-plani')->group(function () {
                 Route::get('/', [ogretmenDersController::class, 'planList'])->name('ogretmen_dersplani_list');
                 Route::get('/{id}', [ogretmenDersController::class, 'planShow'])->name('ogretmen_dersplani_show');
             });
-            Route::prefix('yoklama')->group(function ()
-            {
+            Route::prefix('yoklama')->group(function () {
                 Route::get('/', [ogretmenYoklamaController::class, 'dersList'])->name('ogretmen_yoklama_list');
                 Route::get('/{id}', [ogretmenYoklamaController::class, 'show'])->name('ogretmen_yoklama_show');
                 Route::post('al', [ogretmenYoklamaController::class, 'yoklamaAl'])->name('ogretmen_yoklama_al');

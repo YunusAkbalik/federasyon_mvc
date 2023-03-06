@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Kurum;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\KurumAddOkul;
 use App\Models\IlceModel;
 use App\Models\IlModel;
 use App\Models\kurumLogModel;
@@ -15,17 +16,22 @@ use App\Models\ogrenciSinifModel;
 use App\Models\OkulModel;
 use App\Models\sinifModel;
 use Exception;
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Nette\Utils\Json;
 
 class kurumOkulController extends Controller
 {
+    /**
+     * Kurum Okullarının Listesi
+     * @return View
+     */
     public function index()
     {
         $tumOkullar = OkulModel::orderBy('ad')->get();
         $kurum = get_current_kurum();
         $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('KurumOzelsiniflar')->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
-
-
         $iller = IlModel::all();
         return view('kurum.okullar.index')->with([
             'tumOkullar' => $tumOkullar,
@@ -33,43 +39,25 @@ class kurumOkulController extends Controller
             'iller' => $iller,
         ]);
     }
-
+    /**
+     * Kuruma Okul ekle
+     * @param Request $request
+     * @return Json
+     */
     public function add(Request $request)
     {
         try {
-            if (!$request->okul_id)
-                throw new Exception("Okul Bulunamadı");
-            $okul = OkulModel::find($request->okul_id);
-            if (!$okul)
-                throw new Exception("Okul Bulunamadı");
-            $kurumiliski = kurumUserModel::where('user_id', auth()->user()->id)->first();
-            if (!$kurumiliski)
-                throw new Exception("Kurum Bulunamadı");
-            $kurum = kurumModel::find($kurumiliski->kurum_id);
-            if (!$kurum)
-                throw new Exception("Kurum Bulunamadı");
-            $kurumOkul = kurumOkulModel::where('okul_id', $okul->id)->where('kurum_id', $kurum->id)->first();
-            if ($kurumOkul)
-                throw new Exception("Bu okul eklenmiş durumda");
-            kurumOkulModel::create([
-                'okul_id' => $okul->id,
-                'kurum_id' => $kurum->id,
-            ]);
-
-            $logUser = auth()->user();
-            $logText = "Kurum Yetkilisi $logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' adlı okulu kurum üzerine aldı.";
-            LogModel::create(['kategori_id' => 15, 'logText' => $logText]);
-
-            $kurumlogText = "$logUser->ad $logUser->soyad ($logUser->ozel_id), '$okul->ad' adlı okulu kurum üzerine aldı.";
-            kurumLogModel::create(['kategori_id' => 10, 'logText' => $kurumlogText, 'kurum_id' => get_current_kurum()->id]);
-
-
+            KurumAddOkul::dispatch($request);
             return response()->json(['message' => "Okul kurumunuza başarıyla atandı"]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
-
+    /**
+     * Okul bilgisi ilse o okulun hangi il ilçeye bağlı olduğunun bilgisini döndürür
+     * @param Request $request
+     * @return Json
+     */
     public function getIlIlceFromOkul(Request $request)
     {
         try {
@@ -90,7 +78,11 @@ class kurumOkulController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
-
+    /**
+     * Sınıfın Öğrencilerini getirir
+     * @param Request $request
+     * @return Json
+     */
     public function getOgrenciler(Request $request)
     {
         try {
@@ -104,9 +96,9 @@ class kurumOkulController extends Controller
                 throw new Exception("Sınıf bilgisi alınamadı");
             if ($sinif->kurum_id != get_current_kurum()->id)
                 throw new Exception("Sınıf bilgisi alınamadı");
-            $siniftakiler = ogrenciSinifModel::where('sinif_id',$sinif->id)->get();
+            $siniftakiler = ogrenciSinifModel::where('sinif_id', $sinif->id)->get();
             $ogrenciler = OgrenciOkulModel::where('okul_id', $okul->id)->with('ogrenci')->orderBy('sube')->get();
-            return response()->json(['data' => $ogrenciler , 'siniftakiler' => $siniftakiler]);
+            return response()->json(['data' => $ogrenciler, 'siniftakiler' => $siniftakiler]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
         }
