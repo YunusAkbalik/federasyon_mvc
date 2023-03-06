@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/u9613614/klup.mngdemo.com
-    - /bin/cp /home/u9613614/klup.mngdemo.com $DEPLOYPATH
+    - export DEPLOYPATH=/home/u9613614/klup.mngdemo.com/
+    - /bin/cp /home/u9613614/klup.mngdemo.com/ $DEPLOYPATH
