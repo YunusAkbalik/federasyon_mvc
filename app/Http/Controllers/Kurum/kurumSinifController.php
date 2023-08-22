@@ -74,6 +74,7 @@ class kurumSinifController extends Controller
             'siniflar' => $siniflar,
         ]);
     }
+
     public function add(Request $request)
     {
         try {
@@ -119,12 +120,12 @@ class kurumSinifController extends Controller
             ]);
 
 
-
             return response()->json(['message' => "$request->yeniSinifAd sınıfı oluşturuldu."]);
         } catch (Exception $ex) {
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+
     public function get(Request $request)
     {
         try {
@@ -142,6 +143,7 @@ class kurumSinifController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+
     public function show(Request $request)
     {
         try {
@@ -233,6 +235,7 @@ class kurumSinifController extends Controller
             return redirect()->route('kurum_sinif_index')->withErrors($ex->getMessage());
         }
     }
+
     public function ogrenciEkleTc(Request $request)
     {
         try {
@@ -240,7 +243,7 @@ class kurumSinifController extends Controller
                 throw new Exception("Öğrenci Bulunamadı");
             // $ogrenci = User::where('tc_kimlik', $request->tc)->first();
             $ogrenci = User::where(function ($query) use ($request) {
-                $query->where('tc_kimlik', '=',  $request->tc)
+                $query->where('tc_kimlik', '=', $request->tc)
                     ->orWhere('ozel_id', '=', $request->tc);
             })->first();
             if (!$ogrenci)
@@ -274,6 +277,7 @@ class kurumSinifController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+
     public function getSiniflar(Request $request)
     {
         try {
@@ -300,6 +304,7 @@ class kurumSinifController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+
     public function ogrenciEkleToplu(Request $request)
     {
         try {
@@ -344,6 +349,7 @@ class kurumSinifController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+
     public function ogrenciCikar(Request $request)
     {
         try {
@@ -373,30 +379,31 @@ class kurumSinifController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+
     public function dersProgramiCreate(Request $r)
     {
         try {
-            $rules = array(
-                'ders_id' => array('required'),
-                'gun_id' => array('required', 'integer', 'between:1,7'),
-                'baslangic' => array('required'),
-                'bitis' => array('required'),
-                'ogretmen_id' => array('required'),
-                'sinif_id' => array('required', 'integer'),
-            );
-            $attributeNames = array(
+            $rules = [
+                'ders_id' => ['required'],
+                'gun_id' => ['required', 'integer', 'between:1,7'],
+                'baslangic' => ['required'],
+                'bitis' => ['required'],
+                'ogretmen_id' => ['required'],
+                'sinif_id' => ['required', 'integer'],
+            ];
+            $attributeNames = [
                 'ders_id' => "Ders",
                 'gun_id' => "Gün",
                 'baslangic' => "Başlangıç",
                 'bitis' => "Bitiş",
                 'ogretmen_id' => "Öğretmen",
                 'sinif_id' => "Sınıf",
-            );
-            $messages = array(
+            ];
+            $messages = [
                 'required' => ':attribute alanı zorunlu.',
                 'integer' => ':attribute alanı numerik olmalıdır.',
                 'between' => ':attribute alanı 1 ile 7 arasında olmalıdır',
-            );
+            ];
             $validator = Validator::make($r->all(), $rules, $messages, $attributeNames);
             if ($validator->fails())
                 throw new Exception($validator->errors()->first());
@@ -474,6 +481,7 @@ class kurumSinifController extends Controller
             return response()->json(['message' => $e->getMessage()], 404);
         }
     }
+
     public function yoklamaAl(Request $r)
     {
         try {
@@ -600,6 +608,7 @@ class kurumSinifController extends Controller
             return response()->json(['message' => $e->getMessage()], 404);
         }
     }
+
     public function getDersOgretmenleri(Request $r)
     {
         try {

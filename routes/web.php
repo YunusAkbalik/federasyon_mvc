@@ -43,26 +43,27 @@ use Illuminate\Support\Facades\Route;
 
 // Example Routes
 
+Route::middleware('guest')->group(function () {
+    Route::get('/', [AuthController::class, 'login'])->name('giris_yap');
+    Route::post('login', [AuthController::class, 'loginPost'])->name('giris_yap_post');
+    Route::get('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit'])->name('ogrenci_kayit');
+    Route::post('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit_post'])->name('ogrenci_kayit_post');
+    Route::get('ogretmen-kayit', [AuthController::class, 'ogretmen_kayit'])->name('ogretmen_kayit');
+    Route::post('ogretmen-kayit', [AuthController::class, 'ogretmen_kayit_post'])->name('ogretmen_kayit_post');
+    Route::get('veli-kayit', [AuthController::class, 'veli_kayit'])->name('veli_kayit');
+    Route::post('veli-kayit', [AuthController::class, 'veli_kayit_post'])->name('veli_kayit_post');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('route', [RouteController::class, 'RouteMe'])->name('routeThisGuy');
+    Route::get('cikis', [AuthController::class, 'logout'])->name('cikis_yap');
+});
 
 
 
-
-Route::get('/', [AuthController::class, 'login'])->middleware('guest')->name('giris_yap');
-Route::post('login', [AuthController::class, 'loginPost'])->middleware('guest')->name('giris_yap_post');
-Route::get('route', [RouteController::class, 'RouteMe'])->middleware('auth')->name('routeThisGuy');
-Route::get('cikis', [AuthController::class, 'logout'])->middleware('auth')->name('cikis_yap');
-Route::get('test', [testController::class, 'test']);
-
-
-
-Route::get('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit'])->middleware('guest')->name('ogrenci_kayit');
-Route::post('ogrenci-kayit', [AuthController::class, 'ogrenci_kayit_post'])->middleware('guest')->name('ogrenci_kayit_post');
-Route::get('ogretmen-kayit', [AuthController::class, 'ogretmen_kayit'])->middleware('guest')->name('ogretmen_kayit');
-Route::post('ogretmen-kayit', [AuthController::class, 'ogretmen_kayit_post'])->middleware('guest')->name('ogretmen_kayit_post');
 Route::post('getIlceler', [IlceController::class, 'getIlceFromIl'])->name('getIlcelerFromIlID');
 Route::post('getOkullar', [OkulController::class, 'getOkulsFromIlce'])->name('getOkullarFromIlceID');
-Route::get('veli-kayit', [AuthController::class, 'veli_kayit'])->middleware('guest')->name('veli_kayit');
-Route::post('veli-kayit', [AuthController::class, 'veli_kayit_post'])->middleware('guest')->name('veli_kayit_post');
+
 Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'])->name('getOgrenciFromTc');
 Route::post('get-veli-from-tc', [VeliController::class, 'getVeliFromTc'])->name('getVeliFromTc');
 

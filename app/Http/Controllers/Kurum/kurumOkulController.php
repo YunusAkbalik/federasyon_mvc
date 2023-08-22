@@ -6,18 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Jobs\KurumAddOkul;
 use App\Models\IlceModel;
 use App\Models\IlModel;
-use App\Models\kurumLogModel;
-use App\Models\kurumModel;
 use App\Models\kurumOkulModel;
-use App\Models\kurumUserModel;
-use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
 use App\Models\ogrenciSinifModel;
 use App\Models\OkulModel;
 use App\Models\sinifModel;
 use Exception;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Nette\Utils\Json;
 
@@ -56,7 +52,7 @@ class kurumOkulController extends Controller
     /**
      * Okul bilgisi ilse o okulun hangi il ilçeye bağlı olduğunun bilgisini döndürür
      * @param Request $request
-     * @return Json
+     * @return JsonResponse
      */
     public function getIlIlceFromOkul(Request $request)
     {
