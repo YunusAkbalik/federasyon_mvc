@@ -22,7 +22,7 @@ class kurumOkulController extends Controller
      * Kurum Okullarının Listesi
      * @return View
      */
-    public function index()
+    public function index(): View
     {
         $tumOkullar = OkulModel::orderBy('ad')->get();
         $kurum = get_current_kurum();

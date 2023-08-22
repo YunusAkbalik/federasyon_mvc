@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class kurumController extends Controller
 {
@@ -19,15 +20,18 @@ class kurumController extends Controller
     {
         return view('kurum.dash');
     }
-    public function list()
+
+    public function list(): View
     {
         $kurumlar = kurumModel::all();
         return view('admin.kurumlar.list')->with(['kurumlar' => $kurumlar]);
     }
+
     public function create()
     {
         return view('admin.kurumlar.create');
     }
+
     public function create_post(Request $request)
     {
         try {
@@ -36,7 +40,7 @@ class kurumController extends Controller
             $telefon = str_replace($removeThis, "", $request->telefon_input);
             $yetkili_telefon = str_replace($removeThis, "", $request->yetkili_telefon_input);
             $wp_hatti = str_replace($removeThis, "", $request->wp_hatti_input);
-            $hizmetler =  explode(",", $request->kurum_hizmetler);
+            $hizmetler = explode(",", $request->kurum_hizmetler);
             $rules = array(
                 'unvan' => array('required'),
                 'telefon_input' => array('required'),
@@ -115,6 +119,7 @@ class kurumController extends Controller
             return redirect()->back()->withErrors($exception->getMessage());
         }
     }
+
     public function edit(Request $request)
     {
         try {
@@ -128,6 +133,7 @@ class kurumController extends Controller
             return redirect()->route('admin_list_kurum')->withErrors($exception->getMessage());
         }
     }
+
     public function get(Request $request)
     {
         try {
