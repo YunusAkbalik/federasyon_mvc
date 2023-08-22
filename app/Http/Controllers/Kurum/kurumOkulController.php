@@ -15,7 +15,6 @@ use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Nette\Utils\Json;
 
 class kurumOkulController extends Controller
 {
@@ -35,10 +34,11 @@ class kurumOkulController extends Controller
             'iller' => $iller,
         ]);
     }
+
     /**
      * Kuruma Okul ekle
      * @param Request $request
-     * @return Json
+     * @return JsonResponse
      */
     public function add(Request $request)
     {
@@ -49,12 +49,13 @@ class kurumOkulController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+
     /**
      * Okul bilgisi ilse o okulun hangi il ilçeye bağlı olduğunun bilgisini döndürür
      * @param Request $request
      * @return JsonResponse
      */
-    public function getIlIlceFromOkul(Request $request)
+    public function getIlIlceFromOkul(Request $request): JsonResponse
     {
         try {
             if (!$request->id)
@@ -74,20 +75,21 @@ class kurumOkulController extends Controller
             return response()->json(['message' => $ex->getMessage()], 404);
         }
     }
+
     /**
      * Sınıfın Öğrencilerini getirir
      * @param Request $request
-     * @return Json
+     * @return JsonResponse
      */
-    public function getOgrenciler(Request $request)
+    public function getOgrenciler(Request $request): JsonResponse
     {
         try {
-            if (!$request->id || !$request->sinif)
+            if (!$request->get('id') || !$request->get('sinif'))
                 throw new Exception("Okul bilgisi alınamadı");
-            $okul = OkulModel::find($request->id);
+            $okul = OkulModel::find($request->get('id'));
             if (!$okul)
                 throw new Exception("Okul bilgisi alınamadı");
-            $sinif = sinifModel::find($request->sinif);
+            $sinif = sinifModel::find($request->get('sinif'));
             if (!$sinif)
                 throw new Exception("Sınıf bilgisi alınamadı");
             if ($sinif->kurum_id != get_current_kurum()->id)
@@ -95,8 +97,8 @@ class kurumOkulController extends Controller
             $siniftakiler = ogrenciSinifModel::where('sinif_id', $sinif->id)->get();
             $ogrenciler = OgrenciOkulModel::where('okul_id', $okul->id)->with('ogrenci')->orderBy('sube')->get();
             return response()->json(['data' => $ogrenciler, 'siniftakiler' => $siniftakiler]);
-        } catch (Exception $ex) {
-            return response()->json(['message' => $ex->getMessage()], 404);
+        } catch (Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 404);
         }
     }
 }

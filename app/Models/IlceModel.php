@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static where(string $string, int $id)
+ * @method static find(int $id)
  */
 class IlceModel extends Model
 {
