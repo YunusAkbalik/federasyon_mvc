@@ -9,7 +9,7 @@ use App\Models\IlModel;
 use App\Models\kurumOkulModel;
 use App\Models\OgrenciOkulModel;
 use App\Models\ogrenciSinifModel;
-use App\Models\OkulModel;
+use App\Models\Okul;
 use App\Models\sinifModel;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -24,7 +24,7 @@ class kurumOkulController extends Controller
      */
     public function index(): View
     {
-        $tumOkullar = OkulModel::orderBy('ad')->get();
+        $tumOkullar = Okul::orderBy('ad')->get();
         $kurum = get_current_kurum();
         $kurumOkullar = kurumOkulModel::where('kurum_id', $kurum->id)->with('KurumOzelsiniflar')->with('okul')->join('okul', 'kurum_okul.okul_id', '=', 'okul.id')->orderBy('okul.ad')->get();
         $iller = IlModel::all();
@@ -60,7 +60,7 @@ class kurumOkulController extends Controller
         try {
             if (!$request->id)
                 throw new Exception("Okul bilgisi alınamadı");
-            $okul = OkulModel::find($request->id);
+            $okul = Okul::find($request->id);
             if (!$okul)
                 throw new Exception("Okul bilgisi alınamadı");
             $ilce = IlceModel::find($okul->ilce_id);
@@ -86,7 +86,7 @@ class kurumOkulController extends Controller
         try {
             if (!$request->get('id') || !$request->get('sinif'))
                 throw new Exception("Okul bilgisi alınamadı");
-            $okul = OkulModel::find($request->get('id'));
+            $okul = Okul::find($request->get('id'));
             if (!$okul)
                 throw new Exception("Okul bilgisi alınamadı");
             $sinif = sinifModel::find($request->get('sinif'));

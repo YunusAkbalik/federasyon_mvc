@@ -7,7 +7,7 @@ use App\Models\kurumModel;
 use App\Models\kurumOkulModel;
 use App\Models\kurumUserModel;
 use App\Models\LogModel;
-use App\Models\OkulModel;
+use App\Models\Okul;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -40,7 +40,7 @@ class KurumAddOkul implements ShouldQueue
     public function handle(Request $request)
     {
         $this->validation($request);
-        $okul = OkulModel::find($request->okul_id);
+        $okul = Okul::find($request->okul_id);
         kurumOkulModel::create([
             'okul_id' => $okul->id,
             'kurum_id' => get_current_kurum()->id,
@@ -58,7 +58,7 @@ class KurumAddOkul implements ShouldQueue
     {
         if (!$request->okul_id)
             throw new Exception("Okul Bulunamadı");
-        if (!$okul = OkulModel::find($request->okul_id))
+        if (!$okul = Okul::find($request->okul_id))
             throw new Exception("Okul Bulunamadı");
         if (!$kurumiliski = kurumUserModel::where('user_id', auth()->user()->id)->first())
             throw new Exception("Kurum Bulunamadı");

@@ -6,7 +6,7 @@ use App\Models\IlceModel;
 use App\Models\IlModel;
 use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
-use App\Models\OkulModel;
+use App\Models\Okul;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -43,7 +43,7 @@ class yeniKayitlarController extends Controller
             if ($user->hasRole('Öğrenci')) {
                 $ilce = IlceModel::find($user->okul->okulDetails->ilce_id);
                 $ilceler = IlceModel::where('il_id', $ilce->il_id)->get();
-                $okullar = OkulModel::where('ilce_id', $ilce->id)->get();
+                $okullar = Okul::where('ilce_id', $ilce->id)->get();
                 $user_il = $ilce->il_id;
             }
             return view('admin.kontrol.index')->with(array(
@@ -92,7 +92,7 @@ class yeniKayitlarController extends Controller
                     throw new Exception("Öğrencinin okul bilgisini girin");
                 if (!$request->sinif || !($request->sinif >= 1 && $request->sinif <= 12))
                     throw new Exception("Sınıf bilgisi alınamadı");
-                $okul = OkulModel::find($request->okul);
+                $okul = Okul::find($request->okul);
                 if (!$okul)
                     throw new Exception("Okul bilgisi bulunamadı");
             }

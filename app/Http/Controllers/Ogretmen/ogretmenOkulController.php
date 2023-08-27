@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Ogretmen;
 use App\Http\Controllers\Controller;
 use App\Models\IlceModel;
 use App\Models\IlModel;
-use App\Models\OkulModel;
+use App\Models\Okul;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class ogretmenOkulController extends Controller
         try {
             if (!$request->id)
                 throw new Exception("Okul bilgisi alınamadı");
-            $okul = OkulModel::find($request->id);
+            $okul = Okul::find($request->id);
             if (!$okul)
                 throw new Exception("Okul bilgisi alınamadı");
             $ilce = IlceModel::find($okul->ilce_id);

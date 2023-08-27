@@ -59,14 +59,11 @@ Route::middleware('auth')->group(function () {
     Route::get('cikis', [AuthController::class, 'logout'])->name('cikis_yap');
 });
 
-
-
 Route::post('getIlceler', [IlceController::class, 'getIlceFromIl'])->name('getIlcelerFromIlID');
 Route::post('getOkullar', [OkulController::class, 'getOkulsFromIlce'])->name('getOkullarFromIlceID');
 
 Route::post('get-ogrenci-from-tc', [OgrenciController::class, 'getOgrenciFromTc'])->name('getOgrenciFromTc');
 Route::post('get-veli-from-tc', [VeliController::class, 'getVeliFromTc'])->name('getVeliFromTc');
-
 
 Route::middleware('onePass')->group(function () {
     Route::prefix('admin')->middleware('role:Admin')->group(function () {
@@ -108,6 +105,8 @@ Route::middleware('onePass')->group(function () {
             Route::get('bekleyenler', [ogretmenController::class, 'get_bekleyenler'])->name('admin_bekleyen_ogretmen');
             Route::get('aktif', [ogretmenController::class, 'aktifList'])->name('admin_aktif_ogretmen_list');
         });
+        Route::get('okul/olustur', [OkulController::class, 'create'])->name('admin.okul.create');
+        Route::apiResource('okul', OkulController::class);
     });
     Route::prefix('veli')->middleware('role:Veli')->group(function () {
         Route::get('/', [VeliController::class, 'dashboard'])->name('veli_dash');

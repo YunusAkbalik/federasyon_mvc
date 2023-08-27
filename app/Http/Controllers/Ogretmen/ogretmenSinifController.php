@@ -13,7 +13,7 @@ use App\Models\OgrenciOkulModel;
 use App\Models\ogrenciSinifModel;
 use App\Models\ogretmenDersModel;
 use App\Models\ogretmenKurumModel;
-use App\Models\OkulModel;
+use App\Models\Okul;
 use App\Models\sinifModel;
 use App\Models\User;
 use App\Models\yoklamaModel;
@@ -137,7 +137,7 @@ class ogretmenSinifController extends Controller
         try {
             if (!$request->id || !$request->sinif)
                 throw new Exception("Okul bilgisi alınamadı");
-            $okul = OkulModel::find($request->id);
+            $okul = Okul::find($request->id);
             if (!$okul)
                 throw new Exception("Okul bilgisi alınamadı");
             $sinif = sinifModel::find($request->sinif);
@@ -269,7 +269,7 @@ class ogretmenSinifController extends Controller
         try {
             if (!$request->okul_id)
                 throw new Exception("Sınıf bilgisi alınamadı");
-            $okul = OkulModel::find($request->okul_id);
+            $okul = Okul::find($request->okul_id);
             if (!$okul)
                 throw new Exception("Okul bilgisi alınamadı");
             $kurum = get_ogretmen_current_kurum();

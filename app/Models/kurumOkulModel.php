@@ -15,7 +15,7 @@ class kurumOkulModel extends Model
     ];
     public function okul()
     {
-        return $this->hasOne(OkulModel::class, 'id', 'okul_id');
+        return $this->hasOne(Okul::class, 'id', 'okul_id');
     }
     public function KurumOzelsiniflar()
     {

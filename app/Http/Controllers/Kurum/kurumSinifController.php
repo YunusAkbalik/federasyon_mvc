@@ -14,7 +14,7 @@ use App\Models\LogModel;
 use App\Models\ogrenciSinifModel;
 use App\Models\ogretmenDersModel;
 use App\Models\ogretmenKurumModel;
-use App\Models\OkulModel;
+use App\Models\Okul;
 use App\Models\sinifModel;
 use App\Models\User;
 use App\Models\yoklamaModel;
@@ -32,7 +32,7 @@ class kurumSinifController extends Controller
         $okulExist = false;
         $okul = null;
         if ($r->okul) {
-            $okul = OkulModel::find($r->okul);
+            $okul = Okul::find($r->okul);
             if ($okul) {
                 $kurumOkulExist = kurumOkulModel::where([
                     'kurum_id' => get_current_kurum()->id,
@@ -56,7 +56,7 @@ class kurumSinifController extends Controller
         }
         if (!$okulExist) {
             $kurumOkul = kurumOkulModel::where('kurum_id', get_current_kurum()->id)->first();
-            $okul = OkulModel::find($kurumOkul->okul_id);
+            $okul = Okul::find($kurumOkul->okul_id);
             if (!$okul)
                 return redirect()->route('kurum_okul_index')->withErrors("Okul Bulunamadı.");
             $siniflar = sinifModel::where([
@@ -100,7 +100,7 @@ class kurumSinifController extends Controller
             $sinifExist = sinifModel::where('kurum_id', $kurum->id)->where('okul_id', $request->okul_id)->where('ad', $request->yeniSinifAd)->first();
             if ($sinifExist)
                 throw new Exception("Bu sınıf okulunuzda mevcut");
-            $okul = OkulModel::find($request->okul_id);
+            $okul = Okul::find($request->okul_id);
             sinifModel::create([
                 'kurum_id' => $kurum->id,
                 'okul_id' => $request->okul_id,
@@ -283,7 +283,7 @@ class kurumSinifController extends Controller
         try {
             if (!$request->okul_id)
                 throw new Exception("Sınıf bilgisi alınamadı");
-            $okul = OkulModel::find($request->okul_id);
+            $okul = Okul::find($request->okul_id);
             if (!$okul)
                 throw new Exception("Okul bilgisi alınamadı");
             $kurum = get_current_kurum();

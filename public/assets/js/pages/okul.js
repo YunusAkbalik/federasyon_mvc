@@ -258,17 +258,17 @@ Dashmix.onLoad((() => class {
                 sLengthSelect: "form-select"
             }), jQuery.extend(!0, jQuery.fn.dataTable.defaults, {
                 columnDefs: [{
-                        responsivePriority: 1,
-                        targets: 1,
+                        responsivePriority: 0,
+                        targets: 0,
                     },
                     {
-                        responsivePriority: 1,
-                        targets: 2,
+                        responsivePriority: 0,
+                        targets: 0,
                     },
                 ],
                 language: trLaung,
                 order: [
-                    [4, 'asc']
+                    [1, 'asc']
                 ]
             }), jQuery.extend(!0, jQuery.fn.DataTable.Buttons.defaults, {
                 dom: { button: { className: "btn btn-sm btn-primary" } }

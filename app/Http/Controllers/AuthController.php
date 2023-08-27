@@ -13,7 +13,7 @@ use App\Models\OgrenciOkulModel;
 use App\Models\OgrenciVeliModel;
 use App\Models\ogretmenCvModel;
 use App\Models\ogretmenPhotoModel;
-use App\Models\OkulModel;
+use App\Models\Okul;
 use App\Models\onePassesModel;
 use App\Models\User;
 use Exception;
@@ -89,7 +89,7 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-            $okul = OkulModel::find($request->okul);
+            $okul = Okul::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
 
@@ -380,7 +380,7 @@ class AuthController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-            $okul = OkulModel::find($request->okul);
+            $okul = Okul::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
             $one_pass = rand(100000, 999999);

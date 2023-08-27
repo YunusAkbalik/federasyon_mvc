@@ -25,6 +25,7 @@
     <script src="{{ asset('assets/js/dashmix.app.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+    <script src="{{asset('assets/js/lib/axios.js')}}"></script>
     <script>
         Dashmix.helpersOnLoad(['jq-notify']);
     </script>
@@ -77,7 +78,7 @@
       ''                                          Full width Main Content if no class is added
       'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
       'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
-        
+
     DARK MODE
 
       'sidebar-dark page-header-dark dark-mode'   Enable dark mode (light sidebar/header is not supported with dark mode)
@@ -729,22 +730,20 @@
     <!-- END Page Container -->
 </body>
 <!-- Page JS Plugins -->
-@if (count($errors))
+@if($errors->first())
     <script>
-        Dashmix.helpers('jq-notify', {
-            type: 'danger',
-            icon: 'fa fa-times me-1',
-            message: '{{ $errors->first() }}'
-        });
+    @foreach($errors->all() as $error)
+    Dashmix.helpers('jq-notify', {type: 'danger', icon: 'fa fa-times me-1', message: '{{$error}}'});
+    @endforeach
     </script>
 @endif
 @if (Session::has('success'))
     <script>
-        Dashmix.helpers('jq-notify', {
-            type: 'success',
-            icon: 'fa fa-check me-1',
-            message: '{{ Session::get('success') }}'
-        });
+    Dashmix.helpers('jq-notify', {
+        type: 'success',
+        icon: 'fa fa-check me-1',
+        message: '{{ Session::get('success') }}'
+    })
     </script>
 @endif
 

@@ -10,7 +10,7 @@ use App\Models\LogModel;
 use App\Models\OgrenciOkulModel;
 use App\Models\ogrenciSinifModel;
 use App\Models\OgrenciVeliModel;
-use App\Models\OkulModel;
+use App\Models\Okul;
 use App\Models\onePassesModel;
 use App\Models\sinifModel;
 use App\Models\User;
@@ -101,7 +101,7 @@ class ogretmenOgrenciController extends Controller
                 if ($userExist)
                     throw new Exception("Bu telefon numarasına ait bir kullanıcı var");
             }
-            $okul = OkulModel::find($request->okul);
+            $okul = Okul::find($request->okul);
             if (!$okul)
                 throw new Exception("Okul bulunamadı");
             $kurum = get_ogretmen_current_kurum();
